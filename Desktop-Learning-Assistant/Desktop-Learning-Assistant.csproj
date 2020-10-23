@@ -163,12 +163,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+<<<<<<< HEAD
+    <Compile Include="TimeStatistic\Model.cs" />
+    <Compile Include="TimeStatistic\StatisticService.cs" />
+=======
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+>>>>>>> b267c1da06211116e5e4a3028c75e3649ef327c7
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
