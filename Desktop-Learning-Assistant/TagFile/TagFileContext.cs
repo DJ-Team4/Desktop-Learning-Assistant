@@ -10,8 +10,8 @@ namespace DesktopLearningAssistant.TagFile.Context
 {
     public class TagFileContext : DbContext
     {
-        //public TagFileContext(DbContextOptions<TagFileContext> options)
-        //    : base(options) { }
+        public TagFileContext(DbContextOptions<TagFileContext> options)
+            : base(options) { }
 
         public TagFileContext()
         {

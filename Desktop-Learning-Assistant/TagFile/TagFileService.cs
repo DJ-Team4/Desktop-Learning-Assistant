@@ -155,7 +155,6 @@ namespace DesktopLearningAssistant.TagFile
             string originFilename = Path.GetFileName(filepath);
             string linkName = originFilename + ".lnk";//TODO 解决仓库中有同名文件的问题
             WshShell shell = new WshShellClass();
-            //TODO repo path
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(RepoPath + linkName);
             shortcut.TargetPath = filepath;
             shortcut.Save();
@@ -169,10 +168,17 @@ namespace DesktopLearningAssistant.TagFile
 
         /// <summary>
         /// 获取单例对象
-        /// TODO 线程安全
         /// </summary>
         public static TagFileService GetService()
         {
+            if (uniqueService == null)
+            {
+                lock (locker)
+                {
+                    if (uniqueService == null)
+                        uniqueService = new TagFileService();
+                }
+            }
             return uniqueService;
         }
 
@@ -184,11 +190,10 @@ namespace DesktopLearningAssistant.TagFile
 
         private string RepoPath { get; set; }
 
-        //TODO only for test
-        public TagFileContext Context { get => context; }
+        private readonly TagFileContext context;
 
-        private TagFileContext context;
+        private static volatile TagFileService uniqueService = new TagFileService();
 
-        private static TagFileService uniqueService = new TagFileService();
+        private static readonly object locker = new object();
     }
 }

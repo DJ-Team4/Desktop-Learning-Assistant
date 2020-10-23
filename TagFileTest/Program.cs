@@ -13,9 +13,6 @@ namespace TagFileTest
         static async Task Main(string[] args)
         {
             var service = TagFileService.GetService();
-            var file = await service.AddFileLinkToRepoAsync(@"C:\Users\zhb\Desktop\temp\file.txt");
-            await file.AddTagAsync("tagname");
-            Console.WriteLine(file);
         }
 
         static async Task Test1()
