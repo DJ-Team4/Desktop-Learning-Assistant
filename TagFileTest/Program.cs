@@ -14,27 +14,16 @@ namespace TagFileTest
         {
             TagFileService.EnsureDbAndFolderCreated();
             var service = TagFileService.GetService();
-            var tag = await service.GetTagByNameAsync("tagname");
+            var tag = await service.AddTagAsync("tagname");
+            var file = await service.AddFileItemForTestAsync("disp", "real");
+            await file.AddTagAsync(tag);
             Console.WriteLine(tag);
+            Console.WriteLine(file);
         }
 
         static async Task Test1()
         {
-            var service = TagFileService.GetService();
-            var tag = await service.AddTagAsync("tagname");
-            var file = await service.AddFileItemForTestAsync("1234", "1234");
-            await file.AddTagAsync(tag);
-            Console.WriteLine(file);
-            Console.WriteLine(tag);
-
-            await file.RemoveTag(tag);
-            Console.WriteLine(file);
-            Console.WriteLine(tag);
-        }
-
-        static void Main2(string[] args)
-        {
-
+            await Task.Delay(100);
         }
     }
 }

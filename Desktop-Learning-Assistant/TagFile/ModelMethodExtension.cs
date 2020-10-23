@@ -41,10 +41,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public static async Task RemoveTag(this FileItem fileItem, Tag tag)
         {
-            var service = TagFileService.GetService();
-            var relation = await service.GetRelationAsync(tag, fileItem);
-            if (relation != null)
-                await service.RemoveRelationAsync(relation);
+            await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
         }
 
         #endregion
@@ -78,10 +75,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns></returns>
         public static async Task RemoveFileAsync(this Tag tag, FileItem fileItem)
         {
-            var service = TagFileService.GetService();
-            var relation = await service.GetRelationAsync(tag, fileItem);
-            if (relation != null)
-                await service.RemoveRelationAsync(relation);
+            await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
         }
 
         #endregion

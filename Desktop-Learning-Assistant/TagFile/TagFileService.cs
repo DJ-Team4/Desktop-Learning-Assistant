@@ -16,21 +16,12 @@ namespace DesktopLearningAssistant.TagFile
         #region Tag 相关操作
 
         /// <summary>
-        /// 按 Id 获取 Tag
-        /// </summary>
-        /// <returns>不存在则返回 null</returns>
-        public async Task<Tag> GetTagByIdAsync(int tagId)
-        {
-            return await context.Tags.FindAsync(tagId);
-        }
-
-        /// <summary>
         /// 按 TagName 获取 Tag
         /// </summary>
         /// <returns>不存在则返回 null</returns>
         public async Task<Tag> GetTagByNameAsync(string tagName)
         {
-            return await context.Tags.Where(tag => tag.TagName == tagName).FirstOrDefaultAsync();
+            return await context.Tags.FindAsync(tagName);
         }
 
         /// <summary>
@@ -92,7 +83,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns>不存在则返回 null</returns>
         public async Task<TagFileRelation> GetRelationAsync(Tag tag, FileItem fileItem)
         {
-            return await context.Relations.FindAsync(tag.TagId, fileItem.FileItemId);
+            return await context.Relations.FindAsync(tag.TagName, fileItem.FileItemId);
         }
 
         /// <summary>
@@ -107,9 +98,9 @@ namespace DesktopLearningAssistant.TagFile
             {
                 relation = new TagFileRelation
                 {
-                    TagId = tag.TagId,
+                    TagName = tag.TagName,
                     FileItemId = fileItem.FileItemId,
-                    CreateTime = DateTime.Now
+                    CreateTime = DateTime.UtcNow
                 };
                 await context.Relations.AddAsync(relation);
                 await context.SaveChangesAsync();
@@ -124,6 +115,17 @@ namespace DesktopLearningAssistant.TagFile
         {
             context.Relations.Remove(relation);
             await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 移除某个 Tag-FileItem 关系。
+        /// 若该关系不存在，则什么都不做。
+        /// </summary>
+        public async Task RemoveRelationAsync(Tag tag, FileItem fileItem)
+        {
+            var relation = await GetRelationAsync(tag, fileItem);
+            if (relation != null)
+                await RemoveRelationAsync(relation);
         }
 
         /// <summary>
