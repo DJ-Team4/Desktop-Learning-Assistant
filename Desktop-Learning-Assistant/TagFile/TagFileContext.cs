@@ -13,18 +13,6 @@ namespace DesktopLearningAssistant.TagFile.Context
         public TagFileContext(DbContextOptions<TagFileContext> options)
             : base(options) { }
 
-        public TagFileContext()
-        {
-            Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite(
-                "Data Source=C:/Users/zhb/Documents/sqlitedb/TagFileDB.db");
-            base.OnConfiguring(optionsBuilder);
-        }
-
         //Entity mappings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

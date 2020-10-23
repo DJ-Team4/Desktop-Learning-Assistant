@@ -12,7 +12,10 @@ namespace TagFileTest
     {
         static async Task Main(string[] args)
         {
+            TagFileService.EnsureDbAndFolderCreated();
             var service = TagFileService.GetService();
+            var tag = await service.GetTagByNameAsync("tagname");
+            Console.WriteLine(tag);
         }
 
         static async Task Test1()

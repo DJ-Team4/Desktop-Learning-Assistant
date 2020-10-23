@@ -126,6 +126,14 @@ namespace DesktopLearningAssistant.TagFile
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 查询关系是否存在
+        /// </summary>
+        public async Task<bool> IsRelationExist(Tag tag, FileItem fileItem)
+        {
+            return (await GetRelationAsync(tag, fileItem)) != null;
+        }
+
         #endregion
 
         #region FileItem 有关操作
@@ -182,18 +190,40 @@ namespace DesktopLearningAssistant.TagFile
             return uniqueService;
         }
 
-        private TagFileService()
+        /// <summary>
+        /// 确保数据库和仓库文件夹已创建
+        /// </summary>
+        public static void EnsureDbAndFolderCreated()
         {
-            context = new TagFileContext();
-            RepoPath = Path.GetFullPath("./repo/");
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            using (var context = new TagFileContext(builder.Options))
+            {
+                context.Database.EnsureCreated();
+            }
+            //TODO ensure repo folder created
         }
 
-        private string RepoPath { get; set; }
+        private TagFileService()
+        {
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            context = new TagFileContext(builder.Options);
+        }
+
+        private string RepoPath { get => TagFileConfig.RepoPath; }
 
         private readonly TagFileContext context;
 
-        private static volatile TagFileService uniqueService = new TagFileService();
+        private static volatile TagFileService uniqueService = null;
 
         private static readonly object locker = new object();
+    }
+
+    //TODO modify this to a config class
+    class TagFileConfig
+    {
+        public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/repo";
+        public static string DbPath { get; } = "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";
     }
 }
