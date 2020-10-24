@@ -16,9 +16,8 @@ namespace TagFileTest
             TagFileService.EnsureDbAndFolderCreated();
             Console.WriteLine("db ok");
             var service = TagFileService.GetService();
-            var file = await service.GetFileItemAsync(3);
-            await file.DeleteToRecycleBin();
-            Console.WriteLine(file);
+            Tag tag = await service.GetTagAsync("tagname");
+            Console.WriteLine(tag);
         }
 
         static async Task TestShortcut()

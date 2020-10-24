@@ -26,7 +26,7 @@ namespace DesktopLearningAssistant.TagFile.Model
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"File DisplayName: {DisplayName}, File Id: {FileItemId}\n");
+            sb.Append($"File Display Name: {DisplayName}, File Real Name: {RealName}, File Id: {FileItemId}\n");
             sb.Append($"Relations of {DisplayName}:\n");
             foreach (var relation in Relations)
             {

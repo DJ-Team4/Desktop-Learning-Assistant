@@ -27,6 +27,7 @@ namespace DesktopLearningAssistant.TagFile.Model
             foreach (var relation in Relations)
             {
                 sb.Append($"File Display Name:{relation.FileItem.DisplayName}, " +
+                          $"File Real Name: {relation.FileItem.RealName}, " +
                           $"File Id: {relation.FileItem.FileItemId}, " +
                           $"Local Create Time: {relation.LocalCreateTime}\n");
             }
