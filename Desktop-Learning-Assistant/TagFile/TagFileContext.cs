@@ -13,6 +13,12 @@ namespace DesktopLearningAssistant.TagFile.Context
         public TagFileContext(DbContextOptions<TagFileContext> options)
             : base(options) { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
+        }
+
         //Entity mappings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -14,10 +14,10 @@ namespace DesktopLearningAssistant.TagFile.Model
     public class TagFileRelation
     {
         public string TagName { get; set; }
-        public Tag Tag { get; set; }
+        public virtual Tag Tag { get; set; }
 
         public int FileItemId { get; set; }
-        public FileItem FileItem { get; set; }
+        public virtual FileItem FileItem { get; set; }
 
         public DateTime CreateTime { get; set; }
 
@@ -25,7 +25,7 @@ namespace DesktopLearningAssistant.TagFile.Model
 
         public override string ToString()
         {
-            return $"Tag Name: {TagName}, File Item Id: {FileItemId}, Create Time: {CreateTime}";
+            return $"Tag Name: {TagName}, File Item Id: {FileItemId}, Local Create Time: {LocalCreateTime}";
         }
 
         // override object.Equals

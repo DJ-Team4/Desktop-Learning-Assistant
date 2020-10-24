@@ -15,7 +15,8 @@ namespace DesktopLearningAssistant.TagFile.Model
     {
         public string TagName { get; set; }
 
-        public virtual ICollection<TagFileRelation> Relations { get; set; } = new ObservableCollection<TagFileRelation>();
+        public virtual ICollection<TagFileRelation> Relations { get; private set; }
+            = new ObservableCollection<TagFileRelation>();
 
         // override object.ToString
         public override string ToString()
@@ -27,7 +28,7 @@ namespace DesktopLearningAssistant.TagFile.Model
             {
                 sb.Append($"File Display Name:{relation.FileItem.DisplayName}, " +
                           $"File Id: {relation.FileItem.FileItemId}, " +
-                          $"Create Time: {relation.CreateTime}\n");
+                          $"Local Create Time: {relation.LocalCreateTime}\n");
             }
             return sb.ToString();
         }

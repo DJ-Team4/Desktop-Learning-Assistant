@@ -20,7 +20,8 @@ namespace DesktopLearningAssistant.TagFile.Model
 
         public string RealName { get; set; }
 
-        public virtual ICollection<TagFileRelation> Relations { get; set; } = new ObservableCollection<TagFileRelation>();
+        public virtual ICollection<TagFileRelation> Relations { get; private set; }
+            = new ObservableCollection<TagFileRelation>();
 
         public override string ToString()
         {
@@ -30,7 +31,7 @@ namespace DesktopLearningAssistant.TagFile.Model
             foreach (var relation in Relations)
             {
                 sb.Append($"Tag Name: {relation.Tag.TagName}, " +
-                          $"Create Time: {relation.CreateTime}\n");
+                          $"Local Create Time: {relation.LocalCreateTime}\n");
             }
             return sb.ToString();
         }

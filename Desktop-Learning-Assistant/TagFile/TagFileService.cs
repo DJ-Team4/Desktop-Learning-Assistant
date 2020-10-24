@@ -8,6 +8,7 @@ using DesktopLearningAssistant.TagFile.Context;
 using Microsoft.EntityFrameworkCore;
 using IWshRuntimeLibrary;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace DesktopLearningAssistant.TagFile
 {
@@ -19,7 +20,7 @@ namespace DesktopLearningAssistant.TagFile
         /// 按 TagName 获取 Tag
         /// </summary>
         /// <returns>不存在则返回 null</returns>
-        public async Task<Tag> GetTagByNameAsync(string tagName)
+        public async Task<Tag> GetTagAsync(string tagName)
         {
             return await context.Tags.FindAsync(tagName);
         }
@@ -30,7 +31,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<Tag> AddTagAsync(string tagName)
         {
-            Tag tag = await GetTagByNameAsync(tagName);
+            Tag tag = await GetTagAsync(tagName);
             if (tag == null)
             {
                 tag = new Tag { TagName = tagName };
@@ -70,7 +71,26 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<bool> IsTagExist(string tagName)
         {
-            return await GetTagByNameAsync(tagName) != null;
+            return await GetTagAsync(tagName) != null;
+        }
+
+        /// <summary>
+        /// 获取含所有 Tag 的 List
+        /// </summary>
+        public async Task<List<Tag>> GetTagListAsync()
+        {
+            return await context.Tags.ToListAsync();
+        }
+
+        /// <summary>
+        /// 使用 Eager loading 策略获取 Tag List。
+        /// </summary>
+        public async Task<List<Tag>> GetTagListIncludeFilesAsync()
+        {
+            return await context.Tags.Include(tag => tag.Relations)
+                                         .ThenInclude(relation => relation.FileItem)
+                                             .ThenInclude(file => file.Relations)
+                                     .ToListAsync();
         }
 
         #endregion
@@ -140,13 +160,20 @@ namespace DesktopLearningAssistant.TagFile
 
         #region FileItem 有关操作
 
-        //TODO only for test adding file item
+        //only for test adding file item
         public async Task<FileItem> AddFileItemForTestAsync(string dispName, string realName)
         {
             var file = new FileItem { DisplayName = dispName, RealName = realName };
             await context.FileItems.AddAsync(file);
             await context.SaveChangesAsync();
             return file;
+        }
+
+        //only for test get file item
+        public async Task<FileItem> GetFileItemAsync(string dispName)
+        {
+            return await context.FileItems.Where(f => f.DisplayName == dispName)
+                                          .FirstOrDefaultAsync();
         }
 
         private async Task AddFileItem(FileItem fileItem)
@@ -202,6 +229,17 @@ namespace DesktopLearningAssistant.TagFile
             using (var context = new TagFileContext(builder.Options))
             {
                 context.Database.EnsureCreated();
+            }
+            //TODO ensure repo folder created
+        }
+
+        public static async Task EnsureDbAndFolderCreatedAsync()
+        {
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            using (var context = new TagFileContext(builder.Options))
+            {
+                await context.Database.EnsureCreatedAsync();
             }
             //TODO ensure repo folder created
         }
