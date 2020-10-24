@@ -31,9 +31,10 @@ namespace DesktopLearningAssistant.TagFile
             System.Diagnostics.Process.Start(filepath);
         }
 
+        //TODO
         public static void OpenFileWith(string filepath)
         {
-            throw new NotImplementedException();//TODO
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -42,6 +43,28 @@ namespace DesktopLearningAssistant.TagFile
         public static void ShowInExplorer(string filepath)
         {
             System.Diagnostics.Process.Start("explorer.exe", "/select," + filepath);
+        }
+
+        /// <summary>
+        /// 将文件放入回收站
+        /// </summary>
+        public static void DeleteFileToRecycleBin(string filepath)
+        {
+            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                filepath,
+                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+        }
+
+        /// <summary>
+        /// 将文件夹放入回收站
+        /// </summary>
+        public static void DeleteFolderToRecycleBin(string folderpath)
+        {
+            Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
+                folderpath,
+                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
         }
 
         /// <summary>
@@ -78,13 +101,13 @@ namespace DesktopLearningAssistant.TagFile
         public static string GetAvailableFileName(string filename, string folderpath)
         {
             filename = Path.GetFileName(filename);
-            if (!File.Exists(FileInFolder(folderpath, filename)))
+            if (!File.Exists(Path.Combine(folderpath, filename)))
                 return filename;
 
             string nameWithoutExt = Path.GetFileNameWithoutExtension(filename);
             string ext = Path.GetExtension(filename);
             int num = 1;
-            while (File.Exists(FileInFolder(folderpath, $"{nameWithoutExt} ({num}){ext}")))
+            while (File.Exists(Path.Combine(folderpath, $"{nameWithoutExt} ({num}){ext}")))
                 num += 1;
             return $"{nameWithoutExt} ({num}){ext}";
         }
@@ -98,8 +121,23 @@ namespace DesktopLearningAssistant.TagFile
         public static string MoveFileAutoNumber(string filepath, string folderpath)
         {
             string realName = GetAvailableFileName(filepath, folderpath);
-            File.Move(filepath, FileInFolder(folderpath, realName));
+            File.Move(filepath, Path.Combine(folderpath, realName));
             return realName;
+        }
+
+        /// <summary>
+        /// 重命名文件。若有重名则自动编号。
+        /// </summary>
+        /// <param name="filepath">文件路径</param>
+        /// <param name="newName">新文件名</param>
+        /// <returns>重命名后的文件名（不含路径）</returns>
+        public static string RenameFileAutoNumber(string filepath, string newName)
+        {
+            string folderpath = Path.GetDirectoryName(filepath);
+            newName = Path.GetFileName(newName);
+            string realNewName = GetAvailableFileName(newName, folderpath);
+            File.Move(filepath, Path.Combine(folderpath, realNewName));
+            return realNewName;
         }
     }
 }

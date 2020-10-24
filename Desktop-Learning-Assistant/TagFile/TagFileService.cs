@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile.Context;
 using Microsoft.EntityFrameworkCore;
-using IWshRuntimeLibrary;
 using System.IO;
 
 namespace DesktopLearningAssistant.TagFile
@@ -51,7 +50,7 @@ namespace DesktopLearningAssistant.TagFile
 
         /// <summary>
         /// 重命名该 Tag。
-        /// 若新名字的 Tag 已经存在，则返回 false
+        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false。
         /// </summary>
         public async Task<bool> RenameTagAsync(Tag tag, string newName)
         {
@@ -84,7 +83,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 使用 Eager loading 策略获取 Tag List。
         /// </summary>
-        public async Task<List<Tag>> GetTagListIncludeFilesAsync()
+        public async Task<List<Tag>> GetTagListEagerAsync()
         {
             return await context.Tags.Include(tag => tag.Relations)
                                          .ThenInclude(relation => relation.FileItem)
@@ -175,10 +174,21 @@ namespace DesktopLearningAssistant.TagFile
                                           .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// 按 FileItemId 获取 FileItem
+        /// </summary>
+        public async Task<FileItem> GetFileItemAsync(int fileItemId)
+        {
+            return await context.FileItems.FindAsync(fileItemId);
+        }
+
+        /// <summary>
+        /// 添加 FileItem
+        /// </summary>
         private async Task AddFileItemAsync(FileItem fileItem)
         {
             await context.FileItems.AddAsync(fileItem);
-            await context.SaveChangesAsync();//TODO save
+            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -221,6 +231,49 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public string GetRealFilepath(FileItem fileItem)
             => FileUtils.FileInFolder(RepoPath, fileItem.RealName);
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        public async Task DeleteFileAsync(FileItem fileItem)
+        {
+            string path = GetRealFilepath(fileItem);
+            if (File.Exists(path))
+            {
+                await Task.Run(() => File.Delete(path));
+            }
+            context.FileItems.Remove(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 将文件移动到回收站
+        /// </summary>
+        public async Task DeleteFileToRecycleBinAsync(FileItem fileItem)
+        {
+            if (File.Exists(GetRealFilepath(fileItem)))
+            {
+                //move to temp recycle first
+                string curFilename = FileUtils.MoveFileAutoNumber(
+                    GetRealFilepath(fileItem), TempRecyclePath);
+                string curPath = Path.Combine(TempRecyclePath, curFilename);
+                //then send to system recycle bin
+                await Task.Run(() => FileUtils.DeleteFileToRecycleBin(curPath));
+            }
+            context.FileItems.Remove(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 重命名文件
+        /// </summary>
+        public async Task RenameFileItemAsync(FileItem fileItem, string newName)
+        {
+            fileItem.DisplayName = newName;
+            fileItem.RealName = await Task.Run(() =>
+                FileUtils.RenameFileAutoNumber(GetRealFilepath(fileItem), newName));
+            await context.SaveChangesAsync();
+        }
 
         #endregion
 
@@ -274,6 +327,8 @@ namespace DesktopLearningAssistant.TagFile
 
         private string RepoPath { get => TagFileConfig.RepoPath; }
 
+        private string TempRecyclePath { get => TagFileConfig.TempRecyclePath; }
+
         private readonly TagFileContext context;
 
         private static volatile TagFileService uniqueService = null;
@@ -284,8 +339,8 @@ namespace DesktopLearningAssistant.TagFile
     //TODO modify this to a config class
     class TagFileConfig
     {
-        public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/repo";
+        public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/repo";
         public static string DbPath { get; } = "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";
-        public static string RecycleBinPath { get; } = "";
+        public static string TempRecyclePath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/temp-recycle";
     }
 }

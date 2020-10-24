@@ -13,7 +13,12 @@ namespace TagFileTest
     {
         static async Task Main(string[] args)
         {
-            await Task.Delay(100);
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
+            var service = TagFileService.GetService();
+            var file = await service.GetFileItemAsync(3);
+            await file.DeleteToRecycleBin();
+            Console.WriteLine(file);
         }
 
         static async Task TestShortcut()

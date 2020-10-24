@@ -68,13 +68,38 @@ namespace DesktopLearningAssistant.TagFile
             FileUtils.ShowInExplorer(fileItem.RealPath());
         }
 
+        /// <summary>
+        /// 重命名文件。
+        /// 该方法不会检查文件名是否合法。
+        /// </summary>
+        public static async Task Rename(this FileItem fileItem, string newName)
+        {
+            await TagFileService.GetService().RenameFileItemAsync(fileItem, newName);
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        public static async Task Delete(this FileItem fileItem)
+        {
+            await TagFileService.GetService().DeleteFileAsync(fileItem);
+        }
+
+        /// <summary>
+        /// 把文件放入回收站
+        /// </summary>
+        public static async Task DeleteToRecycleBin(this FileItem fileItem)
+        {
+            await TagFileService.GetService().DeleteFileToRecycleBinAsync(fileItem);
+        }
+
         #endregion
 
         #region Tag 类的扩展方法
 
         /// <summary>
         /// 重命名该 Tag。
-        /// 若新名字的 Tag 已经存在，则返回 false
+        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false
         /// </summary>
         public static async Task Rename(this Tag tag, string newName)
         {
