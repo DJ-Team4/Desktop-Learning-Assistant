@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,29 +13,50 @@ namespace TagFileTest
     {
         static async Task Main(string[] args)
         {
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
             var service = TagFileService.GetService();
-            var file = await service.AddFileLinkToRepoAsync(@"C:\Users\zhb\Desktop\temp\file.txt");
-            await file.AddTagAsync("tagname");
+            Tag tag = await service.GetTagAsync("tagname");
+            Console.WriteLine(tag);
+        }
+
+        static async Task TestShortcut()
+        {
+            string filepath = @"C:\Users\zhb\Desktop\temp\file.txt";
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
+            var service = TagFileService.GetService();
+            var file = await service.AddShortcutToRepoAsync(filepath);
+            var tag = await service.AddTagAsync("tagname");
+            await file.AddTagAsync(tag);
             Console.WriteLine(file);
+            Console.WriteLine(tag);
+        }
+
+        static async Task TestMoveFile()
+        {
+            string filepath = @"C:\Users\zhb\Desktop\temp\movefile.txt";
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
+            var service = TagFileService.GetService();
+            var file = await service.MoveFileToRepoAsync(filepath);
+            var tag = await service.AddTagAsync("tagname");
+            await file.AddTagAsync(tag);
+            Console.WriteLine(file);
+            Console.WriteLine(tag);
         }
 
         static async Task Test1()
         {
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
             var service = TagFileService.GetService();
             var tag = await service.AddTagAsync("tagname");
-            var file = await service.AddFileItemForTestAsync("1234", "1234");
+            //var file = await service.AddFileItemForTestAsync("disp", "real");
+            var file = await service.GetFileItemAsync("disp");
             await file.AddTagAsync(tag);
-            Console.WriteLine(file);
             Console.WriteLine(tag);
-
-            await file.RemoveTag(tag);
             Console.WriteLine(file);
-            Console.WriteLine(tag);
-        }
-
-        static void Main2(string[] args)
-        {
-
         }
     }
 }

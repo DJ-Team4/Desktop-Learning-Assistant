@@ -41,10 +41,56 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public static async Task RemoveTag(this FileItem fileItem, Tag tag)
         {
-            var service = TagFileService.GetService();
-            var relation = await service.GetRelationAsync(tag, fileItem);
-            if (relation != null)
-                await service.RemoveRelationAsync(relation);
+            await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
+        }
+
+        /// <summary>
+        /// 文件在仓库内的真实路径
+        /// </summary>
+        public static string RealPath(this FileItem fileItem)
+        {
+            return TagFileService.GetService().GetRealFilepath(fileItem);
+        }
+
+        /// <summary>
+        /// 使用默认程序打开文件
+        /// </summary>
+        public static void Open(this FileItem fileItem)
+        {
+            FileUtils.OpenFile(fileItem.RealPath());
+        }
+
+        /// <summary>
+        /// 在“资源管理器”中显示
+        /// </summary>
+        public static void ShowInExplorer(this FileItem fileItem)
+        {
+            FileUtils.ShowInExplorer(fileItem.RealPath());
+        }
+
+        /// <summary>
+        /// 重命名文件。
+        /// 该方法不会检查文件名是否合法。
+        /// </summary>
+        public static async Task Rename(this FileItem fileItem, string newName)
+        {
+            await TagFileService.GetService().RenameFileItemAsync(fileItem, newName);
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        public static async Task Delete(this FileItem fileItem)
+        {
+            await TagFileService.GetService().DeleteFileAsync(fileItem);
+        }
+
+        /// <summary>
+        /// 把文件放入回收站
+        /// </summary>
+        public static async Task DeleteToRecycleBin(this FileItem fileItem)
+        {
+            await TagFileService.GetService().DeleteFileToRecycleBinAsync(fileItem);
         }
 
         #endregion
@@ -53,7 +99,7 @@ namespace DesktopLearningAssistant.TagFile
 
         /// <summary>
         /// 重命名该 Tag。
-        /// 若新名字的 Tag 已经存在，则返回 false
+        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false
         /// </summary>
         public static async Task Rename(this Tag tag, string newName)
         {
@@ -78,10 +124,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns></returns>
         public static async Task RemoveFileAsync(this Tag tag, FileItem fileItem)
         {
-            var service = TagFileService.GetService();
-            var relation = await service.GetRelationAsync(tag, fileItem);
-            if (relation != null)
-                await service.RemoveRelationAsync(relation);
+            await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
         }
 
         #endregion
