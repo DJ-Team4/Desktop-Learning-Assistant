@@ -44,6 +44,30 @@ namespace DesktopLearningAssistant.TagFile
             await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
         }
 
+        /// <summary>
+        /// 文件在仓库内的真实路径
+        /// </summary>
+        public static string RealPath(this FileItem fileItem)
+        {
+            return TagFileService.GetService().GetRealFilepath(fileItem);
+        }
+
+        /// <summary>
+        /// 使用默认程序打开文件
+        /// </summary>
+        public static void Open(this FileItem fileItem)
+        {
+            FileUtils.OpenFile(fileItem.RealPath());
+        }
+
+        /// <summary>
+        /// 在“资源管理器”中显示
+        /// </summary>
+        public static void ShowInExplorer(this FileItem fileItem)
+        {
+            FileUtils.ShowInExplorer(fileItem.RealPath());
+        }
+
         #endregion
 
         #region Tag 类的扩展方法

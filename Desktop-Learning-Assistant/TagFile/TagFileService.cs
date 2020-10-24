@@ -8,7 +8,6 @@ using DesktopLearningAssistant.TagFile.Context;
 using Microsoft.EntityFrameworkCore;
 using IWshRuntimeLibrary;
 using System.IO;
-using System.Collections.ObjectModel;
 
 namespace DesktopLearningAssistant.TagFile
 {
@@ -176,30 +175,52 @@ namespace DesktopLearningAssistant.TagFile
                                           .FirstOrDefaultAsync();
         }
 
-        private async Task AddFileItem(FileItem fileItem)
+        private async Task AddFileItemAsync(FileItem fileItem)
         {
             await context.FileItems.AddAsync(fileItem);
             await context.SaveChangesAsync();//TODO save
         }
 
         /// <summary>
-        /// 将某个文件以快捷方式的形式加入系统中
+        /// 将文件以快捷方式的形式加入仓库
         /// </summary>
         /// <param name="filepath">文件路径</param>
-        /// <returns></returns>
-        public async Task<FileItem> AddFileLinkToRepoAsync(string filepath)
+        public async Task<FileItem> AddShortcutToRepoAsync(string filepath)
         {
-            string originFilename = Path.GetFileName(filepath);
-            string linkName = originFilename + ".lnk";//TODO 解决仓库中有同名文件的问题
-            WshShell shell = new WshShellClass();
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(RepoPath + linkName);
-            shortcut.TargetPath = filepath;
-            shortcut.Save();
-            //TOOD real name
-            var fileItem = new FileItem { DisplayName = linkName, RealName = linkName };
-            await AddFileItem(fileItem);
+            string targetName = Path.GetFileName(filepath);
+            string displayName = targetName + ".lnk";
+            string shortcutName = FileUtils.GetAvailableFileName(displayName, RepoPath);
+            FileUtils.CreateShortcut(filepath, FileUtils.FileInFolder(RepoPath, shortcutName));
+            var fileItem = new FileItem
+            {
+                DisplayName = displayName,
+                RealName = shortcutName
+            };
+            await AddFileItemAsync(fileItem);
             return fileItem;
         }
+
+        /// <summary>
+        /// 将文件移动到仓库中
+        /// </summary>
+        public async Task<FileItem> MoveFileToRepoAsync(string filepath)
+        {
+            string realName = await Task.Run(
+                () => FileUtils.MoveFileAutoNumber(filepath, RepoPath));
+            var fileItem = new FileItem
+            {
+                DisplayName = Path.GetFileName(filepath),
+                RealName = realName
+            };
+            await AddFileItemAsync(fileItem);
+            return fileItem;
+        }
+
+        /// <summary>
+        /// 获取文件在仓库内的真实路径
+        /// </summary>
+        public string GetRealFilepath(FileItem fileItem)
+            => FileUtils.FileInFolder(RepoPath, fileItem.RealName);
 
         #endregion
 
@@ -265,5 +286,6 @@ namespace DesktopLearningAssistant.TagFile
     {
         public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/repo";
         public static string DbPath { get; } = "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";
+        public static string RecycleBinPath { get; } = "";
     }
 }

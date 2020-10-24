@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,37 @@ namespace TagFileTest
     {
         static async Task Main(string[] args)
         {
+            await Task.Delay(100);
+        }
+
+        static async Task TestShortcut()
+        {
+            string filepath = @"C:\Users\zhb\Desktop\temp\file.txt";
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
+            var service = TagFileService.GetService();
+            var file = await service.AddShortcutToRepoAsync(filepath);
+            var tag = await service.AddTagAsync("tagname");
+            await file.AddTagAsync(tag);
+            Console.WriteLine(file);
+            Console.WriteLine(tag);
+        }
+
+        static async Task TestMoveFile()
+        {
+            string filepath = @"C:\Users\zhb\Desktop\temp\movefile.txt";
+            TagFileService.EnsureDbAndFolderCreated();
+            Console.WriteLine("db ok");
+            var service = TagFileService.GetService();
+            var file = await service.MoveFileToRepoAsync(filepath);
+            var tag = await service.AddTagAsync("tagname");
+            await file.AddTagAsync(tag);
+            Console.WriteLine(file);
+            Console.WriteLine(tag);
+        }
+
+        static async Task Test1()
+        {
             TagFileService.EnsureDbAndFolderCreated();
             Console.WriteLine("db ok");
             var service = TagFileService.GetService();
@@ -21,11 +53,6 @@ namespace TagFileTest
             await file.AddTagAsync(tag);
             Console.WriteLine(tag);
             Console.WriteLine(file);
-        }
-
-        static async Task Test1()
-        {
-            await Task.Delay(100);
         }
     }
 }
