@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile.Context;
 using Microsoft.EntityFrameworkCore;
-using IWshRuntimeLibrary;
 using System.IO;
 
 namespace DesktopLearningAssistant.TagFile
@@ -16,21 +15,12 @@ namespace DesktopLearningAssistant.TagFile
         #region Tag 相关操作
 
         /// <summary>
-        /// 按 Id 获取 Tag
-        /// </summary>
-        /// <returns>不存在则返回 null</returns>
-        public async Task<Tag> GetTagByIdAsync(int tagId)
-        {
-            return await context.Tags.FindAsync(tagId);
-        }
-
-        /// <summary>
         /// 按 TagName 获取 Tag
         /// </summary>
         /// <returns>不存在则返回 null</returns>
-        public async Task<Tag> GetTagByNameAsync(string tagName)
+        public async Task<Tag> GetTagAsync(string tagName)
         {
-            return await context.Tags.Where(tag => tag.TagName == tagName).FirstOrDefaultAsync();
+            return await context.Tags.FindAsync(tagName);
         }
 
         /// <summary>
@@ -39,7 +29,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<Tag> AddTagAsync(string tagName)
         {
-            Tag tag = await GetTagByNameAsync(tagName);
+            Tag tag = await GetTagAsync(tagName);
             if (tag == null)
             {
                 tag = new Tag { TagName = tagName };
@@ -60,7 +50,7 @@ namespace DesktopLearningAssistant.TagFile
 
         /// <summary>
         /// 重命名该 Tag。
-        /// 若新名字的 Tag 已经存在，则返回 false
+        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false。
         /// </summary>
         public async Task<bool> RenameTagAsync(Tag tag, string newName)
         {
@@ -79,7 +69,26 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<bool> IsTagExist(string tagName)
         {
-            return await GetTagByNameAsync(tagName) != null;
+            return await GetTagAsync(tagName) != null;
+        }
+
+        /// <summary>
+        /// 获取含所有 Tag 的 List
+        /// </summary>
+        public async Task<List<Tag>> GetTagListAsync()
+        {
+            return await context.Tags.ToListAsync();
+        }
+
+        /// <summary>
+        /// 使用 Eager loading 策略获取 Tag List。
+        /// </summary>
+        public async Task<List<Tag>> GetTagListEagerAsync()
+        {
+            return await context.Tags.Include(tag => tag.Relations)
+                                         .ThenInclude(relation => relation.FileItem)
+                                             .ThenInclude(file => file.Relations)
+                                     .ToListAsync();
         }
 
         #endregion
@@ -92,7 +101,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns>不存在则返回 null</returns>
         public async Task<TagFileRelation> GetRelationAsync(Tag tag, FileItem fileItem)
         {
-            return await context.Relations.FindAsync(tag.TagId, fileItem.FileItemId);
+            return await context.Relations.FindAsync(tag.TagName, fileItem.FileItemId);
         }
 
         /// <summary>
@@ -107,9 +116,9 @@ namespace DesktopLearningAssistant.TagFile
             {
                 relation = new TagFileRelation
                 {
-                    TagId = tag.TagId,
+                    TagName = tag.TagName,
                     FileItemId = fileItem.FileItemId,
-                    CreateTime = DateTime.Now
+                    CreateTime = DateTime.UtcNow
                 };
                 await context.Relations.AddAsync(relation);
                 await context.SaveChangesAsync();
@@ -126,11 +135,30 @@ namespace DesktopLearningAssistant.TagFile
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 移除某个 Tag-FileItem 关系。
+        /// 若该关系不存在，则什么都不做。
+        /// </summary>
+        public async Task RemoveRelationAsync(Tag tag, FileItem fileItem)
+        {
+            var relation = await GetRelationAsync(tag, fileItem);
+            if (relation != null)
+                await RemoveRelationAsync(relation);
+        }
+
+        /// <summary>
+        /// 查询关系是否存在
+        /// </summary>
+        public async Task<bool> IsRelationExist(Tag tag, FileItem fileItem)
+        {
+            return (await GetRelationAsync(tag, fileItem)) != null;
+        }
+
         #endregion
 
         #region FileItem 有关操作
 
-        //TODO only for test adding file item
+        //only for test adding file item
         public async Task<FileItem> AddFileItemForTestAsync(string dispName, string realName)
         {
             var file = new FileItem { DisplayName = dispName, RealName = realName };
@@ -139,56 +167,180 @@ namespace DesktopLearningAssistant.TagFile
             return file;
         }
 
-        private async Task AddFileItem(FileItem fileItem)
+        //only for test get file item
+        public async Task<FileItem> GetFileItemAsync(string dispName)
         {
-            await context.FileItems.AddAsync(fileItem);
-            await context.SaveChangesAsync();//TODO save
+            return await context.FileItems.Where(f => f.DisplayName == dispName)
+                                          .FirstOrDefaultAsync();
         }
 
         /// <summary>
-        /// 将某个文件以快捷方式的形式加入系统中
+        /// 按 FileItemId 获取 FileItem
+        /// </summary>
+        public async Task<FileItem> GetFileItemAsync(int fileItemId)
+        {
+            return await context.FileItems.FindAsync(fileItemId);
+        }
+
+        /// <summary>
+        /// 添加 FileItem
+        /// </summary>
+        private async Task AddFileItemAsync(FileItem fileItem)
+        {
+            await context.FileItems.AddAsync(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 将文件以快捷方式的形式加入仓库
         /// </summary>
         /// <param name="filepath">文件路径</param>
-        /// <returns></returns>
-        public async Task<FileItem> AddFileLinkToRepoAsync(string filepath)
+        public async Task<FileItem> AddShortcutToRepoAsync(string filepath)
         {
-            string originFilename = Path.GetFileName(filepath);
-            string linkName = originFilename + ".lnk";//TODO 解决仓库中有同名文件的问题
-            WshShell shell = new WshShellClass();
-            //TODO repo path
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(RepoPath + linkName);
-            shortcut.TargetPath = filepath;
-            shortcut.Save();
-            //TOOD real name
-            var fileItem = new FileItem { DisplayName = linkName, RealName = linkName };
-            await AddFileItem(fileItem);
+            string targetName = Path.GetFileName(filepath);
+            string displayName = targetName + ".lnk";
+            string shortcutName = FileUtils.GetAvailableFileName(displayName, RepoPath);
+            FileUtils.CreateShortcut(filepath, FileUtils.FileInFolder(RepoPath, shortcutName));
+            var fileItem = new FileItem
+            {
+                DisplayName = displayName,
+                RealName = shortcutName
+            };
+            await AddFileItemAsync(fileItem);
             return fileItem;
+        }
+
+        /// <summary>
+        /// 将文件移动到仓库中
+        /// </summary>
+        public async Task<FileItem> MoveFileToRepoAsync(string filepath)
+        {
+            string realName = await Task.Run(
+                () => FileUtils.MoveFileAutoNumber(filepath, RepoPath));
+            var fileItem = new FileItem
+            {
+                DisplayName = Path.GetFileName(filepath),
+                RealName = realName
+            };
+            await AddFileItemAsync(fileItem);
+            return fileItem;
+        }
+
+        /// <summary>
+        /// 获取文件在仓库内的真实路径
+        /// </summary>
+        public string GetRealFilepath(FileItem fileItem)
+            => FileUtils.FileInFolder(RepoPath, fileItem.RealName);
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        public async Task DeleteFileAsync(FileItem fileItem)
+        {
+            string path = GetRealFilepath(fileItem);
+            if (File.Exists(path))
+            {
+                await Task.Run(() => File.Delete(path));
+            }
+            context.FileItems.Remove(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 将文件移动到回收站
+        /// </summary>
+        public async Task DeleteFileToRecycleBinAsync(FileItem fileItem)
+        {
+            if (File.Exists(GetRealFilepath(fileItem)))
+            {
+                //move to temp recycle first
+                string curFilename = FileUtils.MoveFileAutoNumber(
+                    GetRealFilepath(fileItem), TempRecyclePath);
+                string curPath = Path.Combine(TempRecyclePath, curFilename);
+                //then send to system recycle bin
+                await Task.Run(() => FileUtils.DeleteFileToRecycleBin(curPath));
+            }
+            context.FileItems.Remove(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 重命名文件
+        /// </summary>
+        public async Task RenameFileItemAsync(FileItem fileItem, string newName)
+        {
+            fileItem.DisplayName = newName;
+            fileItem.RealName = await Task.Run(() =>
+                FileUtils.RenameFileAutoNumber(GetRealFilepath(fileItem), newName));
+            await context.SaveChangesAsync();
         }
 
         #endregion
 
         /// <summary>
         /// 获取单例对象
-        /// TODO 线程安全
         /// </summary>
         public static TagFileService GetService()
         {
+            if (uniqueService == null)
+            {
+                lock (locker)
+                {
+                    if (uniqueService == null)
+                        uniqueService = new TagFileService();
+                }
+            }
             return uniqueService;
+        }
+
+        /// <summary>
+        /// 确保数据库和仓库文件夹已创建
+        /// </summary>
+        public static void EnsureDbAndFolderCreated()
+        {
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            using (var context = new TagFileContext(builder.Options))
+            {
+                context.Database.EnsureCreated();
+            }
+            //TODO ensure repo folder created
+        }
+
+        public static async Task EnsureDbAndFolderCreatedAsync()
+        {
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            using (var context = new TagFileContext(builder.Options))
+            {
+                await context.Database.EnsureCreatedAsync();
+            }
+            //TODO ensure repo folder created
         }
 
         private TagFileService()
         {
-            context = new TagFileContext();
-            RepoPath = Path.GetFullPath("./repo/");
+            var builder = new DbContextOptionsBuilder<TagFileContext>();
+            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+            context = new TagFileContext(builder.Options);
         }
 
-        private string RepoPath { get; set; }
+        private string RepoPath { get => TagFileConfig.RepoPath; }
 
-        //TODO only for test
-        public TagFileContext Context { get => context; }
+        private string TempRecyclePath { get => TagFileConfig.TempRecyclePath; }
 
-        private TagFileContext context;
+        private readonly TagFileContext context;
 
-        private static TagFileService uniqueService = new TagFileService();
+        private static volatile TagFileService uniqueService = null;
+
+        private static readonly object locker = new object();
+    }
+
+    //TODO modify this to a config class
+    class TagFileConfig
+    {
+        public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/repo";
+        public static string DbPath { get; } = "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";
+        public static string TempRecyclePath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/temp-recycle";
     }
 }

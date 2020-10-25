@@ -13,17 +13,19 @@ namespace DesktopLearningAssistant.TagFile.Model
     /// </summary>
     public class TagFileRelation
     {
-        public int TagId { get; set; }
-        public Tag Tag { get; set; }
+        public string TagName { get; set; }
+        public virtual Tag Tag { get; set; }
 
         public int FileItemId { get; set; }
-        public FileItem FileItem { get; set; }
+        public virtual FileItem FileItem { get; set; }
 
         public DateTime CreateTime { get; set; }
 
+        public DateTime LocalCreateTime { get => CreateTime.ToLocalTime(); }
+
         public override string ToString()
         {
-            return $"Tag Name: {Tag.TagName}, File Item Id: {FileItemId}, Create Time: {CreateTime}";
+            return $"Tag Name: {TagName}, File Item Id: {FileItemId}, Local Create Time: {LocalCreateTime}";
         }
 
         // override object.Equals
@@ -34,13 +36,13 @@ namespace DesktopLearningAssistant.TagFile.Model
                 return false;
             }
             var other = (TagFileRelation)obj;
-            return TagId == other.TagId && FileItemId == other.FileItemId;
+            return TagName == other.TagName && FileItemId == other.FileItemId;
         }
 
         // override object.GetHashCode
         public override int GetHashCode()
         {
-            return TagId ^ FileItemId;
+            return TagName.GetHashCode() ^ FileItemId;
         }
     }
 }

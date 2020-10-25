@@ -10,36 +10,35 @@ namespace DesktopLearningAssistant.TagFile.Context
 {
     public class TagFileContext : DbContext
     {
-        //public TagFileContext(DbContextOptions<TagFileContext> options)
-        //    : base(options) { }
-
-        public TagFileContext()
-        {
-            Database.EnsureCreated();
-        }
+        public TagFileContext(DbContextOptions<TagFileContext> options)
+            : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(
-                "Data Source=C:/Users/zhb/Documents/sqlitedb/TagFileDB.db");
+            optionsBuilder.UseLazyLoadingProxies();
             base.OnConfiguring(optionsBuilder);
         }
 
         //Entity mappings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Tag>().HasKey(tag => tag.TagName);
+
             modelBuilder.Entity<TagFileRelation>()
-                        .HasKey(tf => new { tf.TagId, tf.FileItemId });
+                        .HasKey(tf => new { tf.TagName, tf.FileItemId });
 
             modelBuilder.Entity<TagFileRelation>()
                         .HasOne(tf => tf.Tag)
                         .WithMany(tag => tag.Relations)
-                        .HasForeignKey(tf => tf.TagId);
+                        .HasForeignKey(tf => tf.TagName);
 
             modelBuilder.Entity<TagFileRelation>()
                         .HasOne(tf => tf.FileItem)
                         .WithMany(file => file.Relations)
                         .HasForeignKey(tf => tf.FileItemId);
+
+            modelBuilder.Entity<TagFileRelation>()
+                        .Ignore(tf => tf.LocalCreateTime);
         }
 
         public DbSet<Tag> Tags { get; set; }
