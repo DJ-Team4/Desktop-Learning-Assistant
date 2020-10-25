@@ -171,6 +171,9 @@
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TomatoClock\Model.cs" />
+    <Compile Include="TomatoClock\Time.cs" />
+    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
