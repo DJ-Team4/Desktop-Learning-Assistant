@@ -80,17 +80,6 @@ namespace DesktopLearningAssistant.TagFile
             return await context.Tags.ToListAsync();
         }
 
-        /// <summary>
-        /// 使用 Eager loading 策略获取 Tag List。
-        /// </summary>
-        public async Task<List<Tag>> GetTagListEagerAsync()
-        {
-            return await context.Tags.Include(tag => tag.Relations)
-                                         .ThenInclude(relation => relation.FileItem)
-                                             .ThenInclude(file => file.Relations)
-                                     .ToListAsync();
-        }
-
         #endregion
 
         #region TagFileRelation 有关操作
@@ -165,13 +154,6 @@ namespace DesktopLearningAssistant.TagFile
             await context.FileItems.AddAsync(file);
             await context.SaveChangesAsync();
             return file;
-        }
-
-        //only for test get file item
-        public async Task<FileItem> GetFileItemAsync(string dispName)
-        {
-            return await context.FileItems.Where(f => f.DisplayName == dispName)
-                                          .FirstOrDefaultAsync();
         }
 
         /// <summary>

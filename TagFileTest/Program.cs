@@ -11,13 +11,14 @@ namespace TagFileTest
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            TagFileService.EnsureDbAndFolderCreated();
-            Console.WriteLine("db ok");
-            var service = TagFileService.GetService();
-            Tag tag = await service.GetTagAsync("tagname");
-            Console.WriteLine(tag);
+            string e1 = "\"t1\" and (\"t2\" or not \"t3\")";
+            string e2 = "not(\"t1\"and\"t\")";
+            string ie = "not \"t1\\\\t2\" and";
+            string s = ie;
+            Console.WriteLine(s);
+            TagExpression.Test(s);
         }
 
         static async Task TestShortcut()
@@ -44,19 +45,6 @@ namespace TagFileTest
             await file.AddTagAsync(tag);
             Console.WriteLine(file);
             Console.WriteLine(tag);
-        }
-
-        static async Task Test1()
-        {
-            TagFileService.EnsureDbAndFolderCreated();
-            Console.WriteLine("db ok");
-            var service = TagFileService.GetService();
-            var tag = await service.AddTagAsync("tagname");
-            //var file = await service.AddFileItemForTestAsync("disp", "real");
-            var file = await service.GetFileItemAsync("disp");
-            await file.AddTagAsync(tag);
-            Console.WriteLine(tag);
-            Console.WriteLine(file);
         }
     }
 }
