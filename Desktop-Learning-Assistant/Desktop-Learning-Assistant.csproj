@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -180,14 +180,20 @@
     <Compile Include="TagFile\Expression\UnaryNode.cs" />
     <Compile Include="TagFile\FileUtils.cs" />
     <Compile Include="TagFile\Expression\TagExpression.cs" />
-    <Compile Include="TimeStatistic\Model.cs" />
-    <Compile Include="TimeStatistic\StatisticService.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivity.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
+    <Compile Include="TimeStatistic\Monitor.cs" />
+    <Compile Include="TimeStatistic\TimeDataManager.cs" />
+    <Compile Include="TimeStatistic\TimeStatisticService.cs" />
+    <Compile Include="TomatoClock\Model.cs" />
+    <Compile Include="TomatoClock\Time.cs" />
+    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
