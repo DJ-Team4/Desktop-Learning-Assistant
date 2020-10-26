@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile.Context;
+using DesktopLearningAssistant.TagFile.Expression;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -78,17 +79,6 @@ namespace DesktopLearningAssistant.TagFile
         public async Task<List<Tag>> GetTagListAsync()
         {
             return await context.Tags.ToListAsync();
-        }
-
-        /// <summary>
-        /// 使用 Eager loading 策略获取 Tag List。
-        /// </summary>
-        public async Task<List<Tag>> GetTagListEagerAsync()
-        {
-            return await context.Tags.Include(tag => tag.Relations)
-                                         .ThenInclude(relation => relation.FileItem)
-                                             .ThenInclude(file => file.Relations)
-                                     .ToListAsync();
         }
 
         #endregion
@@ -165,13 +155,6 @@ namespace DesktopLearningAssistant.TagFile
             await context.FileItems.AddAsync(file);
             await context.SaveChangesAsync();
             return file;
-        }
-
-        //only for test get file item
-        public async Task<FileItem> GetFileItemAsync(string dispName)
-        {
-            return await context.FileItems.Where(f => f.DisplayName == dispName)
-                                          .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -276,6 +259,18 @@ namespace DesktopLearningAssistant.TagFile
         }
 
         #endregion
+
+        /// <summary>
+        /// 表达式查询
+        /// </summary>
+        public async Task<List<FileItem>> Query(string expression)
+        {
+            var files = new List<FileItem>();
+            var idList = TagExpression.Query(context.Relations, expression);
+            foreach (int fileItemId in idList)
+                files.Add(await GetFileItemAsync(fileItemId));
+            return files;
+        }
 
         /// <summary>
         /// 获取单例对象
