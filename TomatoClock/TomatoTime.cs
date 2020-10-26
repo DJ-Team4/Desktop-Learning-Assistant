@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TomatoClock.TomatoTime
 {
-    public class Time
+    public class TomatoTime
     {
         private int sec;
         private int min;
         private bool stop;
-        public Time(double min)
+        public TomatoTime(double min)
         {
             this.min = (int)min;
             sec = (int)((min - this.min) * 60);
