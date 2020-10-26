@@ -171,18 +171,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Configuration\ConfigService.cs" />
-    <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
+    <Compile Include="TagFile\Expression\AstNode.cs" />
+    <Compile Include="TagFile\Expression\BinaryNode.cs" />
+    <Compile Include="TagFile\Expression\QueryFile.cs" />
+    <Compile Include="TagFile\Expression\LeafNode.cs" />
+    <Compile Include="TagFile\Expression\Operator.cs" />
+    <Compile Include="TagFile\Expression\Token.cs" />
+    <Compile Include="TagFile\Expression\UnaryNode.cs" />
     <Compile Include="TagFile\FileUtils.cs" />
-    <Compile Include="TimeStatistic\Model\UserActivity.cs" />
-    <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
-    <Compile Include="TimeStatistic\Monitor.cs" />
+    <Compile Include="TagFile\Expression\TagExpression.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivity.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
+    <Compile Include="TimeStatistic\Monitor.cs" />
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TomatoClock\Model.cs" />
@@ -239,6 +245,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

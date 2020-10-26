@@ -16,8 +16,14 @@ namespace DesktopLearningAssistant.TagFile.Model
     {
         public int FileItemId { get; set; }
 
+        /// <summary>
+        /// 显示的文件名
+        /// </summary>
         public string DisplayName { get; set; }
 
+        /// <summary>
+        /// 实际的文件名
+        /// </summary>
         public string RealName { get; set; }
 
         public virtual ICollection<TagFileRelation> Relations { get; private set; }

@@ -7,9 +7,8 @@ using TomatoClock.Model;
 
 namespace TomatoClock
 {
-    class TomatoClockService
+    class TaskService
     {
-        private List<TaskInfo> TaskRecords;
 
         public void AddTask()
         {
@@ -19,9 +18,9 @@ namespace TomatoClock
 
             Console.WriteLine("Set Start Time: \n"+"eg:For 2020/10/26 8:39:00, Input 2020102684100 ");
             string SetStartLine = Console.ReadLine();
-            NewTask.SetTime = DateTime.ParseExact(SetStartLine, "yyyyMMddhhmmss", System.Globalization.CultureInfo.CurrentCulture);
+            //NewTask.SetTime = DateTime.ParseExact(SetStartLine, "yyyyMMddhhmmss", System.Globalization.CultureInfo.CurrentCulture);
 
-            Console.WriteLine("Set Time Span: ")
+            Console.WriteLine("Set Time Span: ");
 
         }
         public void DeletTask() { }
