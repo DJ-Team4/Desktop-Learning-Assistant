@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile.Context;
+using DesktopLearningAssistant.TagFile.Expression;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -258,6 +259,18 @@ namespace DesktopLearningAssistant.TagFile
         }
 
         #endregion
+
+        /// <summary>
+        /// 表达式查询
+        /// </summary>
+        public async Task<List<FileItem>> Query(string expression)
+        {
+            var files = new List<FileItem>();
+            var idList = TagExpression.Query(context.Relations, expression);
+            foreach (int fileItemId in idList)
+                files.Add(await GetFileItemAsync(fileItemId));
+            return files;
+        }
 
         /// <summary>
         /// 获取单例对象

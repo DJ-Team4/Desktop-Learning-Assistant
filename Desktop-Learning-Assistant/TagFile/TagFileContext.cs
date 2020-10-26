@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DesktopLearningAssistant.TagFile.Context
 {
+    /// <summary>
+    /// Database context of tag file service
+    /// </summary>
     public class TagFileContext : DbContext
     {
         public TagFileContext(DbContextOptions<TagFileContext> options)

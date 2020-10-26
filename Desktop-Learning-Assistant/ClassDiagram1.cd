@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DesktopLearningAssistant.TagFile.TagFileService" Collapsed="true">
+    <Position X="4" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECIAAAIABAIBoAQQAAMSAJBAGQAAADAIAACAAAAkA=</HashCode>
+      <FileName>TagFile\TagFileService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TagFileConfig" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DesktopLearningAssistant.TagFile.TagFileConfig" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAQAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>TagFile\TagFileService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DesktopLearningAssistant.TagFile.FileUtils" Collapsed="true">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAJAAAAAgAEAAAAACAAAAAAAAAEAEAASAAAAAAAE=</HashCode>
+      <FileName>TagFile\FileUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
