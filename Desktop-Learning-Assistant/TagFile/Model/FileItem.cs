@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
@@ -19,18 +20,18 @@ namespace DesktopLearningAssistant.TagFile.Model
 
         public string RealName { get; set; }
 
-        public ICollection<TagFileRelation> Relations { get; set; } = new List<TagFileRelation>();
+        public virtual ICollection<TagFileRelation> Relations { get; private set; }
+            = new ObservableCollection<TagFileRelation>();
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"File DisplayName: {DisplayName}, File Id: {FileItemId}\n");
+            sb.Append($"File Display Name: {DisplayName}, File Real Name: {RealName}, File Id: {FileItemId}\n");
             sb.Append($"Relations of {DisplayName}:\n");
             foreach (var relation in Relations)
             {
                 sb.Append($"Tag Name: {relation.Tag.TagName}, " +
-                          $"Tag Id: {relation.TagId}, " +
-                          $"Create Time: {relation.CreateTime}\n");
+                          $"Local Create Time: {relation.LocalCreateTime}\n");
             }
             return sb.ToString();
         }
