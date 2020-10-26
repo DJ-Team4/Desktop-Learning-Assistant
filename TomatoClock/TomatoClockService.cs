@@ -7,7 +7,7 @@ using TomatoClock.Model;
 
 namespace TomatoClock
 {
-    class TomatoClockService
+    class TaskService
     {
 
         public void AddTask()
