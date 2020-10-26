@@ -14,7 +14,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         public List<Model.UserActivity> KilledActivity { get; set; }
         public List<UserActivityPiece> UserActivityPieces { get; set; }
 
-        public TimeDataManager GetTimeDataManager()     // 获取单例对象
+        public static TimeDataManager GetTimeDataManager()     // 获取单例对象
         {
             if (uniqueTimeDataManager == null)
             {
