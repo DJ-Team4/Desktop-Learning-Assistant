@@ -12,7 +12,7 @@ namespace TomatoClock.Model
         public string Name { get; set; }
         public string Remark { get; set; }
         public DateTime StartTime { get; set; }
-        public DateTime SetTime { get; set; }
+        public Time SetTime { get; set; }
         public Time SetSpan { get; set; }
         public Time LeftTime { get; set; }
     }
