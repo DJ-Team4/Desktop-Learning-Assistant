@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DesktopLearningAssistant.TimeStatistic;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.Configuration.Config;
@@ -15,6 +16,7 @@ namespace DesktopLearningAssistant.TimeStatistic
     public class Monitor
     {
         private Monitor uniqueMonitor;
+        private TimeDataManager TDManager;
         private bool monitorStarted = false;     // 保证只开启一个线程进行监控
         private int timeSlice;                   // Monitor的检查周期，单位：毫秒
 
@@ -28,6 +30,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         {
             var configService = ConfigService.GetConfigService();
             timeSlice = configService.TSConfig.TimeSlice;
+            TDManager = TimeDataManager.GetTimeDataManager();       // 注入DataManager
         }
 
         public Monitor GetMonitor()
@@ -42,18 +45,18 @@ namespace DesktopLearningAssistant.TimeStatistic
             return uniqueMonitor;
         }
 
-        public static void Start()
+        public void Start()
         {
             if (!monitorStarted)
             {
                 monitorStarted = true;
                 timeSlice = 200;                  // 暂时直接写死，应该由配置文件设置
-                Thread thread = new Thread(new ThreadStart(Monitor.Work));
+                Thread thread = new Thread(new ThreadStart(Work));
                 thread.Start();
             }
         }
 
-        private static void Work()
+        private void Work()
         {
             while (true)
             {
@@ -72,24 +75,27 @@ namespace DesktopLearningAssistant.TimeStatistic
                         CloseTime = DateTime.Now,
                     };
 
-                    lock (taskPieces)
+                    
+                    lock (TDManager)
                     {
-                        if (taskPieces.Count == 0)
+                        List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
+                        List<UserActivity> killedActivities = TDManager.KilledActivity;
+                        if (userActivityPieces.Count == 0)
                         {
-                            taskPieces.Add(currentTP);
+                            userActivityPieces.Add(currentTP);
                             Thread.Sleep(timeSlice);
                             continue;
                         }
 
-                        UserActivityPiece lastTP = taskPieces[taskPieces.Count - 1];    // 上一个任务片片
+                        UserActivityPiece lastTP = userActivityPieces[userActivityPieces.Count - 1];    // 上一个任务片片
                         lastTP.CloseTime = DateTime.Now;        // 先更新上一个任务片的结束时间
                         if (!lastTP.Equals(currentTP))
                         {
-                            taskPieces.Add(currentTP);
+                            userActivityPieces.Add(currentTP);
 
                             if (Process.GetProcesses().Count(p => p.ProcessName == lastTP.Name) == 0)     // 当前窗口发送了变化时，检测上一个窗口的进程是否被关闭（可能也只是隐藏）。
                             {
-                                killedTasks.Add(new Model.UserActivity(lastTP));  // 记录被杀死的进程
+                                killedActivities.Add(new Model.UserActivity(lastTP));  // 记录被杀死的进程
                             }
                         }
                     }

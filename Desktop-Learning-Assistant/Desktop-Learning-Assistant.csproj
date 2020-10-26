@@ -171,15 +171,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\ConfigService.cs" />
+    <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
     <Compile Include="TagFile\FileUtils.cs" />
-    <Compile Include="TimeStatistic\Model.cs" />
-    <Compile Include="TimeStatistic\StatisticService.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivity.cs" />
+    <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
+    <Compile Include="TimeStatistic\Monitor.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TimeStatistic\TimeDataManager.cs" />
+    <Compile Include="TimeStatistic\TimeStatisticService.cs" />
+    <Compile Include="TomatoClock\Model.cs" />
+    <Compile Include="TomatoClock\Time.cs" />
+    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -211,7 +219,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Statistics.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
