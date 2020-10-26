@@ -8,6 +8,9 @@ using DesktopLearningAssistant.TagFile.Model;
 
 namespace DesktopLearningAssistant.TagFile.Expression
 {
+    /// <summary>
+    /// 表达式查询辅助类
+    /// </summary>
     public static class TagExpression
     {
         public static void TokenizeTest(string expr)
@@ -316,27 +319,5 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #endregion
 
-    }
-
-    //TODO exception namespace
-    public class InvalidExpressionException : ApplicationException
-    {
-        public InvalidExpressionException() { }
-        public InvalidExpressionException(string message)
-            : base(message) { }
-    }
-
-    public class TokenizeException : InvalidExpressionException
-    {
-        public TokenizeException() { }
-        public TokenizeException(string message)
-            : base(message) { }
-    }
-
-    public class ParseException : InvalidExpressionException
-    {
-        public ParseException() { }
-        public ParseException(string message)
-            : base(message) { }
     }
 }

@@ -173,6 +173,7 @@
     </ApplicationDefinition>
     <Compile Include="TagFile\Expression\AstNode.cs" />
     <Compile Include="TagFile\Expression\BinaryNode.cs" />
+    <Compile Include="TagFile\Expression\InvalidExpressionException.cs" />
     <Compile Include="TagFile\Expression\QueryFile.cs" />
     <Compile Include="TagFile\Expression\LeafNode.cs" />
     <Compile Include="TagFile\Expression\Operator.cs" />

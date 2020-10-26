@@ -6,9 +6,19 @@ using System.Threading.Tasks;
 
 namespace DesktopLearningAssistant.TagFile.Expression
 {
+    /// <summary>
+    /// 用于表达式查询的 File 实体类
+    /// </summary>
     public class QueryFile
     {
+        /// <summary>
+        /// 文件 Id
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// 该文件所含的 Tag
+        /// </summary>
         public HashSet<string> Tags { get; set; }
 
         public override string ToString()
