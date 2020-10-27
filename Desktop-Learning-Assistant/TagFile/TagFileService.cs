@@ -10,7 +10,7 @@ using System.IO;
 
 namespace DesktopLearningAssistant.TagFile
 {
-    public class TagFileService
+    public class TagFileService : ITagFileService
     {
         #region Tag 相关操作
 
@@ -288,6 +288,8 @@ namespace DesktopLearningAssistant.TagFile
 
         #endregion
 
+        #region 查询有关操作
+
         /// <summary>
         /// 表达式查询
         /// </summary>
@@ -316,10 +318,14 @@ namespace DesktopLearningAssistant.TagFile
             return files;
         }
 
+        #endregion
+
+        #region 静态方法
+
         /// <summary>
         /// 获取单例对象
         /// </summary>
-        public static TagFileService GetService()
+        public static ITagFileService GetService()
         {
             if (uniqueService == null)
             {
@@ -363,6 +369,8 @@ namespace DesktopLearningAssistant.TagFile
             Directory.CreateDirectory(TagFileConfig.RepoPath);
             Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
         }
+
+        #endregion
 
         private TagFileService()
         {

@@ -183,6 +183,7 @@
     <Compile Include="TagFile\Expression\UnaryNode.cs" />
     <Compile Include="TagFile\FileUtils.cs" />
     <Compile Include="TagFile\Expression\TagExpression.cs" />
+    <Compile Include="TagFile\ITagFileService.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
