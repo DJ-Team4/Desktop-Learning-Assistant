@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -173,7 +173,9 @@
     </ApplicationDefinition>
     <Compile Include="TagFile\Expression\AstNode.cs" />
     <Compile Include="TagFile\Expression\BinaryNode.cs" />
-    <Compile Include="TagFile\Expression\InvalidExpressionException.cs" />
+    <Compile Include="TagFile\Expression\ParseException.cs" />
+    <Compile Include="TagFile\Expression\TokenizeException.cs" />
+    <Compile Include="TagFile\InvalidExpressionException.cs" />
     <Compile Include="TagFile\Expression\QueryFile.cs" />
     <Compile Include="TagFile\Expression\LeafNode.cs" />
     <Compile Include="TagFile\Expression\Operator.cs" />

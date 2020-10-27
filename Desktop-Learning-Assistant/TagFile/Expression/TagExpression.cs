@@ -13,6 +13,10 @@ namespace DesktopLearningAssistant.TagFile.Expression
     /// </summary>
     public static class TagExpression
     {
+        /// <summary>
+        /// only for test
+        /// </summary>
+        /// <param name="expr"></param>
         public static void TokenizeTest(string expr)
         {
             var tokens = Tokenize(expr);
@@ -22,6 +26,9 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #region Query
 
+        /// <summary>
+        /// 将 TagFileRelation 集合转换为 QueryFile 列表
+        /// </summary>
         private static List<QueryFile> ToFiles(IEnumerable<TagFileRelation> relations)
         {
             //dict[id] = tagSet
