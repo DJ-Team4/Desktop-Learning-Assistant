@@ -139,6 +139,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 表达式查询
         /// </summary>
+        /// <exception cref="InvalidExpressionException">查询表达式非法</exception>
         Task<List<FileItem>> QueryAsync(string expression);
 
         /// <summary>

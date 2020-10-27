@@ -293,6 +293,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 表达式查询
         /// </summary>
+        /// <exception cref="InvalidExpressionException">查询表达式非法</exception>
         public async Task<List<FileItem>> QueryAsync(string expression)
         {
             var files = new List<FileItem>();
@@ -372,7 +373,7 @@ namespace DesktopLearningAssistant.TagFile
 
         #endregion
 
-        private TagFileService()
+        protected TagFileService()
         {
             var builder = new DbContextOptionsBuilder<TagFileContext>();
             builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
