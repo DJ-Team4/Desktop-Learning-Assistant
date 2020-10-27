@@ -16,7 +16,6 @@ namespace DesktopLearningAssistant.TagFile.Expression
         /// <summary>
         /// only for test
         /// </summary>
-        /// <param name="expr"></param>
         public static void TokenizeTest(string expr)
         {
             var tokens = Tokenize(expr);
@@ -59,6 +58,8 @@ namespace DesktopLearningAssistant.TagFile.Expression
         /// <param name="relations">关系列表</param>
         /// <param name="expression">表达式</param>
         /// <returns>文件 Id 的列表</returns>
+        /// <exception cref="TokenizeException">词法分析时发现错误</exception>
+        /// <exception cref="ParseException">语法分析时发现错误</exception>
         public static ICollection<int> Query(IEnumerable<TagFileRelation> relations, string expression)
         {
             var files = ToFiles(relations);

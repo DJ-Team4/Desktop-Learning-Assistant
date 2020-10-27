@@ -10,7 +10,7 @@ using System.IO;
 
 namespace DesktopLearningAssistant.TagFile
 {
-    public class TagFileService
+    public class TagFileService : ITagFileService
     {
         #region Tag 相关操作
 
@@ -288,9 +288,12 @@ namespace DesktopLearningAssistant.TagFile
 
         #endregion
 
+        #region 查询有关操作
+
         /// <summary>
         /// 表达式查询
         /// </summary>
+        /// <exception cref="InvalidExpressionException">查询表达式非法</exception>
         public async Task<List<FileItem>> QueryAsync(string expression)
         {
             var files = new List<FileItem>();
@@ -316,10 +319,14 @@ namespace DesktopLearningAssistant.TagFile
             return files;
         }
 
+        #endregion
+
+        #region 静态方法
+
         /// <summary>
         /// 获取单例对象
         /// </summary>
-        public static TagFileService GetService()
+        public static ITagFileService GetService()
         {
             if (uniqueService == null)
             {
@@ -364,7 +371,9 @@ namespace DesktopLearningAssistant.TagFile
             Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
         }
 
-        private TagFileService()
+        #endregion
+
+        protected TagFileService()
         {
             var builder = new DbContextOptionsBuilder<TagFileContext>();
             builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
