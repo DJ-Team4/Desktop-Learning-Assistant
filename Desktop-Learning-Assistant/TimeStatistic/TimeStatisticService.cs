@@ -10,58 +10,61 @@ namespace DesktopLearningAssistant.TimeStatistic
     public class TimeStatisticService
     {
         private static TimeStatisticService uniqueTimeStatisticService;
+        private TimeDataManager TDManager;
 
-        private Dictionary<string, string> typeDict = new Dictionary<string, string>();
-
-        public static List<UserActivity> GetTasksWithin(DateTime t1, DateTime t2)
+        public TimeStatisticService()
         {
-            List<UserActivityPiece> pieces = taskPieces.FindAll(tp => tp.StartTime >= t1 && tp.CloseTime <= t2);
-            return TransferTaskPiece2Task(pieces);
+            TDManager = TimeDataManager.GetTimeDataManager();       // 注入TimeDataManager
         }
 
-        public static List<UserActivity> GetAllTasks()
+        public List<UserActivity> GetTasksWithin(DateTime t1, DateTime t2)
         {
-            List<UserActivity> tasks;
-
-            lock (taskPieces)            // 防止读的时候数据发生变化
+            lock(TDManager.UserActivityPieces)
             {
-                tasks = TransferTaskPiece2Task(taskPieces);
+                List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
+                List<UserActivityPiece> pieces = userActivityPieces.FindAll(uap => uap.StartTime >= t1 && uap.CloseTime <= t2);
+                return MergeUserActivityPiece(pieces);
             }
-
-            return tasks;
         }
 
-        public static List<UserActivity> GetKilledTasks()
+        public List<UserActivity> GetAllTasks()
         {
-            return killedTasks;
-        }
-
-        public static void ChangeTaskType(string taskName, string typeName)
-        {
-            typeDict[taskName] = typeName;
-        }
-
-
-
-        private static List<UserActivity> TransferTaskPiece2Task(List<UserActivityPiece> tps)      // 把给定的一堆任务片统计成不重复的任务
-        {
-            List<UserActivity> tasks = new List<UserActivity>();
-
-            foreach (UserActivityPiece tp in tps)        // 把时间片累计起来
+            lock (TDManager.UserActivityPieces)
             {
-                UserActivity t = tasks.FirstOrDefault(task => task.IsSameActivity(tp));
+                List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
+                return MergeUserActivityPiece(TDManager.UserActivityPieces);
+            }
+        }
+
+        public List<UserActivity> GetKilledTasks()
+        {
+            return TDManager.KilledActivity;
+        }
+
+        public void ChangeTaskType(string taskName, string typeName)
+        {
+            TDManager.TypeDict[taskName] = typeName;
+        }
+
+        private List<UserActivity> MergeUserActivityPiece(List<UserActivityPiece> uaps)      // 把给定的一堆任务片统计成不重复的任务
+        {
+            List<UserActivity> userActivities = new List<UserActivity>();
+
+            foreach (UserActivityPiece uap in uaps)        // 把时间片累计起来
+            {
+                UserActivity t = userActivities.FirstOrDefault(task => task.IsSameActivity(uap));
                 if (t == null)
                 {
-                    t = new UserActivity(tp);
-                    tasks.Add(t);
+                    t = new UserActivity(uap);
+                    userActivities.Add(t);
                 }
                 else
                 {
-                    t.AddUserActivityPiece(tp);      // 如果已经创建了这个进程的任务，那么把tp时间片加进去
+                    t.AddUserActivityPiece(uap);      // 如果已经创建了这个进程的任务，那么把tp时间片加进去
                 }
             }
 
-            return tasks;
+            return userActivities;
         }
     }
 }
