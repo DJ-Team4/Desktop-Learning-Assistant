@@ -9,12 +9,13 @@ namespace DesktopLearningAssistant.TimeStatistic
 {
     public class TimeDataManager
     {
-        public static TimeDataManager uniqueTimeDataManager;
+        private static TimeDataManager uniqueTimeDataManager;
 
         public List<Model.UserActivity> KilledActivity { get; set; }
         public List<UserActivityPiece> UserActivityPieces { get; set; }
+        public Dictionary<string, string> TypeDict { get; set; }           // 每款软件与类型的字典集合
 
-        public TimeDataManager GetTimeDataManager()     // 获取单例对象
+        public static TimeDataManager GetTimeDataManager()     // 获取单例对象
         {
             if (uniqueTimeDataManager == null)
             {
