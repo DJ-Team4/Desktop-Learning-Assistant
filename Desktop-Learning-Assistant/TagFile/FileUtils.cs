@@ -31,12 +31,6 @@ namespace DesktopLearningAssistant.TagFile
             System.Diagnostics.Process.Start(filepath);
         }
 
-        //TODO
-        public static void OpenFileWith(string filepath)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// 在“资源管理器”中显示该文件
         /// </summary>
