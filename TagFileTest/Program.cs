@@ -38,7 +38,7 @@ namespace TagFileTest
             {
                 string expr = "(\"t1\" or \"t2\") and not \"t3\"";
                 Console.WriteLine(expr);
-                PrintEnumerable(await service.Query(expr));
+                PrintEnumerable(await service.QueryAsync(expr));
             }
             catch (Exception e)
             {

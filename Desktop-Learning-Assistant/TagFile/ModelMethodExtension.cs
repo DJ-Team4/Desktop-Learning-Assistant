@@ -28,7 +28,7 @@ namespace DesktopLearningAssistant.TagFile
         /// 若 FileItem 已包含该标签，则什么都不做。
         /// 若系统中不含该名字的标签，会自动生成新标签并插入。
         /// </summary>
-        public static async Task AddTagAsync(this FileItem fileItem, string tagName)
+        private static async Task AddTagAsync(this FileItem fileItem, string tagName)
         {
             var service = TagFileService.GetService();
             Tag tag = await service.AddTagAsync(tagName);
@@ -39,7 +39,7 @@ namespace DesktopLearningAssistant.TagFile
         /// 移除 FileItem 的某个标签。
         /// 若 FileItem 不含该标签，则什么都不做。
         /// </summary>
-        public static async Task RemoveTag(this FileItem fileItem, Tag tag)
+        public static async Task RemoveTagAsync(this FileItem fileItem, Tag tag)
         {
             await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);
         }
@@ -72,7 +72,7 @@ namespace DesktopLearningAssistant.TagFile
         /// 重命名文件。
         /// 该方法不会检查文件名是否合法。
         /// </summary>
-        public static async Task Rename(this FileItem fileItem, string newName)
+        public static async Task RenameAsync(this FileItem fileItem, string newName)
         {
             await TagFileService.GetService().RenameFileItemAsync(fileItem, newName);
         }
@@ -80,7 +80,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 删除文件
         /// </summary>
-        public static async Task Delete(this FileItem fileItem)
+        public static async Task DeleteAsync(this FileItem fileItem)
         {
             await TagFileService.GetService().DeleteFileAsync(fileItem);
         }
@@ -88,7 +88,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 把文件放入回收站
         /// </summary>
-        public static async Task DeleteToRecycleBin(this FileItem fileItem)
+        public static async Task DeleteToRecycleBinAsync(this FileItem fileItem)
         {
             await TagFileService.GetService().DeleteFileToRecycleBinAsync(fileItem);
         }
@@ -99,9 +99,9 @@ namespace DesktopLearningAssistant.TagFile
 
         /// <summary>
         /// 重命名该 Tag。
-        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false
+        /// 若新名字的 Tag 已经存在，则什么都不做并返回 false。
         /// </summary>
-        public static async Task Rename(this Tag tag, string newName)
+        public static async Task RenameAsync(this Tag tag, string newName)
         {
             await TagFileService.GetService().RenameTagAsync(tag, newName);
         }
@@ -119,9 +119,6 @@ namespace DesktopLearningAssistant.TagFile
         /// 为 Tag 移除文件。
         /// 若该文件不含该 Tag，则什么都不做。
         /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="fileItem"></param>
-        /// <returns></returns>
         public static async Task RemoveFileAsync(this Tag tag, FileItem fileItem)
         {
             await TagFileService.GetService().RemoveRelationAsync(tag, fileItem);

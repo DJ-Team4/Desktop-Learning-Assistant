@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
-using DesktopLearningAssistant.TagFile.Context;
 using DesktopLearningAssistant.TagFile.Expression;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
@@ -41,12 +40,16 @@ namespace DesktopLearningAssistant.TagFile
         }
 
         /// <summary>
-        /// 将该 Tag 从系统中移除
+        /// 将该 Tag 从系统中移除。
+        /// 若 Tag 不存在，则什么都不做。
         /// </summary>
         public async Task RemoveTagAsync(Tag tag)
         {
-            context.Tags.Remove(tag);
-            await context.SaveChangesAsync();
+            if (await IsTagExistAsync(tag.TagName))
+            {
+                context.Tags.Remove(tag);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<bool> RenameTagAsync(Tag tag, string newName)
         {
-            if (!await IsTagExist(newName))
+            if (!await IsTagExistAsync(newName))
             {
                 tag.TagName = newName;
                 await context.SaveChangesAsync();
@@ -68,7 +71,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 该名字的 Tag 是否存在
         /// </summary>
-        public async Task<bool> IsTagExist(string tagName)
+        public async Task<bool> IsTagExistAsync(string tagName)
         {
             return await GetTagAsync(tagName) != null;
         }
@@ -76,7 +79,7 @@ namespace DesktopLearningAssistant.TagFile
         /// <summary>
         /// 获取含所有 Tag 的 List
         /// </summary>
-        public async Task<List<Tag>> GetTagListAsync()
+        public async Task<List<Tag>> TagListAsync()
         {
             return await context.Tags.ToListAsync();
         }
@@ -108,7 +111,7 @@ namespace DesktopLearningAssistant.TagFile
                 {
                     TagName = tag.TagName,
                     FileItemId = fileItem.FileItemId,
-                    CreateTime = DateTime.UtcNow
+                    UtcCreateTime = DateTime.UtcNow
                 };
                 await context.Relations.AddAsync(relation);
                 await context.SaveChangesAsync();
@@ -117,12 +120,16 @@ namespace DesktopLearningAssistant.TagFile
         }
 
         /// <summary>
-        /// 移除 TagFileRelation 对象
+        /// 移除 TagFileRelation 对象。
+        /// 若关系不存在则什么都不做。
         /// </summary>
         public async Task RemoveRelationAsync(TagFileRelation relation)
         {
-            context.Relations.Remove(relation);
-            await context.SaveChangesAsync();
+            if (await IsRelationExistAsync(relation.Tag, relation.FileItem))
+            {
+                context.Relations.Remove(relation);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -133,29 +140,31 @@ namespace DesktopLearningAssistant.TagFile
         {
             var relation = await GetRelationAsync(tag, fileItem);
             if (relation != null)
-                await RemoveRelationAsync(relation);
+            {
+                context.Relations.Remove(relation);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
         /// 查询关系是否存在
         /// </summary>
-        public async Task<bool> IsRelationExist(Tag tag, FileItem fileItem)
+        public async Task<bool> IsRelationExistAsync(Tag tag, FileItem fileItem)
         {
             return (await GetRelationAsync(tag, fileItem)) != null;
+        }
+
+        /// <summary>
+        /// 获取含所有关系的列表
+        /// </summary>
+        public async Task<List<TagFileRelation>> RelationListAsync()
+        {
+            return await context.Relations.ToListAsync();
         }
 
         #endregion
 
         #region FileItem 有关操作
-
-        //only for test adding file item
-        public async Task<FileItem> AddFileItemForTestAsync(string dispName, string realName)
-        {
-            var file = new FileItem { DisplayName = dispName, RealName = realName };
-            await context.FileItems.AddAsync(file);
-            await context.SaveChangesAsync();
-            return file;
-        }
 
         /// <summary>
         /// 按 FileItemId 获取 FileItem
@@ -163,15 +172,6 @@ namespace DesktopLearningAssistant.TagFile
         public async Task<FileItem> GetFileItemAsync(int fileItemId)
         {
             return await context.FileItems.FindAsync(fileItemId);
-        }
-
-        /// <summary>
-        /// 添加 FileItem
-        /// </summary>
-        private async Task AddFileItemAsync(FileItem fileItem)
-        {
-            await context.FileItems.AddAsync(fileItem);
-            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -258,17 +258,61 @@ namespace DesktopLearningAssistant.TagFile
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 获取含所有 FileItem 的列表
+        /// </summary>
+        public async Task<List<FileItem>> FileItemListAsync()
+        {
+            return await context.FileItems.ToListAsync();
+        }
+
+        /// <summary>
+        /// 添加 FileItem
+        /// </summary>
+        private async Task AddFileItemAsync(FileItem fileItem)
+        {
+            await context.FileItems.AddAsync(fileItem);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// only for test adding file item
+        /// </summary>
+        public async Task<FileItem> AddFileItemForTestAsync(string dispName, string realName)
+        {
+            var file = new FileItem { DisplayName = dispName, RealName = realName };
+            await context.FileItems.AddAsync(file);
+            await context.SaveChangesAsync();
+            return file;
+        }
+
         #endregion
 
         /// <summary>
         /// 表达式查询
         /// </summary>
-        public async Task<List<FileItem>> Query(string expression)
+        public async Task<List<FileItem>> QueryAsync(string expression)
         {
             var files = new List<FileItem>();
             var idList = TagExpression.Query(context.Relations, expression);
             foreach (int fileItemId in idList)
                 files.Add(await GetFileItemAsync(fileItemId));
+            return files;
+        }
+
+        /// <summary>
+        /// 获取不含任何标签的文件
+        /// </summary>
+        public async Task<List<FileItem>> FilesWithoutTagAsync()
+        {
+            var hasTagIds = new HashSet<int>();
+            (await RelationListAsync()).ForEach(
+                relation => hasTagIds.Add(relation.FileItemId));
+            var allFiles = await FileItemListAsync();
+            var files = new List<FileItem>();
+            foreach (var file in allFiles)
+                if (!hasTagIds.Contains(file.FileItemId))
+                    files.Add(file);
             return files;
         }
 
@@ -299,9 +343,14 @@ namespace DesktopLearningAssistant.TagFile
             {
                 context.Database.EnsureCreated();
             }
-            //TODO ensure repo folder created
+            //ensure folders created
+            Directory.CreateDirectory(TagFileConfig.RepoPath);
+            Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
         }
 
+        /// <summary>
+        /// 确保数据库和仓库文件夹已创建（异步版本）
+        /// </summary>
         public static async Task EnsureDbAndFolderCreatedAsync()
         {
             var builder = new DbContextOptionsBuilder<TagFileContext>();
@@ -310,7 +359,9 @@ namespace DesktopLearningAssistant.TagFile
             {
                 await context.Database.EnsureCreatedAsync();
             }
-            //TODO ensure repo folder created
+            //ensure folders created
+            Directory.CreateDirectory(TagFileConfig.RepoPath);
+            Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
         }
 
         private TagFileService()
@@ -320,14 +371,29 @@ namespace DesktopLearningAssistant.TagFile
             context = new TagFileContext(builder.Options);
         }
 
+        /// <summary>
+        /// 文件仓库的路径
+        /// </summary>
         private string RepoPath { get => TagFileConfig.RepoPath; }
 
+        /// <summary>
+        /// 临时回收站的路径
+        /// </summary>
         private string TempRecyclePath { get => TagFileConfig.TempRecyclePath; }
 
+        /// <summary>
+        /// 用于操作数据库的 DbContext
+        /// </summary>
         private readonly TagFileContext context;
 
+        /// <summary>
+        /// 单例对象
+        /// </summary>
         private static volatile TagFileService uniqueService = null;
 
+        /// <summary>
+        /// 互斥锁，用于保证单例模式的实现是线程安全的
+        /// </summary>
         private static readonly object locker = new object();
     }
 

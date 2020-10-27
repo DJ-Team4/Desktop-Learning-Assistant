@@ -8,8 +8,15 @@ using DesktopLearningAssistant.TagFile.Model;
 
 namespace DesktopLearningAssistant.TagFile.Expression
 {
+    /// <summary>
+    /// 表达式查询辅助类
+    /// </summary>
     public static class TagExpression
     {
+        /// <summary>
+        /// only for test
+        /// </summary>
+        /// <param name="expr"></param>
         public static void TokenizeTest(string expr)
         {
             var tokens = Tokenize(expr);
@@ -19,6 +26,9 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #region Query
 
+        /// <summary>
+        /// 将 TagFileRelation 集合转换为 QueryFile 列表
+        /// </summary>
         private static List<QueryFile> ToFiles(IEnumerable<TagFileRelation> relations)
         {
             //dict[id] = tagSet
@@ -316,27 +326,5 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #endregion
 
-    }
-
-    //TODO exception namespace
-    public class InvalidExpressionException : ApplicationException
-    {
-        public InvalidExpressionException() { }
-        public InvalidExpressionException(string message)
-            : base(message) { }
-    }
-
-    public class TokenizeException : InvalidExpressionException
-    {
-        public TokenizeException() { }
-        public TokenizeException(string message)
-            : base(message) { }
-    }
-
-    public class ParseException : InvalidExpressionException
-    {
-        public ParseException() { }
-        public ParseException(string message)
-            : base(message) { }
     }
 }
