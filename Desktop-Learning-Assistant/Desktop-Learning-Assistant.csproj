@@ -194,6 +194,9 @@
     <Compile Include="TomatoClock\Model.cs" />
     <Compile Include="TomatoClock\Time.cs" />
     <Compile Include="TomatoClock\TomatoClockService.cs" />
+    <Compile Include="Configuration\ConfigService.cs" />
+    <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
+    <Compile Include="Configuration\Config\TomatoClockConfig.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
