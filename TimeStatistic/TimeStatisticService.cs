@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeStatistic.Model;
+using TimeStatisticTest.TimeStatistic.Model;
 
-namespace TimeStatistic
+namespace TimeStatisticTest.TimeStatistic
 {
     public class TimeStatisticService
     {
@@ -33,7 +33,7 @@ namespace TimeStatistic
 
         public List<UserActivity> GetUserActivitiesWithin(DateTime beginTime, DateTime endTime)
         {
-            lock (TDManager.UserActivityPieces)
+            lock(TDManager.UserActivityPieces)
             {
                 List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
                 List<UserActivityPiece> piecesWithSpan = userActivityPieces.FindAll(uap => uap.StartTime >= beginTime && uap.CloseTime <= endTime);

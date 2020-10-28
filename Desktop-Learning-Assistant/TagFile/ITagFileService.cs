@@ -1,11 +1,11 @@
-﻿using DesktopLearningAssistant.TagFile.Model;
+﻿using TimeStatisticTest.TagFile.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile
+namespace TimeStatisticTest.TagFile
 {
     /// <summary>
     /// TagFileService 的抽象外观类

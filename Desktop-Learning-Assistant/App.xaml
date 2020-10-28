@@ -1,7 +1,7 @@
-﻿<Application x:Class="DesktopLearningAssistant.App"
+﻿<Application x:Class="TimeStatisticTest.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DesktopLearningAssistant"
+             xmlns:local="clr-namespace:TimeStatisticTest"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

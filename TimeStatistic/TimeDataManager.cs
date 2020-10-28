@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeStatistic.Model;
+using TimeStatisticTest.TimeStatistic.Model;
 
-namespace TimeStatistic
+namespace TimeStatisticTest.TimeStatistic
 {
     public class TimeDataManager
     {
@@ -27,7 +27,7 @@ namespace TimeStatistic
         {
             if (uniqueTimeDataManager == null)
             {
-                lock (locker)
+                lock(locker)
                 {
                     uniqueTimeDataManager = new TimeDataManager();
                 }

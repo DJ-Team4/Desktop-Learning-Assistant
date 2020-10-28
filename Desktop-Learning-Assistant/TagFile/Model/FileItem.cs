@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Model
+namespace TimeStatisticTest.TagFile.Model
 {
     /// <summary>
     /// 文件实体类

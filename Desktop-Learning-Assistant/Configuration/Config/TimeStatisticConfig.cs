@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.Configuration.Config
+namespace Configuration.Config
 {
     [Serializable]
     public class TimeStatisticConfig

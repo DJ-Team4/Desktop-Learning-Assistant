@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Expression
+namespace TimeStatisticTest.TagFile.Expression
 {
     /// <summary>
     /// 一元运算符节点（Not）

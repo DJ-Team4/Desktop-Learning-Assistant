@@ -192,7 +192,7 @@
     <Compile Include="TagFile\TagFileService.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
-    <Compile Include="TimeStatistic\Monitor.cs" />
+    <Compile Include="TimeStatistic\ActivityMonitor.cs" />
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />

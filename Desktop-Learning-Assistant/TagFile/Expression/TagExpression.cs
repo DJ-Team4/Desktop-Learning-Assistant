@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DesktopLearningAssistant.TagFile.Model;
+using TimeStatisticTest.TagFile.Model;
 
-namespace DesktopLearningAssistant.TagFile.Expression
+namespace TimeStatisticTest.TagFile.Expression
 {
     /// <summary>
     /// 表达式查询辅助类
