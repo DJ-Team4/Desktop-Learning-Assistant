@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Model
+namespace TimeStatisticTest.TagFile.Model
 {
     /// <summary>
     /// 表示标签-文件关系的实体类

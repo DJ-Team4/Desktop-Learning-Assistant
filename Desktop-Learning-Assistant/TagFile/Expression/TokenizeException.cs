@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Expression
+namespace TimeStatisticTest.TagFile.Expression
 {
     /// <summary>
     /// 在 tokenize 过程中出现的表达式错误

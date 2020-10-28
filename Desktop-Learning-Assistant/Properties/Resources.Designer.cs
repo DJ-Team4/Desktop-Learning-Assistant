@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DesktopLearningAssistant.Properties {
+namespace TimeStatisticTest.Properties {
     using System;
     
     

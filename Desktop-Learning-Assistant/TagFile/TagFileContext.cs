@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DesktopLearningAssistant.TagFile.Model;
+using TimeStatisticTest.TagFile.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace DesktopLearningAssistant.TagFile
+namespace TimeStatisticTest.TagFile
 {
     /// <summary>
     /// Database context of tag file service

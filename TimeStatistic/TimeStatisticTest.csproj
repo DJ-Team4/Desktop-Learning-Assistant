@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Process_Statistics_Test</RootNamespace>
     <AssemblyName>Process-Statistics-Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -46,11 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model.cs" />
+    <Compile Include="Model\UserActivity.cs" />
+    <Compile Include="Model\UserActivityPiece.cs" />
+    <Compile Include="ActivityMonitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatisticService.cs" />
-    <Compile Include="WebProcess.cs" />
+    <Compile Include="TimeDataManager.cs" />
+    <Compile Include="TimeStatisticService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

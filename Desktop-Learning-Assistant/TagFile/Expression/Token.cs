@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Expression
+namespace TimeStatisticTest.TagFile.Expression
 {
     public class Token
     {

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DesktopLearningAssistant.TagFile;
-using DesktopLearningAssistant.TagFile.Model;
-using DesktopLearningAssistant.TagFile.Expression;
+using TimeStatisticTest.TagFile;
+using TimeStatisticTest.TagFile.Model;
+using TimeStatisticTest.TagFile.Expression;
 
 namespace TagFileTest
 {
