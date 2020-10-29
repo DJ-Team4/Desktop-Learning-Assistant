@@ -13,15 +13,39 @@
                 pu:TabControlHelper.ItemHeight="30"
                 pu:TabControlHelper.CanRemove="False"
                 TabStripPlacement="Left" 
-                Margin="0,0,0.333,-0.333">
+                Margin="0,0,10,10">
             <TabItem Header="时间统计" >
                 <Grid>
-                    
+
                 </Grid>
             </TabItem>
             <TabItem Header="番茄钟" >
             </TabItem>
-            <TabItem Header="任务管理" >
+            <TabItem Header="文件管理" >
+                <Grid>
+                    <TextBox x:Name="SearchBox"  TabIndex="0" BorderThickness="1" Margin="34,23,0,411" HorizontalAlignment="Left" Width="214" Grid.Column="0"   ToolTipService.ToolTip="Please input keywords" ToolTipService.InitialShowDelay="1" ToolTipService.Placement="MousePoint">
+                        <TextBox.Resources>
+                            <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock FontStyle="Italic" Text="Search Files"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="">
+                                        <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
