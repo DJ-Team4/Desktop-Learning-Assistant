@@ -8,8 +8,14 @@ using DesktopLearningAssistant.TagFile.Model;
 
 namespace DesktopLearningAssistant.TagFile.Expression
 {
+    /// <summary>
+    /// 表达式查询辅助类
+    /// </summary>
     public static class TagExpression
     {
+        /// <summary>
+        /// only for test
+        /// </summary>
         public static void TokenizeTest(string expr)
         {
             var tokens = Tokenize(expr);
@@ -19,6 +25,9 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #region Query
 
+        /// <summary>
+        /// 将 TagFileRelation 集合转换为 QueryFile 列表
+        /// </summary>
         private static List<QueryFile> ToFiles(IEnumerable<TagFileRelation> relations)
         {
             //dict[id] = tagSet
@@ -49,6 +58,8 @@ namespace DesktopLearningAssistant.TagFile.Expression
         /// <param name="relations">关系列表</param>
         /// <param name="expression">表达式</param>
         /// <returns>文件 Id 的列表</returns>
+        /// <exception cref="TokenizeException">词法分析时发现错误</exception>
+        /// <exception cref="ParseException">语法分析时发现错误</exception>
         public static ICollection<int> Query(IEnumerable<TagFileRelation> relations, string expression)
         {
             var files = ToFiles(relations);
@@ -316,27 +327,5 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         #endregion
 
-    }
-
-    //TODO exception namespace
-    public class InvalidExpressionException : ApplicationException
-    {
-        public InvalidExpressionException() { }
-        public InvalidExpressionException(string message)
-            : base(message) { }
-    }
-
-    public class TokenizeException : InvalidExpressionException
-    {
-        public TokenizeException() { }
-        public TokenizeException(string message)
-            : base(message) { }
-    }
-
-    public class ParseException : InvalidExpressionException
-    {
-        public ParseException() { }
-        public ParseException(string message)
-            : base(message) { }
     }
 }

@@ -14,6 +14,9 @@ namespace DesktopLearningAssistant.TagFile.Model
     /// </summary>
     public class FileItem
     {
+        /// <summary>
+        /// 文件 Id，主键
+        /// </summary>
         public int FileItemId { get; set; }
 
         /// <summary>
@@ -26,6 +29,10 @@ namespace DesktopLearningAssistant.TagFile.Model
         /// </summary>
         public string RealName { get; set; }
 
+        /// <summary>
+        /// 含有该文件的 TagFileRelation 的集合。
+        /// 可通过该属性获取该文件的所有标签
+        /// </summary>
         public virtual ICollection<TagFileRelation> Relations { get; private set; }
             = new ObservableCollection<TagFileRelation>();
 
