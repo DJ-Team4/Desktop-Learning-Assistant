@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+<<<<<<< HEAD
+VisualStudioVersion = 15.0.28307.852
+=======
 VisualStudioVersion = 15.0.28010.2019
+>>>>>>> 0162409eb66173fa3a09ad3d84987395f8c536dc
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagFileTest", "TagFileTest\TagFileTest.csproj", "{1042032A-88B6-4AE2-853C-B9D5C065C043}"
 EndProject
