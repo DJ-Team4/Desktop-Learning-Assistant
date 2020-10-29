@@ -1,0 +1,31 @@
+﻿<Window x:Class="ui.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ui"
+        mc:Ignorable="d"
+
+        Title="任务管理" Height="802" Width="648" WindowStyle="None">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="127*"/>
+            <ColumnDefinition Width="513*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="10,10,23,10" Background="#FFF5F5F7" Grid.ColumnSpan="2">
+            <TabControl
+        pu:TabControlHelper.SelectedBackground="AliceBlue"
+        pu:TabControlHelper.ItemHeight="30"
+        pu:TabControlHelper.TabControlStyle="Card"
+        pu:TabControlHelper.CanRemove="false" Margin="25,32,10,171" TabStripPlacement="Left" Grid.ColumnSpan="2" Height="335" >
+                <TabItem Header="时间统计"   >
+                </TabItem>
+                <TabItem Header="番茄钟" />
+                <TabItem Header="文件管理" />
+            </TabControl>
+        </StackPanel>
+
+    </Grid>
+</Window>

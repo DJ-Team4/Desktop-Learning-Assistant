@@ -12,11 +12,9 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-<<<<<<< HEAD
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-=======
->>>>>>> 3eb8b2b740d71ba14c8bcf9b294f97f5d8cbf3ac
+
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
