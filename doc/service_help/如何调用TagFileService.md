@@ -89,10 +89,10 @@
 
 ## 图
 ### 实体类 E-R 图
-![er](./pic/TagFile-ER.jpg)
+![er](../pic/TagFile-ER.jpg)
 
 ### UML 图
-![uml](./pic/TagFileClassDiagram.jpg)
+![uml](../pic/TagFileClassDiagram.jpg)
 
 # 注意事项
 **不要**直接修改实体类的属性，若要执行重命名、打标签等操作，请使用实体类的扩展方法，或使用 ITagFileService 的成员方法。

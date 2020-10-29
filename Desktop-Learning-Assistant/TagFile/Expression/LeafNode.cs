@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile.Expression
+namespace DesktopLearningAssistant.TagFile.Expression
 {
     /// <summary>
     /// 叶子节点（Tag 名节点）

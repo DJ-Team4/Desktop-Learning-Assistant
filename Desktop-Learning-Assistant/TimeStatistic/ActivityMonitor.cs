@@ -6,34 +6,85 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TimeStatistic.Model;
-using Configuration;
-using Configuration.Config;
+using DesktopLearningAssistant.TimeStatistic.Model;
+using DesktopLearningAssistant.Configuration;
+using DesktopLearningAssistant.Configuration.Config;
 
-namespace TimeStatistic
+namespace DesktopLearningAssistant.TimeStatistic
 {
+    /// <summary>
+    /// 活动监控类，监控活动过程和被关闭的软件
+    /// </summary>
     public class ActivityMonitor
     {
+        #region 静态变量
+
+        /// <summary>
+        /// 单例监视器
+        /// </summary>
         private static ActivityMonitor uniqueMonitor;
-        private static readonly object locker = new object();   // 定义一个标识确保线程同步
 
+        /// <summary>
+        /// 确保线程同步的锁标识
+        /// </summary>
+        private static readonly object locker = new object();
+        #endregion
+
+        #region 私有变量
+
+        /// <summary>
+        /// 活动数据管理对象，通过TDManager增删改查活动片
+        /// </summary>
         private TimeDataManager TDManager;
-        private bool monitorStarted = false;     // 保证只开启一个线程进行监控
-        private int timeSlice;                   // Monitor的检查周期，单位：毫秒
 
+        /// <summary>
+        /// 监控线程是否开启的标识，确保只开启一个线程进行监控
+        /// </summary>
+        private bool monitorStarted = false;
+
+        /// <summary>
+        /// Monitor的检查周期，单位：毫秒
+        /// </summary>
+        private int timeSlice;
+
+        #endregion
+
+        #region DLL导入
+
+        /// <summary>
+        /// 获取前台窗口句柄的方法
+        /// </summary>
+        /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();
 
+        /// <summary>
+        /// 获取窗口句柄对应进程ID的方法
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="processId"></param>
+        /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        #endregion
+
+        #region 方法
+
+        /// <summary>
+        /// 构造方法
+        /// </summary>
         public ActivityMonitor()
         {
             // var configService = ConfigService.GetConfigService();    // TODO: 从配置类中读出配置
             timeSlice = 200;   // configService.TSConfig.TimeSlice;
             TDManager = TimeDataManager.GetTimeDataManager();       // 注入DataManager
         }
-
+        
+        /// <summary>
+        /// 获取单例对象的方法
+        /// </summary>
+        /// <returns></returns>
         public static ActivityMonitor GetMonitor()
         {
             if (uniqueMonitor == null)
@@ -46,6 +97,9 @@ namespace TimeStatistic
             return uniqueMonitor;
         }
 
+        /// <summary>
+        /// 开启监控的方法
+        /// </summary>
         public void Start()
         {
             if (!monitorStarted)
@@ -55,7 +109,13 @@ namespace TimeStatistic
                 thread.Start();
             }
         }
+        #endregion
 
+        #region 私有方法
+
+        /// <summary>
+        /// 监控函数
+        /// </summary>
         private void Work()
         {
             while (true)
@@ -109,5 +169,6 @@ namespace TimeStatistic
                 }
             }
         }
+        #endregion
     }
 }

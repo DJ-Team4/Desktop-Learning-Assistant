@@ -5,8 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using TimeStatisticTest.TimeStatistic;
-using TimeStatisticTest.TimeStatistic.Model;
+using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.TimeStatistic.Model;
 
 namespace TimeStatisticTest
 {
@@ -26,8 +26,6 @@ namespace TimeStatisticTest
                 List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);   // 获取最近五秒的活动统计
                 // List<UserActivity> userActivities = timeStatisticService.GetAllUserActivities();        // 获取所有的活动统计
                 Console.Clear();
-                //Console.WriteLine(beginTime.ToString());
-                //Console.WriteLine(endTime.ToString());
                 foreach (UserActivity userActivity in userActivities)
                 {
                     Console.WriteLine(userActivity.ToString());
@@ -40,8 +38,6 @@ namespace TimeStatisticTest
                 }
                 Thread.Sleep(1000);
             }
-            
-            
         }
     }
 }

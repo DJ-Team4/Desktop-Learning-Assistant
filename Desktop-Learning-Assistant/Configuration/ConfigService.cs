@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Configuration.Config;
+using DesktopLearningAssistant.Configuration.Config;
 
-namespace Configuration
+namespace DesktopLearningAssistant.Configuration
 {
     public class ConfigService
     {

@@ -190,6 +190,7 @@
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
     <Compile Include="TimeStatistic\ActivityMonitor.cs" />
