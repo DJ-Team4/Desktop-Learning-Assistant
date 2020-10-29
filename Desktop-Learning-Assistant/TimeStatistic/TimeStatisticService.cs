@@ -7,61 +7,153 @@ using DesktopLearningAssistant.TimeStatistic.Model;
 
 namespace DesktopLearningAssistant.TimeStatistic
 {
-    public class TimeStatisticService
+    /// <summary>
+    /// 屏幕时间统计的服务类，负责将活动数据进行转换，按指定要求返回活动统计信息
+    /// </summary>
+    public class TimeStatisticService : ITimeStatisticService
     {
+        #region 静态变量
+
+        /// <summary>
+        /// 单例变量
+        /// </summary>
         private static TimeStatisticService uniqueTimeStatisticService;
 
-        private Dictionary<string, string> typeDict = new Dictionary<string, string>();
+        /// <summary>
+        /// 确保线程同步的锁标识
+        /// </summary>
+        private static readonly object locker = new object();
 
-        public static List<UserActivity> GetTasksWithin(DateTime t1, DateTime t2)
+        #endregion
+
+        #region 私有变量
+
+        /// <summary>
+        /// 活动数据管理对象，通过TDManager增删改查活动片
+        /// </summary>
+        private TimeDataManager TDManager;
+
+        #endregion
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public TimeStatisticService()
         {
-            List<UserActivityPiece> pieces = taskPieces.FindAll(tp => tp.StartTime >= t1 && tp.CloseTime <= t2);
-            return TransferTaskPiece2Task(pieces);
+            TDManager = TimeDataManager.GetTimeDataManager();       // 注入TimeDataManager
         }
 
-        public static List<UserActivity> GetAllTasks()
-        {
-            List<UserActivity> tasks;
+        #region 接口方法
 
-            lock (taskPieces)            // 防止读的时候数据发生变化
+        /// <summary>
+        /// 获取单例对象的方法
+        /// </summary>
+        /// <returns></returns>
+        public static TimeStatisticService GetTimeStatisticService()
+        {
+            if (uniqueTimeStatisticService == null)
             {
-                tasks = TransferTaskPiece2Task(taskPieces);
+                lock (locker)
+                {
+                    uniqueTimeStatisticService = new TimeStatisticService();
+                }
+            }
+            return uniqueTimeStatisticService;
+        }
+
+        /// <summary>
+        /// 获取指定时间范围内的活动统计
+        /// </summary>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<UserActivity> GetUserActivitiesWithin(DateTime beginTime, DateTime endTime)
+        {
+            lock (TDManager.UserActivityPieces)
+            {
+                List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
+                List<UserActivityPiece> piecesWithSpan = userActivityPieces.FindAll(uap => uap.StartTime >= beginTime && uap.CloseTime <= endTime);
+                return MergeUserActivityPiece(piecesWithSpan);
+            }
+        }
+
+        /// <summary>
+        /// 获得所有记录内的活动统计
+        /// </summary>
+        /// <returns></returns>
+        public List<UserActivity> GetAllUserActivities()
+        {
+            lock (TDManager.UserActivityPieces)
+            {
+                List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
+                return MergeUserActivityPiece(TDManager.UserActivityPieces);
+            }
+        }
+
+        /// <summary>
+        /// 获取beginTime之后的被关闭软件的记录
+        /// </summary>
+        /// <param name="beginTime"></param>
+        /// <returns></returns>
+        public List<UserActivity> GetKilledActivitiesWithin(DateTime beginTime)
+        {
+            lock (TDManager.KilledActivity)
+            {
+                List<UserActivity> killedActivities = TDManager.KilledActivity;
+                return killedActivities.FindAll(ka => ka.CloseTime >= beginTime);
             }
 
-            return tasks;
         }
 
-        public static List<UserActivity> GetKilledTasks()
+        /// <summary>
+        /// 获取所有被杀死了的软件
+        /// </summary>
+        /// <returns></returns>
+        public List<UserActivity> GetKilledUserActivities()
         {
-            return killedTasks;
+            return TDManager.KilledActivity;
         }
 
-        public static void ChangeTaskType(string taskName, string typeName)
+        /// <summary>
+        /// 更改软件的类型
+        /// </summary>
+        /// <param name="activityName"></param>
+        /// <param name="typeName"></param>
+        public void ChangeActivityType(string activityName, string typeName)
         {
-            typeDict[taskName] = typeName;
+            TDManager.TypeDict[activityName] = typeName;
         }
 
+        #endregion
 
+        #region 私有方法
 
-        private static List<UserActivity> TransferTaskPiece2Task(List<UserActivityPiece> tps)      // 把给定的一堆任务片统计成不重复的任务
+        /// <summary>
+        /// 将活动片聚合成活动
+        /// </summary>
+        /// <param name="uaps"></param>
+        /// <returns></returns>
+        private List<UserActivity> MergeUserActivityPiece(List<UserActivityPiece> uaps)
         {
-            List<UserActivity> tasks = new List<UserActivity>();
+            List<UserActivity> userActivities = new List<UserActivity>();
 
-            foreach (UserActivityPiece tp in tps)        // 把时间片累计起来
+            foreach (UserActivityPiece uap in uaps)        // 把活动片累计起来
             {
-                UserActivity t = tasks.FirstOrDefault(task => task.IsSameActivity(tp));
+                UserActivity t = userActivities.FirstOrDefault(task => task.IsSameActivity(uap));
                 if (t == null)
                 {
-                    t = new UserActivity(tp);
-                    tasks.Add(t);
+                    t = new UserActivity(uap);
+                    userActivities.Add(t);
                 }
                 else
                 {
-                    t.AddUserActivityPiece(tp);      // 如果已经创建了这个进程的任务，那么把tp时间片加进去
+                    t.AddUserActivityPiece(uap);      // 如果已经创建了这个进程的任务，那么把活动片加进去
                 }
             }
 
-            return tasks;
+            return userActivities;
         }
+
+        #endregion
     }
 }

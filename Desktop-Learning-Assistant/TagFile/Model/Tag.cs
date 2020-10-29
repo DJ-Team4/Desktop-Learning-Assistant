@@ -13,8 +13,15 @@ namespace DesktopLearningAssistant.TagFile.Model
     /// </summary>
     public class Tag
     {
+        /// <summary>
+        /// 标签名字，主键
+        /// </summary>
         public string TagName { get; set; }
 
+        /// <summary>
+        /// 含有该标签的 TagFileRelation 的集合。
+        /// 可通过该属性获取所有含该标签的文件。
+        /// </summary>
         public virtual ICollection<TagFileRelation> Relations { get; private set; }
             = new ObservableCollection<TagFileRelation>();
 
