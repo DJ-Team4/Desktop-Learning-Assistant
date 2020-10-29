@@ -10,18 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Panuon.UI.Silver;
 
-namespace ui
+namespace UI
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// TagWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TagWindow : Window
     {
-        public MainWindow()
+        public TagWindow()
         {
             InitializeComponent();
         }

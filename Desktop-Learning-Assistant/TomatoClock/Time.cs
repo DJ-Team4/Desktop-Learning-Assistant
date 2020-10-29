@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TomatoClock.TomatoTime
+namespace DesktopLearningAssistant.TomatoClock.TomatoTime
 {
     public class Time
     {

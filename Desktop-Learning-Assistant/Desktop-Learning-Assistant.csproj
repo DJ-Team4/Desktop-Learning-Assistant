@@ -173,6 +173,9 @@
     </ApplicationDefinition>
     <Compile Include="TagFile\Expression\AstNode.cs" />
     <Compile Include="TagFile\Expression\BinaryNode.cs" />
+    <Compile Include="TagFile\Expression\ParseException.cs" />
+    <Compile Include="TagFile\Expression\TokenizeException.cs" />
+    <Compile Include="TagFile\InvalidExpressionException.cs" />
     <Compile Include="TagFile\Expression\QueryFile.cs" />
     <Compile Include="TagFile\Expression\LeafNode.cs" />
     <Compile Include="TagFile\Expression\Operator.cs" />
@@ -180,15 +183,17 @@
     <Compile Include="TagFile\Expression\UnaryNode.cs" />
     <Compile Include="TagFile\FileUtils.cs" />
     <Compile Include="TagFile\Expression\TagExpression.cs" />
+    <Compile Include="TagFile\ITagFileService.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
     <Compile Include="TagFile\Model\TagFileRelation.cs" />
     <Compile Include="TagFile\TagFileContext.cs" />
     <Compile Include="TagFile\TagFileService.cs" />
+    <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
-    <Compile Include="TimeStatistic\Monitor.cs" />
+    <Compile Include="TimeStatistic\ActivityMonitor.cs" />
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
