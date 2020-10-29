@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TomatoClock.Model;
+using DesktopLearningAssistant.TomatoClock.Model;
 
-namespace TomatoClock
+namespace DesktopLearningAssistant.TomatoClock
 {
     class TaskService
     {

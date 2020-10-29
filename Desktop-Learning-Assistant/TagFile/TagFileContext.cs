@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DesktopLearningAssistant.TagFile.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace DesktopLearningAssistant.TagFile.Context
+namespace DesktopLearningAssistant.TagFile
 {
     /// <summary>
     /// Database context of tag file service
