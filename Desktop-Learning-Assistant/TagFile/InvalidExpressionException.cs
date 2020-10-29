@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile
+namespace DesktopLearningAssistant.TagFile
 {
     /// <summary>
     /// 查询表达式非法

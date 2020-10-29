@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile.Expression
+namespace DesktopLearningAssistant.TagFile.Expression
 {
     /// <summary>
     /// 表达式运算符

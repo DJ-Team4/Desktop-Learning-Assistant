@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile
+namespace DesktopLearningAssistant.TagFile
 {
     /// <summary>
     /// 与文件有关的操作

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile.Expression
+namespace DesktopLearningAssistant.TagFile.Expression
 {
     /// <summary>
     /// 在 parse 的过程中出现的表达式错误

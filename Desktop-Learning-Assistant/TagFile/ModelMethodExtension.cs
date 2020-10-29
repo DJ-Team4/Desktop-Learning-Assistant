@@ -1,11 +1,11 @@
-﻿using TimeStatisticTest.TagFile.Model;
+﻿using DesktopLearningAssistant.TagFile.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimeStatisticTest.TagFile
+namespace DesktopLearningAssistant.TagFile
 {
     /// <summary>
     /// 为 Model 类增加一些有用、方便的扩展方法
