@@ -9,19 +9,39 @@ using System.Threading.Tasks;
 namespace DesktopLearningAssistant.TagFile.Model
 {
     /// <summary>
-    /// 表示标签-文件关联的实体类
+    /// 表示标签-文件关系的实体类
     /// </summary>
     public class TagFileRelation
     {
+        /// <summary>
+        /// 对应标签的名字，外键
+        /// </summary>
         public string TagName { get; set; }
+
+        /// <summary>
+        /// 对应的 Tag 对象
+        /// </summary>
         public virtual Tag Tag { get; set; }
 
+        /// <summary>
+        /// 对应文件的 Id，外键
+        /// </summary>
         public int FileItemId { get; set; }
+
+        /// <summary>
+        /// 对应的 FileItem 对象
+        /// </summary>
         public virtual FileItem FileItem { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 标签被打上的时间（UTC 时间）
+        /// </summary>
+        public DateTime UtcCreateTime { get; set; }
 
-        public DateTime LocalCreateTime { get => CreateTime.ToLocalTime(); }
+        /// <summary>
+        /// 标签被打上的时间（本地时间）
+        /// </summary>
+        public DateTime LocalCreateTime { get => UtcCreateTime.ToLocalTime(); }
 
         public override string ToString()
         {

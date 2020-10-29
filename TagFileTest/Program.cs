@@ -26,19 +26,19 @@ namespace TagFileTest
             foreach (string tagName in tagNames)
                 await service.AddTagAsync(tagName);
 
-            var f1 = await service.AddFileItemForTestAsync("f1", "f1");
+            var f1 = await (service as TagFileService).AddFileItemForTestAsync("f1", "f1");
             await f1.AddTagAsync(await service.GetTagAsync("t1"));
             await f1.AddTagAsync(await service.GetTagAsync("t2"));
             await f1.AddTagAsync(await service.GetTagAsync("t3"));
 
-            var f2 = await service.AddFileItemForTestAsync("f2", "f2");
+            var f2 = await (service as TagFileService).AddFileItemForTestAsync("f2", "f2");
             await f2.AddTagAsync(await service.GetTagAsync("t1"));
 
             try
             {
                 string expr = "(\"t1\" or \"t2\") and not \"t3\"";
                 Console.WriteLine(expr);
-                PrintEnumerable(await service.Query(expr));
+                PrintEnumerable(await service.QueryAsync(expr));
             }
             catch (Exception e)
             {
