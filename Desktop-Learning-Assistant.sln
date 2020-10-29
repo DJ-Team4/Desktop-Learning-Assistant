@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagFileTest", "TagFileTest\TagFileTest.csproj", "{1042032A-88B6-4AE2-853C-B9D5C065C043}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomatoClock", "TomatoClock\TomatoClock.csproj", "{5A83D74C-3DB1-4671-B1CC-8A1FFA09B02E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeStatisticTest", "TimeStatistic\TimeStatisticTest.csproj", "{11279186-FD46-421C-A98A-21D2E9F0CD3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{6D705A94-8A0E-4466-BA94-6200141A0C9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{11279186-FD46-421C-A98A-21D2E9F0CD3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11279186-FD46-421C-A98A-21D2E9F0CD3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11279186-FD46-421C-A98A-21D2E9F0CD3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
