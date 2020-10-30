@@ -24,24 +24,26 @@
             </TabItem>
             <TabItem Header="文件管理"  >
                 <Grid>
-                    <TextBox               
+                    <TextBox 
+                        Opacity="0.2"
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
                         pu:TextBoxHelper.CornerRadius="3" Margin="25,26,42,266" Text="" />
 
 
-                    <Label Content="最近打开..." HorizontalAlignment="Left" Margin="67,224,0,0" VerticalAlignment="Top"/>
+                    <Label Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
 
                     <Label Content="需求分析报告.docx" Margin="16,257,25,171" />
                     <Label Content="需求分析报告.docx" Height="31" Width="225" Margin="16,288,25,140" />
-                    <Image HorizontalAlignment="Left" Height="28" Margin="16,224,0,0" Source=""
-                           VerticalAlignment="Top" Width="32"/>
+                    <Image HorizontalAlignment="Left" Height="25" Margin="21,232,0,0" Source="Icon/file.jpeg"
+                           VerticalAlignment="Top" Width="24"/>
 
                     <Button Height="30"
                             Content="打开"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
                             pu:ButtonHelper.CornerRadius="15" Margin="80,394,102,35" Background="aliceblue"/>
+                    <Image HorizontalAlignment="Left" Height="41" Margin="102,86,0,0" VerticalAlignment="Top" Width="70" Source="Icon/plus.png" Opacity="0.9"/>
 
 
                 </Grid>
