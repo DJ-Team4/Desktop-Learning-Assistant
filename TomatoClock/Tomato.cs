@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TomatoClock
 {
-    class Tomato
+    public class Tomato
     {
         DateTime StartTime;
         DateTime EndTime;
