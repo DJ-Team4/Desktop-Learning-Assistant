@@ -112,5 +112,28 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\Acrobat-File.png" />
+    <Resource Include="Icon\chrome.png" />
+    <Resource Include="Icon\file.jpeg" />
+    <Resource Include="Icon\PDF.png" />
+    <Resource Include="Icon\plus.png" />
+    <Resource Include="Icon\qq.png" />
+    <Resource Include="Icon\Visual Studio.png" />
+    <Resource Include="Icon\word %281%29.png" />
+    <Resource Include="Icon\word.png" />
+    <Resource Include="Icon\书.png" />
+    <Resource Include="Icon\右箭头.png" />
+    <Resource Include="Icon\微信.png" />
+    <Resource Include="Icon\搜索.png" />
+    <Resource Include="Icon\文件夹.png" />
+    <Resource Include="Icon\时钟.png" />
+    <Resource Include="Icon\浏览器.png" />
+    <Resource Include="Icon\番茄已完成.png" />
+    <Resource Include="Icon\番茄未完成.png" />
+    <Resource Include="Icon\箭头%281%29.png" />
+    <Resource Include="Icon\详情-1.png" />
+    <Resource Include="Icon\详情.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
