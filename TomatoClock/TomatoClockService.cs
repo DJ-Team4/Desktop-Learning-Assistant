@@ -9,9 +9,14 @@ namespace TomatoClock
 {
     class TaskService
     {
-
-        public void AddTask()
+        private int nextID;
+        List<TaskInfo> TaskInfos;
+        public void AddTask(TaskInfo task)
         {
+            task.TaskID = nextID;
+            nextID++;
+            TaskInfos.Add(task);
+            //////////////////////////////////////////////////////
             TaskInfo NewTask = new TaskInfo();
             Console.WriteLine("Task Infomation: \n");
             NewTask.Name = Console.ReadLine();
