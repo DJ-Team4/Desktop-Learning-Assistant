@@ -9,46 +9,43 @@
         mc:Ignorable="d"
         Title="TagWindow" Height="500" Width="360">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="292*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Margin="6,10,10,306" Grid.ColumnSpan="2" >
-            <TextBox  x:Name="SearchBox"  TabIndex="0"  BorderThickness="1" Margin="34,23,0,411" HorizontalAlignment="Left" Width="268"  
-                     ToolTipService.ToolTip="Please input keywords" ToolTipService.InitialShowDelay="1" ToolTipService.Placement="MousePoint" Height="26">
-                <TextBox.Resources>
-                    <VisualBrush  x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
-                        <VisualBrush.Visual>
-                            <TextBlock FontStyle="Italic" Foreground="Black"  Text="Search Files"/>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </TextBox.Resources>
-                <TextBox.Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="{x:Null}">
-                                <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
-                            </Trigger>
-                            <Trigger Property="Text" Value="">
-                                <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
 
-        </StackPanel>
-        <Grid RenderTransformOrigin="0.499,0.302" Margin="6,93,14,324" Background="AliceBlue" Grid.ColumnSpan="2">
+        <TextBox  x:Name="SearchBox"  TabIndex="0" Opacity="0.9" BorderThickness="1" Margin="25,24,0,414.4" HorizontalAlignment="Left" Width="287"  
+                     ToolTipService.ToolTip="Please input keywords" ToolTipService.InitialShowDelay="1" ToolTipService.Placement="MousePoint">
+            <TextBox.Resources>
+                <VisualBrush  x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock FontStyle="Italic" Foreground="Black"  Text="请输入标签进行添加或搜索"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </TextBox.Resources>
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+
+        </TextBox>
+
+        <Grid RenderTransformOrigin="0.499,0.302" Margin="0,89,12.6,327.4"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="112*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="C#"  HorizontalAlignment="Left"  
-                   Margin="10,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
-            <Label Content="Java"  HorizontalAlignment="Left"   
-                   Margin="64,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
+            <Label Content="C#"  HorizontalAlignment="Left"  Background="AliceBlue" BorderThickness="0.5" BorderBrush="Black"
+                   Margin="21,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
+            <Label Content="Java"  HorizontalAlignment="Left"    Background="AliceBlue" BorderThickness="0.5" BorderBrush="Black"
+                   Margin="80,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
             <TextBox Background="Aliceblue"
                      pu:TextBoxHelper.CornerRadius="15" Margin="10,90,12,-282"/>
         </Grid>
+        <Image HorizontalAlignment="Left" Height="22" Margin="289,30,0,0" VerticalAlignment="Top" Width="23" Source="Icon/搜索.png"/>
 
 
     </Grid>
