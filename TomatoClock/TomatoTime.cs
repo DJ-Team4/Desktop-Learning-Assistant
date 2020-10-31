@@ -43,6 +43,5 @@ namespace TomatoClock.TomatoTime
             SB.Append(min < 10 ? "0" + min : min.ToString()).Append(sec < 10 ? "0" + sec : sec.ToString());
             return SB.ToString();
         }
-
     }
 }
