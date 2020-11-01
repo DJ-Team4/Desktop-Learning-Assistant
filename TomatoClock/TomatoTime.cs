@@ -30,8 +30,8 @@ namespace TomatoClock.TomatoTime
             else
             {
                 stop = true;
-                pomodoroCount++;
-            }
+                pomodoroCount++; 
+            }      
         }
         public bool Stop
         {

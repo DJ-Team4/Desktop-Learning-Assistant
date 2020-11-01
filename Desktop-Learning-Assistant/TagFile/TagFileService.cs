@@ -344,15 +344,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public static void EnsureDbAndFolderCreated()
         {
-            var builder = new DbContextOptionsBuilder<TagFileContext>();
-            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
-            using (var context = new TagFileContext(builder.Options))
-            {
-                context.Database.EnsureCreated();
-            }
-            //ensure folders created
-            Directory.CreateDirectory(TagFileConfig.RepoPath);
-            Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
+            EnsureDbAndFolderCreatedAsync().Wait();
         }
 
         /// <summary>
