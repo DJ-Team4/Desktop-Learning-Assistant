@@ -3,33 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TomatoClock.Model;
+using DesktopLearningAssistant.TomatoClock.Model;
 
-namespace TomatoClock
+namespace DesktopLearningAssistant.TomatoClock
 {
     class TaskService
     {
-        private int nextID;
-        List<TaskInfo> TaskInfos;
-        public void AddTask(TaskInfo task)
+        public bool AddTask(TaskInfo task)
         {
-            task.TaskID = nextID;
-            nextID++;
-            TaskInfos.Add(task);
-            //////////////////////////////////////////////////////
-            TaskInfo NewTask = new TaskInfo();
-            Console.WriteLine("Task Infomation: \n");
-            NewTask.Name = Console.ReadLine();
-
-            Console.WriteLine("Set Start Time: \n"+"eg:For 2020/10/26 8:39:00, Input 2020102684100 ");
-            string SetStartLine = Console.ReadLine();
-            //NewTask.SetTime = DateTime.ParseExact(SetStartLine, "yyyyMMddhhmmss", System.Globalization.CultureInfo.CurrentCulture);
-
-            Console.WriteLine("Set Time Span: ");
+            return true;
+        }
+        public void DeletTask()
+        {
+            
+        }
+        public bool ModifyTask()
+        {
+            return true;
+        }
+        public TaskInfo ReadTasK(int TaskID)
+        {
+            TaskInfo taskInfo = new TaskInfo();
+            return taskInfo;
+        }
+        public int AddTomatoStartTime(int TaskID)
+        {
+            int TomatoID = 0;
+            return TomatoID;
+        }
+        public void AddTomatoEndTime(int TaskID, int TomatoID)
+        {
 
         }
-        public void DeletTask() { }
-        public void ModifyTask() { }
-        public void ShowTask() { }
+        public int ReadTomato(int TaskID)
+        {
+            int count = 0;
+            return count;
+        }
+        private void AddTomatoNum()
+        {
+
+        }
     }
 }
