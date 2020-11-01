@@ -71,6 +71,7 @@
     <Compile Include="TagWindow.xaml.cs">
       <DependentUpon>TagWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TimeStatisticsData.cs" />
     <Compile Include="TomatoWindow.xaml.cs">
       <DependentUpon>TomatoWindow.xaml</DependentUpon>
     </Compile>
@@ -153,6 +154,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon\tag.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Desktop-Learning-Assistant\Desktop-Learning-Assistant.csproj">
+      <Project>{3bdcedcd-9866-44ad-b45e-347b30b7460e}</Project>
+      <Name>Desktop-Learning-Assistant</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
