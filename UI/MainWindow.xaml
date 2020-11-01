@@ -17,14 +17,81 @@
                 Margin="0,0,10,10">
             <TabItem Header="时间统计" >
                 <Grid>
-
+                    <TabControl  Width="160"
+                        pu:TabControlHelper.SelectedForeground="#3F3F3F" 
+                                 TabStripPlacement="Bottom" Margin="53.667,0,53.667,268.667" SelectionChanged="TabControl_SelectionChanged">
+                        <TabItem Header="今日">
+                            <Grid>
+                                <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                                    <lvc:PieChart.Series>
+                                        <lvc:PieSeries Values="3" DataLabels="True"
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="4" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="6" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="2" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                    </lvc:PieChart.Series>
+                                </lvc:PieChart>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="昨日">
+                            <Grid>
+                                <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                                    <lvc:PieChart.Series>
+                                        <lvc:PieSeries Values="3" DataLabels="True"
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="4" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="6" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                        <lvc:PieSeries Values="2" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                    </lvc:PieChart.Series>
+                                </lvc:PieChart>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="一周">
+                            <Grid>
+                                <lvc:CartesianChart>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding Labels}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Margin="0,192,0.333,-0.333">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Salesman" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Sold Apps" Labels="{Binding Labels}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.DataTooltip>
+                            <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                        </lvc:CartesianChart.DataTooltip>
+                    </lvc:CartesianChart>
                 </Grid>
             </TabItem>
             <TabItem Header="番茄钟" >
+                <Grid>
+                    <Label Content="写选题报告" Margin="93,21,97,412.8" Background="AliceBlue" />
+                    <Image Source="Icon/Visual Studio.png" Width="32" Height="28" Margin="22,242,214,190.8"/>
+                    <ProgressBar Height="30"
+                                 pu:ProgressBarHelper.CornerRadius="15"
+                                 pu:ProgressBarHelper.IsPercentVisible="True" Margin="63,240,27,190.8"/>
+                </Grid>
             </TabItem>
             <TabItem Header="文件管理"  >
                 <Grid>
                     <TextBox 
+                        BorderBrush="Black"
+                        BorderThickness="3"
                         Opacity="0.2"
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
@@ -33,9 +100,9 @@
 
                     <Label Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
 
-                    <Label Content="需求分析报告.docx" Margin="16,257,25,171" />
-                    <Label Content="需求分析报告.docx" Height="31" Width="225" Margin="16,288,25,140" />
-                    <Image HorizontalAlignment="Left" Height="25" Margin="21,232,0,0" Source="Icon/file.jpeg"
+                    <Label Content="需求分析报告.docx" Margin="57,261,78,166.8" />
+                    <Label Content="选题报告.pdf" Height="31" Width="225" Margin="56,295,-13,134.8" />
+                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" Source="Icon/file.jpeg"
                            VerticalAlignment="Top" Width="24"/>
 
                     <Button Height="30"
@@ -43,11 +110,15 @@
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
                             pu:ButtonHelper.CornerRadius="15" Margin="80,394,102,35" Background="aliceblue"/>
-                    <Image HorizontalAlignment="Left" Height="41" Margin="102,86,0,0" VerticalAlignment="Top" Width="70" Source="Icon/plus.png" Opacity="0.9"/>
+                    <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="91" Source="Icon/plus.png" Opacity="0.9"/>
+                    <Image HorizontalAlignment="Left" Height="26" Margin="12,295,0,0" VerticalAlignment="Top" Width="33" Source="Icon/PDF.png"/>
+                    <Image HorizontalAlignment="Left" Height="26" Margin="12,264,0,0" VerticalAlignment="Top" Width="29" Source="Icon/word (1).png"/>
 
 
                 </Grid>
             </TabItem>
+            <Label Content="Label" Height="100" Width="100"/>
+            <Image Height="100" Width="100"/>
         </TabControl>
     </Grid>
 
