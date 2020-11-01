@@ -76,8 +76,8 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public ActivityMonitor()
         {
-            // var configService = ConfigService.GetConfigService();    // TODO: 从配置类中读出配置
-            timeSlice = 200;   // configService.TSConfig.TimeSlice;
+            var configService = ConfigService.GetConfigService();
+            timeSlice = configService.TSConfig.TimeSlice;
             TDManager = TimeDataManager.GetTimeDataManager();       // 注入DataManager
         }
         
