@@ -145,5 +145,14 @@
     <Resource Include="Icon\详情-1.png" />
     <Resource Include="Icon\详情.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\refresh.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\home.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\tag.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

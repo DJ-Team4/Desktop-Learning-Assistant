@@ -8,9 +8,28 @@
 
         mc:Ignorable="d"
         Title="TagWindow" Height="500" Width="360">
-    <Grid>
+    <Grid >
+        <TreeView
+            Background="AliceBlue"
+             pu:TreeViewHelper.ItemHeight="30"
+             pu:TreeViewHelper.SelectMode="ChildOnly" Margin="4,47,230.6,10.4">
+            <TreeViewItem Header="综合">
+                <Label Content="●主页" />
+                <Label Content="●搜索结果" />
 
-        <TextBox  x:Name="SearchBox"  TabIndex="0" Opacity="0.9" BorderThickness="1" Margin="25,24,0,414.4" HorizontalAlignment="Left" Width="287"  
+            </TreeViewItem>
+
+            <TreeViewItem Header="标签" >
+                <Label Content="●数据结构" />
+                <Label Content="●算法" />
+                <Label Content="●Java" />
+
+
+            </TreeViewItem>
+        </TreeView>
+        <TextBox  
+           
+            x:Name="SearchBox"  TabIndex="0" Opacity="0.9" BorderThickness="1" Margin="77,10,0,428.4" HorizontalAlignment="Left" Width="260"  
                      ToolTipService.ToolTip="Please input keywords" ToolTipService.InitialShowDelay="1" ToolTipService.Placement="MousePoint">
             <TextBox.Resources>
                 <VisualBrush  x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
@@ -34,18 +53,17 @@
 
         </TextBox>
 
-        <Grid RenderTransformOrigin="0.499,0.302" Margin="0,89,12.6,327.4"  >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="112*"/>
-            </Grid.ColumnDefinitions>
+        <Grid RenderTransformOrigin="0.499,0.302" Margin="128,0,4.6,10.4" Height="375" VerticalAlignment="Bottom"  >
             <Label Content="C#"  HorizontalAlignment="Left"  Background="AliceBlue" BorderThickness="0.5" BorderBrush="Black"
-                   Margin="21,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
+                   Margin="6,-34,0,0" VerticalAlignment="Top" Height="25" Width="34" Grid.Column="1"/>
             <Label Content="Java"  HorizontalAlignment="Left"    Background="AliceBlue" BorderThickness="0.5" BorderBrush="Black"
-                   Margin="80,17,0,0" VerticalAlignment="Top" Height="25" Width="42"/>
+                   Margin="57,-34,0,0" VerticalAlignment="Top" Height="25" Width="41" Grid.Column="1"/>
             <TextBox Background="Aliceblue"
-                     pu:TextBoxHelper.CornerRadius="15" Margin="10,90,12,-282"/>
+                     pu:TextBoxHelper.CornerRadius="15" Margin="0,10,-0.2,10" Grid.Column="1" Grid.ColumnSpan="3"/>
         </Grid>
-        <Image HorizontalAlignment="Left" Height="22" Margin="289,30,0,0" VerticalAlignment="Top" Width="23" Source="Icon/搜索.png"/>
+        <Image HorizontalAlignment="Left" Height="21" Margin="314,16,0,0" VerticalAlignment="Top" Width="18" Source="Icon/搜索.png" RenderTransformOrigin="0.896,0.323"/>
+        <Image HorizontalAlignment="Left" Height="26" Margin="38,11,0,0" VerticalAlignment="Top" Width="34" Source="Icon/refresh.jpg"/>
+        <Image HorizontalAlignment="Left" Height="26" Margin="10,11,0,0" VerticalAlignment="Top" Width="23" Source="Icon/home.jpg"/>
 
 
     </Grid>

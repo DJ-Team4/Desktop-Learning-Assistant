@@ -79,7 +79,7 @@ namespace DesktopLearningAssistant.TagFile.Expression
 
         /// <summary>
         /// 获取表达式中所有 Tag Name 的范围。
-        /// 返回 dict[start] = stop，区间 start, stop)。
+        /// 返回 dict[start] = stop，区间 [start, stop)。
         /// </summary>
         private static Dictionary<int, int> NamePosDict(string expression)
         {
