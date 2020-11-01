@@ -17,9 +17,13 @@
                 Margin="0,0,10,10">
             <TabItem Header="时间统计" >
                 <Grid>
-                    <TabControl  Width="160"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33*"/>
+                        <RowDefinition Height="59*"/>
+                    </Grid.RowDefinitions>
+                    <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                                 TabStripPlacement="Bottom" Margin="53.667,0,53.667,268.667" SelectionChanged="TabControl_SelectionChanged">
+                                 TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
                                 <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
@@ -65,7 +69,7 @@
                             </Grid>
                         </TabItem>
                     </TabControl>
-                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Margin="0,192,0.333,-0.333">
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Margin="0,26.6,0,-0.2" Grid.Row="1">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Title="Salesman" LabelFormatter="{Binding Formatter}"></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
