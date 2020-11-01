@@ -89,7 +89,7 @@
 
 ## 图
 ### 实体类 E-R 图
-![er](../pic/TagFile-ER.jpg)
+![er](../pic/TagFile-ER.png)
 
 ### UML 图
 ![uml](../pic/TagFileClassDiagram.jpg)

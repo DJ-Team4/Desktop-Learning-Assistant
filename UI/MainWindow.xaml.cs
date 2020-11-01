@@ -55,11 +55,7 @@ namespace UI
         public string[] Labels { get; set; }
         public Func<double, string> Formatter { get; set; }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
+  
 
     }
 }
