@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TomatoClock
+namespace DesktopLearningAssistant.TomatoClock
 {
-    class Tomato
+    public class Tomato
     {
         DateTime StartTime;
         DateTime EndTime;

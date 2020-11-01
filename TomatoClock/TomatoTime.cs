@@ -11,6 +11,7 @@ namespace TomatoClock.TomatoTime
         private int sec;
         private int min;
         private bool stop;
+        private int pomodoroCount;
         public TomatoTime(double min)
         {
             this.min = (int)min;
@@ -27,7 +28,10 @@ namespace TomatoClock.TomatoTime
                 sec = 59;
             }
             else
+            {
                 stop = true;
+                pomodoroCount++; 
+            }      
         }
         public bool Stop
         {

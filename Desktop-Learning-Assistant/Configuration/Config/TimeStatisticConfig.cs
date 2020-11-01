@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DesktopLearningAssistant.Configuration.Config
 {
-    [Serializable]
     public class TimeStatisticConfig
     {
         public int TimeSlice;      // 轮询时间
