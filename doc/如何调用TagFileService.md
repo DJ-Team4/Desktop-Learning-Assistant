@@ -85,11 +85,11 @@
 引入命名空间 DesktopLearningAssistant.TagFile 即可使用这些扩展方法。
 
 ## 异步操作
-名字带 Async 后缀的方法都是异步方法，关于 C# 中的异步编程参见 [C# 中的异步编程]([https://link](https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/async/))。
+名字带 Async 后缀的方法都是异步方法，关于 C# 中的异步编程参见 [C# 中的异步编程](https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/async/)。
 
 ## 图
 ### 实体类 E-R 图
-![er](./pic/TagFile-ER.jpg)
+![er](./pic/TagFile-ER.png)
 
 ### UML 图
 ![uml](./pic/TagFileClassDiagram.jpg)
