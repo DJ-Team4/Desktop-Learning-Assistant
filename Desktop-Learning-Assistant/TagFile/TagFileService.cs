@@ -20,7 +20,10 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns>不存在则返回 null</returns>
         public async Task<Tag> GetTagAsync(string tagName)
         {
-            return await context.Tags.FindAsync(tagName);
+            using (var context = Context)
+            {
+                return await context.Tags.FindAsync(tagName);
+            }
         }
 
         /// <summary>
@@ -29,14 +32,17 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<Tag> AddTagAsync(string tagName)
         {
-            Tag tag = await GetTagAsync(tagName);
-            if (tag == null)
+            using (var context = Context)
             {
-                tag = new Tag { TagName = tagName };
-                await context.Tags.AddAsync(tag);
-                await context.SaveChangesAsync();
+                Tag tag = await GetTagAsync(tagName);
+                if (tag == null)
+                {
+                    tag = new Tag { TagName = tagName };
+                    await context.Tags.AddAsync(tag);
+                    await context.SaveChangesAsync();
+                }
+                return tag;
             }
-            return tag;
         }
 
         /// <summary>
@@ -45,10 +51,13 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task RemoveTagAsync(Tag tag)
         {
-            if (await IsTagExistAsync(tag.TagName))
+            using (var context = Context)
             {
-                context.Tags.Remove(tag);
-                await context.SaveChangesAsync();
+                if (await IsTagExistAsync(tag.TagName))
+                {
+                    context.Tags.Remove(tag);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
@@ -58,14 +67,17 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<bool> RenameTagAsync(Tag tag, string newName)
         {
-            if (!await IsTagExistAsync(newName))
+            using (var context = Context)
             {
-                tag.TagName = newName;
-                await context.SaveChangesAsync();
-                return true;
+                if (!await IsTagExistAsync(newName))
+                {
+                    tag.TagName = newName;
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                    return false;
             }
-            else
-                return false;
         }
 
         /// <summary>
@@ -73,7 +85,10 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<bool> IsTagExistAsync(string tagName)
         {
-            return await GetTagAsync(tagName) != null;
+            using (var context = Context)
+            {
+                return await GetTagAsync(tagName) != null;
+            }
         }
 
         /// <summary>
@@ -81,7 +96,10 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<List<Tag>> TagListAsync()
         {
-            return await context.Tags.ToListAsync();
+            using (var context = Context)
+            {
+                return await context.Tags.ToListAsync();
+            }
         }
 
         #endregion
@@ -94,7 +112,10 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns>不存在则返回 null</returns>
         public async Task<TagFileRelation> GetRelationAsync(Tag tag, FileItem fileItem)
         {
-            return await context.Relations.FindAsync(tag.TagName, fileItem.FileItemId);
+            using (var context = Context)
+            {
+                return await context.Relations.FindAsync(tag.TagName, fileItem.FileItemId);
+            }
         }
 
         /// <summary>
@@ -104,19 +125,22 @@ namespace DesktopLearningAssistant.TagFile
         /// <returns>关系实体类</returns>
         public async Task<TagFileRelation> AddRelationAsync(Tag tag, FileItem fileItem)
         {
-            var relation = await GetRelationAsync(tag, fileItem);
-            if (relation == null)
+            using (var context = Context)
             {
-                relation = new TagFileRelation
+                var relation = await GetRelationAsync(tag, fileItem);
+                if (relation == null)
                 {
-                    TagName = tag.TagName,
-                    FileItemId = fileItem.FileItemId,
-                    UtcCreateTime = DateTime.UtcNow
-                };
-                await context.Relations.AddAsync(relation);
-                await context.SaveChangesAsync();
+                    relation = new TagFileRelation
+                    {
+                        TagName = tag.TagName,
+                        FileItemId = fileItem.FileItemId,
+                        UtcCreateTime = DateTime.UtcNow
+                    };
+                    await context.Relations.AddAsync(relation);
+                    await context.SaveChangesAsync();
+                }
+                return relation;
             }
-            return relation;
         }
 
         /// <summary>
@@ -125,10 +149,13 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task RemoveRelationAsync(TagFileRelation relation)
         {
-            if (await IsRelationExistAsync(relation.Tag, relation.FileItem))
+            using (var context = Context)
             {
-                context.Relations.Remove(relation);
-                await context.SaveChangesAsync();
+                if (await IsRelationExistAsync(relation.Tag, relation.FileItem))
+                {
+                    context.Relations.Remove(relation);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
@@ -138,11 +165,14 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task RemoveRelationAsync(Tag tag, FileItem fileItem)
         {
-            var relation = await GetRelationAsync(tag, fileItem);
-            if (relation != null)
+            using (var context = Context)
             {
-                context.Relations.Remove(relation);
-                await context.SaveChangesAsync();
+                var relation = await GetRelationAsync(tag, fileItem);
+                if (relation != null)
+                {
+                    context.Relations.Remove(relation);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
@@ -159,7 +189,10 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<List<TagFileRelation>> RelationListAsync()
         {
-            return await context.Relations.ToListAsync();
+            using (var context = Context)
+            {
+                return await context.Relations.ToListAsync();
+            }
         }
 
         #endregion
@@ -171,7 +204,10 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<FileItem> GetFileItemAsync(int fileItemId)
         {
-            return await context.FileItems.FindAsync(fileItemId);
+            using (var context = Context)
+            {
+                return await context.FileItems.FindAsync(fileItemId);
+            }
         }
 
         /// <summary>
@@ -220,13 +256,16 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task DeleteFileAsync(FileItem fileItem)
         {
-            string path = GetRealFilepath(fileItem);
-            if (File.Exists(path))
+            using (var context = Context)
             {
-                await Task.Run(() => File.Delete(path));
+                string path = GetRealFilepath(fileItem);
+                if (File.Exists(path))
+                {
+                    await Task.Run(() => File.Delete(path));
+                }
+                context.FileItems.Remove(fileItem);
+                await context.SaveChangesAsync();
             }
-            context.FileItems.Remove(fileItem);
-            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -234,17 +273,20 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task DeleteFileToRecycleBinAsync(FileItem fileItem)
         {
-            if (File.Exists(GetRealFilepath(fileItem)))
+            using (var context = Context)
             {
-                //move to temp recycle first
-                string curFilename = FileUtils.MoveFileAutoNumber(
-                    GetRealFilepath(fileItem), TempRecyclePath);
-                string curPath = Path.Combine(TempRecyclePath, curFilename);
-                //then send to system recycle bin
-                await Task.Run(() => FileUtils.DeleteFileToRecycleBin(curPath));
+                if (File.Exists(GetRealFilepath(fileItem)))
+                {
+                    //move to temp recycle first
+                    string curFilename = FileUtils.MoveFileAutoNumber(
+                        GetRealFilepath(fileItem), TempRecyclePath);
+                    string curPath = Path.Combine(TempRecyclePath, curFilename);
+                    //then send to system recycle bin
+                    await Task.Run(() => FileUtils.DeleteFileToRecycleBin(curPath));
+                }
+                context.FileItems.Remove(fileItem);
+                await context.SaveChangesAsync();
             }
-            context.FileItems.Remove(fileItem);
-            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -252,10 +294,13 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task RenameFileItemAsync(FileItem fileItem, string newName)
         {
-            fileItem.DisplayName = newName;
-            fileItem.RealName = await Task.Run(() =>
-                FileUtils.RenameFileAutoNumber(GetRealFilepath(fileItem), newName));
-            await context.SaveChangesAsync();
+            using (var context = Context)
+            {
+                fileItem.DisplayName = newName;
+                fileItem.RealName = await Task.Run(() =>
+                    FileUtils.RenameFileAutoNumber(GetRealFilepath(fileItem), newName));
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -263,7 +308,10 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<List<FileItem>> FileItemListAsync()
         {
-            return await context.FileItems.ToListAsync();
+            using (var context = Context)
+            {
+                return await context.FileItems.ToListAsync();
+            }
         }
 
         /// <summary>
@@ -271,8 +319,11 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         private async Task AddFileItemAsync(FileItem fileItem)
         {
-            await context.FileItems.AddAsync(fileItem);
-            await context.SaveChangesAsync();
+            using (var context = Context)
+            {
+                await context.FileItems.AddAsync(fileItem);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -280,10 +331,13 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<FileItem> AddFileItemForTestAsync(string dispName, string realName)
         {
-            var file = new FileItem { DisplayName = dispName, RealName = realName };
-            await context.FileItems.AddAsync(file);
-            await context.SaveChangesAsync();
-            return file;
+            using (var context = Context)
+            {
+                var file = new FileItem { DisplayName = dispName, RealName = realName };
+                await context.FileItems.AddAsync(file);
+                await context.SaveChangesAsync();
+                return file;
+            }
         }
 
         #endregion
@@ -296,11 +350,14 @@ namespace DesktopLearningAssistant.TagFile
         /// <exception cref="InvalidExpressionException">查询表达式非法</exception>
         public async Task<List<FileItem>> QueryAsync(string expression)
         {
-            var files = new List<FileItem>();
-            var idList = TagExpression.Query(context.Relations, expression);
-            foreach (int fileItemId in idList)
-                files.Add(await GetFileItemAsync(fileItemId));
-            return files;
+            using (var context = Context)
+            {
+                var files = new List<FileItem>();
+                var idList = TagExpression.Query(context.Relations, expression);
+                foreach (int fileItemId in idList)
+                    files.Add(await GetFileItemAsync(fileItemId));
+                return files;
+            }
         }
 
         /// <summary>
@@ -308,15 +365,18 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task<List<FileItem>> FilesWithoutTagAsync()
         {
-            var hasTagIds = new HashSet<int>();
-            (await RelationListAsync()).ForEach(
-                relation => hasTagIds.Add(relation.FileItemId));
-            var allFiles = await FileItemListAsync();
-            var files = new List<FileItem>();
-            foreach (var file in allFiles)
-                if (!hasTagIds.Contains(file.FileItemId))
-                    files.Add(file);
-            return files;
+            using (var context = Context)
+            {
+                var hasTagIds = new HashSet<int>();
+                (await RelationListAsync()).ForEach(
+                    relation => hasTagIds.Add(relation.FileItemId));
+                var allFiles = await FileItemListAsync();
+                var files = new List<FileItem>();
+                foreach (var file in allFiles)
+                    if (!hasTagIds.Contains(file.FileItemId))
+                        files.Add(file);
+                return files;
+            }
         }
 
         #endregion
@@ -367,9 +427,11 @@ namespace DesktopLearningAssistant.TagFile
 
         protected TagFileService()
         {
+            /*
             var builder = new DbContextOptionsBuilder<TagFileContext>();
             builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
             context = new TagFileContext(builder.Options);
+            */
         }
 
         /// <summary>
@@ -382,10 +444,20 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         private string TempRecyclePath { get => TagFileConfig.TempRecyclePath; }
 
+        //private readonly TagFileContext context;
         /// <summary>
         /// 用于操作数据库的 DbContext
         /// </summary>
-        private readonly TagFileContext context;
+        private TagFileContext Context
+        {
+            get
+            {
+                var builder = new DbContextOptionsBuilder<TagFileContext>();
+                builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
+                TagFileContext context = new TagFileContext(builder.Options);
+                return context;
+            }
+        }
 
         /// <summary>
         /// 单例对象

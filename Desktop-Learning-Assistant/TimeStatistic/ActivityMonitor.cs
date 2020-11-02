@@ -158,7 +158,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                             }
                             if (Process.GetProcesses().Count(p => p.ProcessName == lastUAP.Name) == 0)     // 当前窗口发送了变化时，检测上一个窗口的进程是否被关闭（可能也只是隐藏）。
                             {
-                                TDManager.KilledActivity.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
+                                TDManager.KilledActivities.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
                             }
                         }
                     }

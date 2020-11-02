@@ -40,6 +40,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                     command.CommandText = "DROP TABLE Demo";
                     command.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
         /// <summary> 
@@ -67,6 +68,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                     }
                     transaction.Commit();
                 }
+                connection.Close();
             }
             return affectedRows;
         }
@@ -78,6 +80,23 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         /// <returns></returns> 
         public SQLiteDataReader ExecuteReader(string sql, SQLiteParameter[] parameters)
         {
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    using (SQLiteDataReader rdr = command.ExecuteReader())
+                    {
+                        if (parameters != null)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+                        return command.ExecuteReader(CommandBehavior.CloseConnection);
+                    }
+                }
+            }
+
+            /*
             SQLiteConnection connection = new SQLiteConnection(connectionString);
             SQLiteCommand command = new SQLiteCommand(sql, connection);
             if (parameters != null)
@@ -86,6 +105,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             }
             connection.Open();
             return command.ExecuteReader(CommandBehavior.CloseConnection);
+            */
         }
         /// <summary> 
         /// 执行一个查询语句，返回一个包含查询结果的DataTable 
