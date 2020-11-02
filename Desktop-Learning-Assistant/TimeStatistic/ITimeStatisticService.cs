@@ -39,12 +39,5 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         /// <returns></returns>
         List<UserActivity> GetKilledUserActivities();
-
-        /// <summary>
-        /// 改变软件的类型
-        /// </summary>
-        /// <param name="activityName"></param>
-        /// <param name="typeName"></param>
-        void ChangeActivityType(string activityName, string typeName);
     }
 }
