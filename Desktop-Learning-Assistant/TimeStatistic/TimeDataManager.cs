@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,11 +99,22 @@ namespace DesktopLearningAssistant.TimeStatistic
                     uniqueTimeDataManager.LoadDataFromDb();             // 读入数据
 
                     int SaveToDbTimeSlice = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
-                    System.Threading.Timer threadTimer = new System.Threading.Timer(
-                        callback: new TimerCallback(TimeWriteToDb), null, 0, SaveToDbTimeSlice);
+                    System.Timers.Timer timer = new System.Timers.Timer();
+                    timer.Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
+                    timer.Enabled = true;
+                    timer.Elapsed += TimeWriteToDb;
+                    timer.Start();
                 }
             }
             return uniqueTimeDataManager;
+        }
+
+        /// <summary>
+        /// 释放单例对象
+        /// </summary>
+        public static void Dispose()
+        {
+            uniqueTimeDataManager = null;
         }
 
         /// <summary>
@@ -124,6 +136,9 @@ namespace DesktopLearningAssistant.TimeStatistic
             using (var context = new TimeDataContext(options))
             {
                 UserActivityPieces = context.UserActivityPieces.ToList();
+                UserActivityPieces.Add(new UserActivityPiece() 
+                { Name = "Idle", StartTime = DateTime.Now, Detail = "", CloseTime = DateTime.Now });    // 添加一个Idle，以避免ActivityMonitor修改数据库中读出的最后一项数据
+
                 KilledActivities = context.KilledActivities.ToList();
                 lastUAPCount = UserActivityPieces.Count;
                 lastKACount = KilledActivities.Count;
@@ -142,6 +157,8 @@ namespace DesktopLearningAssistant.TimeStatistic
                 context.UserActivityPieces.AddRangeAsync(UserActivityPieces.GetRange(lastUAPCount, newUAPCount));
                 context.KilledActivities.AddRangeAsync(KilledActivities.GetRange(lastKACount, newKACount));
                 context.SaveChanges();
+                lastUAPCount = UserActivityPieces.Count;    // 更新一下位置记录，避免重复写入
+                lastKACount = KilledActivities.Count;
             }
         }
 
@@ -149,7 +166,12 @@ namespace DesktopLearningAssistant.TimeStatistic
 
         #region 私有方法
 
-        private static void TimeWriteToDb(object state)
+        /// <summary>
+        /// 将单例对象的数据写入数据库
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private static void TimeWriteToDb(Object source, System.Timers.ElapsedEventArgs e)
         {
             uniqueTimeDataManager.SaveDataToDb();
         }

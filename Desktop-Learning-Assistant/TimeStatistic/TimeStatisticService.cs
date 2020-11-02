@@ -65,6 +65,14 @@ namespace DesktopLearningAssistant.TimeStatistic
         }
 
         /// <summary>
+        /// 释放单例对象
+        /// </summary>
+        public static void Dispose()
+        {
+            uniqueTimeStatisticService = null;
+        }
+
+        /// <summary>
         /// 获取指定时间范围内的活动统计
         /// </summary>
         /// <param name="beginTime"></param>
