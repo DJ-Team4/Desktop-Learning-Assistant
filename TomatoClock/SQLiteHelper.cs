@@ -68,6 +68,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                     }
                     transaction.Commit();
                 }
+                connection.Close();
             }
             return affectedRows;
         }
@@ -77,7 +78,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         /// <param name="sql">要执行的查询语句</param> 
         /// <param name="parameters">执行SQL查询语句所需要的参数，参数必须以它们在SQL语句中的顺序为准</param> 
         /// <returns></returns> 
-        public void ExecuteReader(string sql, SQLiteParameter[] parameters)
+        public SQLiteDataReader ExecuteReader(string sql, SQLiteParameter[] parameters)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -90,16 +91,9 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                         {
                             command.Parameters.AddRange(parameters);
                         }
-                        while (rdr.Read())
-                        {
-                            Console.Write("{0} ", rdr["Id"]);
-                            Console.Write("{0} ", rdr["Name"]);
-                            Console.Write("{0} \n", rdr["Price"]);
-                        }
+                        return command.ExecuteReader(CommandBehavior.CloseConnection);
                     }
                 }
-
-                connection.Close();
             }
 
             /*

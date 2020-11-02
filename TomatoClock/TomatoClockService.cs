@@ -50,8 +50,13 @@ namespace DesktopLearningAssistant.TomatoClock
             TaskInfo taskInfo = new TaskInfo();
             string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
             SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            DB.ExecuteReader(sql, null);
-
+            SQLiteDataReader dr = DB.ExecuteReader(sql, null);
+            while(dr.Read())
+            {
+                taskInfo.TaskID = (int)dr["TaskID"];
+                taskInfo.Name = dr["name"].ToString();
+                taskInfo.StartTime = 
+            }
             return taskInfo;
         }
         public int AddTomatoStartTime(int TaskID)
