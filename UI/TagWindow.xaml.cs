@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DesktopLearningAssistant.TagFile;
+using DesktopLearningAssistant.TagFile.Model;
 
 namespace UI
 {
@@ -22,6 +24,20 @@ namespace UI
         public TagWindow()
         {
             InitializeComponent();
+        }
+
+        private async Task AddTag()
+        {            
+            NewTagWindow newtagWindow = new NewTagWindow();
+            newtagWindow.Show();
+            string newtagName = TxtNewtagName.content;
+            Tag tag = await TagFileService.GetService().AddTagAsync("newtagName");
+       
+        }
+
+        private void AddFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            AddTag();
         }
     }
 }
