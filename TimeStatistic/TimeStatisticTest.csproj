@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>TimeStatisticTest</RootNamespace>
     <AssemblyName>TimeStatisticTest</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
