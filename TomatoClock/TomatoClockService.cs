@@ -3,33 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TomatoClock.Model;
+using System.Data;
+using System.Data.Common;
+using System.Data.SQLite;
+using DesktopLearningAssistant.TomatoClock.Model;
+using DesktopLearningAssistant.TomatoClock.SQLite;
 
-namespace TomatoClock
+namespace DesktopLearningAssistant.TomatoClock
 {
     class TaskService
     {
-        private int nextID;
-        List<TaskInfo> TaskInfos;
-        public void AddTask(TaskInfo task)
+
+        public bool AddTask(TaskInfo task)
         {
-            task.TaskID = nextID;
-            nextID++;
-            TaskInfos.Add(task);
-            //////////////////////////////////////////////////////
-            TaskInfo NewTask = new TaskInfo();
-            Console.WriteLine("Task Infomation: \n");
-            NewTask.Name = Console.ReadLine();
+            string sql = "INSERT INTO Task(name,StartTime,Deadline,notes,TomatoNum,TomatoCount,State)" +
+                "values(@name,@StartTime,@Deadline,@notes,@TomatoNum,@TomatoCount,@State)";
+            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
+            SQLiteParameter[] parameters = new SQLiteParameter[]{
+            new SQLiteParameter("@name",task.Name.ToString()),
+            new SQLiteParameter("@StartTime",task.StartTime.ToString()),
+            new SQLiteParameter("@Deadline",task.Deadline),
+            new SQLiteParameter("@notes",task.Notes.ToString()),
+            new SQLiteParameter("@TomatoNum",0),
+            new SQLiteParameter("@TomatoCount",0),
+            new SQLiteParameter("@State",task.TaskState.ToString())
+            };
+            DB.ExecuteNonQuery(sql, parameters);
+            return true;
+        }
+        public void DeletTask(TaskInfo task)
+        {
+            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
+            string sql = "DELETE FROM Task WHERE TaskID = '" + task.TaskID + "'";
+            DB.ExecuteNonQuery(sql, null);
+            Console.WriteLine(task.TaskID + "被删除！");
+        }
+        public bool ModifyTask(TaskInfo task)
+        {
+            ReadTask(task);
+            AddTask(task);
 
-            Console.WriteLine("Set Start Time: \n"+"eg:For 2020/10/26 8:39:00, Input 2020102684100 ");
-            string SetStartLine = Console.ReadLine();
-            //NewTask.SetTime = DateTime.ParseExact(SetStartLine, "yyyyMMddhhmmss", System.Globalization.CultureInfo.CurrentCulture);
-
-            Console.WriteLine("Set Time Span: ");
+            return true;
+        }
+        public TaskInfo ReadTask(TaskInfo task)
+        {
+            TaskInfo taskInfo = new TaskInfo();
+            string sql = "SELECT * FROM Task WHERE TaskID = '" + task.TaskID + "'";
+            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
+            DB.ExecuteReader(sql, null);
+            return taskInfo;
+        }
+        public int AddTomatoStartTime(int TaskID)
+        {
+            int TomatoID = 0;
+            return TomatoID;
+        }
+        public void AddTomatoEndTime(int TaskID, int TomatoID)
+        {
 
         }
-        public void DeletTask() { }
-        public void ModifyTask() { }
-        public void ShowTask() { }
+        public int ReadTomato(int TaskID)
+        {
+            int count = 0;
+            return count;
+        }
+        private void AddTomatoNum()
+        {
+
+        }
     }
 }
