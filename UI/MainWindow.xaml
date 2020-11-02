@@ -26,7 +26,7 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:PieChart.Series>
                                         <lvc:PieSeries Values="3" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
@@ -42,7 +42,7 @@
                         </TabItem>
                         <TabItem Header="昨日">
                             <Grid>
-                                <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:PieChart.Series>
                                         <lvc:PieSeries Values="3" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
@@ -69,16 +69,8 @@
                             </Grid>
                         </TabItem>
                     </TabControl>
-                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Margin="0,26.6,0,-0.2" Grid.Row="1">
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Salesman" LabelFormatter="{Binding Formatter}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Sold Apps" Labels="{Binding Labels}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                        <lvc:CartesianChart.DataTooltip>
-                            <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
-                        </lvc:CartesianChart.DataTooltip>
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}" Margin="0,26.6,0,-0.2" Grid.Row="1">
+                        
                     </lvc:CartesianChart>
                 </Grid>
             </TabItem>
