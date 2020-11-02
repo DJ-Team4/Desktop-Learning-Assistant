@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.TimeStatistic.Model;
@@ -32,31 +35,14 @@ namespace DesktopLearningAssistant.TimeStatistic
         #region 公有属性
 
         /// <summary>
-        /// 数据库
-        /// </summary>
-        public TimeDataContext context;
-
-        /// <summary>
         /// 所有被关闭了的软件
         /// </summary>
-        public List<UserActivity> KilledActivity
-        {
-            get
-            {
-                return context.KilledActivities.ToList();
-            }
-        }
+        public List<UserActivity> KilledActivities { get; set; }
 
         /// <summary>
         /// 所有的活动片
         /// </summary>
-        public List<UserActivityPiece> UserActivityPieces
-        {
-            get
-            {
-                return context.UserActivityPieces.ToList(); ;
-            }
-        }
+        public List<UserActivityPiece> UserActivityPieces { get; set; }
 
         /// <summary>
         /// 软件的类型字典集合
@@ -65,21 +51,37 @@ namespace DesktopLearningAssistant.TimeStatistic
 
         #endregion
 
-        #region 方法
+        #region 私有属性
+
+        /// <summary>
+        /// Context构造字符串，放在此处以减少重复代码
+        /// </summary>
+        private DbContextOptions<TimeDataContext> options;
+
+        /// <summary>
+        /// 上一次从数据库中读出的实体数量，写回数据库时只写入新增加的
+        /// </summary>
+        private int lastUAPCount;
+        private int lastKACount;
+
+        #endregion
+
+        #region 公有方法
 
         /// <summary>
         /// 构造方法
         /// </summary>
         public TimeDataManager()
         {
+            // 构造options
             ConfigService configService = ConfigService.GetConfigService();
             string dbPath = configService.TSConfig.DbPath;
             var builder = new DbContextOptionsBuilder<TimeDataContext>();
             builder.UseSqlite($"Data Source={dbPath}");
-            context = new TimeDataContext(builder.Options); // KilledActivities和UserActivitiesPieces通过数据库读写
-            context.Database.EnsureCreated();
+            options = builder.Options;
 
-            TypeDict = configService.TSConfig.TypeDict;     // TypeDict通过配置文件读写
+            // 读出配置文件中的TypeDict
+            TypeDict = ConfigService.GetConfigService().TSConfig.TypeDict;
         }
 
         /// <summary>
@@ -93,29 +95,85 @@ namespace DesktopLearningAssistant.TimeStatistic
                 lock (locker)
                 {
                     uniqueTimeDataManager = new TimeDataManager();
+                    uniqueTimeDataManager.EnsureDbCreated();            // 只检查一次是否建库建表
+                    uniqueTimeDataManager.LoadDataFromDb();             // 读入数据
+
+                    int SaveToDbTimeSlice = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
+                    System.Timers.Timer timer = new System.Timers.Timer();
+                    timer.Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
+                    timer.Enabled = true;
+                    timer.Elapsed += TimeWriteToDb;
+                    timer.Start();
                 }
             }
             return uniqueTimeDataManager;
         }
 
         /// <summary>
-        /// 通过此接口把新的KilledActivity写入内存
+        /// 释放单例对象
         /// </summary>
-        /// <param name="ua"></param>
-        public async void AddKilledActivity(UserActivity ua)
+        public static void Dispose()
         {
-            await context.KilledActivities.AddAsync(ua);
-            await context.SaveChangesAsync();
+            uniqueTimeDataManager = null;
         }
 
         /// <summary>
-        /// 通过此接口把新的UserActivityPiece写入内存
+        /// 确保数据库已被创建
         /// </summary>
-        /// <param name="uap"></param>
-        public async void AddUserActivityPiece(UserActivityPiece uap)
+        public async void EnsureDbCreated()
         {
-            await context.UserActivityPieces.AddAsync(uap);
-            await context.SaveChangesAsync();
+            using(var context = new TimeDataContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+            }
+        }
+
+        /// <summary>
+        /// 从数据库中读出所有实体
+        /// </summary>
+        public void LoadDataFromDb()
+        {
+            using (var context = new TimeDataContext(options))
+            {
+                UserActivityPieces = context.UserActivityPieces.ToList();
+                UserActivityPieces.Add(new UserActivityPiece() 
+                { Name = "Idle", StartTime = DateTime.Now, Detail = "", CloseTime = DateTime.Now });    // 添加一个Idle，以避免ActivityMonitor修改数据库中读出的最后一项数据
+
+                KilledActivities = context.KilledActivities.ToList();
+                lastUAPCount = UserActivityPieces.Count;
+                lastKACount = KilledActivities.Count;
+            }
+        }
+
+        /// <summary>
+        /// 将新增加的实体写入数据库
+        /// </summary>
+        public void SaveDataToDb()
+        {
+            using (var context = new TimeDataContext(options))
+            {
+                int newUAPCount = UserActivityPieces.Count - lastUAPCount;
+                int newKACount = KilledActivities.Count - lastKACount;
+                context.UserActivityPieces.AddRangeAsync(UserActivityPieces.GetRange(lastUAPCount, newUAPCount));
+                context.KilledActivities.AddRangeAsync(KilledActivities.GetRange(lastKACount, newKACount));
+                context.SaveChanges();
+                lastUAPCount = UserActivityPieces.Count;    // 更新一下位置记录，避免重复写入
+                lastKACount = KilledActivities.Count;
+            }
+        }
+
+        #endregion
+
+        #region 私有方法
+
+        /// <summary>
+        /// 将单例对象的数据写入数据库
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private static void TimeWriteToDb(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            uniqueTimeDataManager.SaveDataToDb();
         }
 
         #endregion

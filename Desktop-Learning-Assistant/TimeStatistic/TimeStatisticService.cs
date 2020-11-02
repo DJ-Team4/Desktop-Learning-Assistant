@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
+using Castle.Core.Internal;
+using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.TimeStatistic.Model;
 
 namespace DesktopLearningAssistant.TimeStatistic
@@ -62,6 +65,14 @@ namespace DesktopLearningAssistant.TimeStatistic
         }
 
         /// <summary>
+        /// 释放单例对象
+        /// </summary>
+        public static void Dispose()
+        {
+            uniqueTimeStatisticService = null;
+        }
+
+        /// <summary>
         /// 获取指定时间范围内的活动统计
         /// </summary>
         /// <param name="beginTime"></param>
@@ -69,11 +80,12 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public List<UserActivity> GetUserActivitiesWithin(DateTime beginTime, DateTime endTime)
         {
-            lock (TDManager.UserActivityPieces)
+            lock (TDManager)
             {
                 List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
                 List<UserActivityPiece> piecesWithSpan = userActivityPieces.FindAll(uap => uap.StartTime >= beginTime && uap.CloseTime <= endTime);
-                return MergeUserActivityPiece(piecesWithSpan);
+                List<UserActivity> userActivities = MergeUserActivityPiece(piecesWithSpan).OrderByDescending(ua => ua.SpanTime).ToList();   // 按时间长度降序排序
+                return userActivities;
             }
         }
 
@@ -83,11 +95,34 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public List<UserActivity> GetAllUserActivities()
         {
-            lock (TDManager.UserActivityPieces)
+            lock (TDManager)
             {
                 List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
-                return MergeUserActivityPiece(TDManager.UserActivityPieces);
+                List<UserActivity> userActivities = MergeUserActivityPiece(TDManager.UserActivityPieces).OrderByDescending(ua => ua.SpanTime).ToList();
+                return userActivities;
             }
+        }
+
+        /// <summary>
+        /// 获取一段时间内的各类软件使用时间
+        /// </summary>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public List<TypeActivity> GetTypeActivitiesWithin(DateTime beginTime, DateTime endTime)
+        {
+            List<UserActivity> userActivities = GetUserActivitiesWithin(beginTime, endTime);
+            return MergeUserActivity(userActivities).OrderByDescending(ta => ta.SpanTime).ToList();
+        }
+
+        /// <summary>
+        /// 获取所有有记录的时间内的各类软件使用时间
+        /// </summary>
+        /// <returns></returns>
+        public List<TypeActivity> GetAllTypeActivities()
+        {
+            List<UserActivity> userActivities = GetAllUserActivities();
+            return MergeUserActivity(userActivities).OrderByDescending(ta => ta.SpanTime).ToList();
         }
 
         /// <summary>
@@ -97,12 +132,11 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public List<UserActivity> GetKilledActivitiesWithin(DateTime beginTime)
         {
-            lock (TDManager.KilledActivity)
+            lock (TDManager)
             {
-                List<UserActivity> killedActivities = TDManager.KilledActivity;
+                List<UserActivity> killedActivities = TDManager.KilledActivities;
                 return killedActivities.FindAll(ka => ka.CloseTime >= beginTime);
             }
-
         }
 
         /// <summary>
@@ -111,17 +145,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public List<UserActivity> GetKilledUserActivities()
         {
-            return TDManager.KilledActivity;
-        }
-
-        /// <summary>
-        /// 更改软件的类型
-        /// </summary>
-        /// <param name="activityName"></param>
-        /// <param name="typeName"></param>
-        public void ChangeActivityType(string activityName, string typeName)
-        {
-            TDManager.TypeDict[activityName] = typeName;
+            return TDManager.KilledActivities;
         }
 
         #endregion
@@ -150,8 +174,37 @@ namespace DesktopLearningAssistant.TimeStatistic
                     t.AddUserActivityPiece(uap);      // 如果已经创建了这个进程的任务，那么把活动片加进去
                 }
             }
-
             return userActivities;
+        }
+
+        /// <summary>
+        /// 将活动按类别聚合起来
+        /// </summary>
+        /// <param name="uas"></param>
+        /// <returns></returns>
+        private List<TypeActivity> MergeUserActivity(List<UserActivity> uas)
+        {
+            List<TypeActivity> typeActivities = new List<TypeActivity>();
+            Dictionary<string, TimeSpan> typeTimeDict = new Dictionary<string, TimeSpan>();
+            var typeDict = ConfigService.GetConfigService().TSConfig.TypeDict;
+            foreach (UserActivity userActivity in uas)
+            {
+                if (!typeDict.ContainsKey(userActivity.Name)) continue; // 当这个软件没有类别时，不予考虑
+                string type = typeDict[userActivity.Name];
+                if (typeTimeDict.ContainsKey(type))
+                {
+                    typeTimeDict[type] += userActivity.SpanTime;    // 当此类别已在字典中时，累加时间
+                }
+                else
+                {
+                    typeTimeDict.Add(type, userActivity.SpanTime);  // 否则新加入此类别
+                }
+            }
+            foreach (var type in typeTimeDict.Keys)
+            {
+                typeActivities.Add(new TypeActivity { TypeName = type, SpanTime = typeTimeDict[type] });    // 将字典转为实体类
+            }
+            return typeActivities;
         }
 
         #endregion

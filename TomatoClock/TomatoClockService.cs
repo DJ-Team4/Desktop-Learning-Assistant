@@ -6,14 +6,68 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Data.Entity;
 using DesktopLearningAssistant.TomatoClock.Model;
-using DesktopLearningAssistant.TomatoClock.SQLite;
+//using DesktopLearningAssistant.TomatoClock.SQLite;
 
-namespace DesktopLearningAssistant.TomatoClock
+namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
     class TaskService
     {
+        public void AddTask()
+        {
+            using (var db = new TaskTomatoContext())
+            {
+                var task = new Task { };
+            }
+        }
+        public void DeletTask(TaskInfo task)
+        {
+            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
+            string sql = "DELETE FROM Task WHERE TaskID = '" + task.TaskID + "'";
+            DB.ExecuteNonQuery(sql, null);
+            Console.WriteLine(task.TaskID + "被删除！");
+        }
+        public bool ModifyTask(TaskInfo task)
+        {
+            ReadTask(task.TaskID);
+            AddTask();
 
+            return true;
+        }
+        public TaskInfo ReadTask(int TaskID)
+        {
+            TaskInfo taskInfo = new TaskInfo();
+            string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
+            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
+            SQLiteDataReader dr = DB.ExecuteReader(sql, null);
+            while (dr.Read())
+            {
+                taskInfo.TaskID = (int)dr["TaskID"];
+                taskInfo.Name = dr["name"].ToString();
+                taskInfo.StartTime =
+            }
+            return taskInfo;
+        }
+        public int AddTomatoStartTime(int TaskID)
+        {
+            int TomatoID = 0;
+            return TomatoID;
+        }
+        public void AddTomatoEndTime(int TaskID, int TomatoID)
+        {
+
+        }
+        public int ReadTomato(int TaskID)
+        {
+            int count = 0;
+            return count;
+        }
+        private void AddTomatoNum()
+        {
+
+        }
+        /*
         public bool AddTask(TaskInfo task)
         {
             string sql = "INSERT INTO Task(name,StartTime,Deadline,notes,TomatoNum,TomatoCount,State)" +
@@ -40,17 +94,23 @@ namespace DesktopLearningAssistant.TomatoClock
         }
         public bool ModifyTask(TaskInfo task)
         {
-            ReadTask(task);
+            ReadTask(task.TaskID);
             AddTask(task);
 
             return true;
         }
-        public TaskInfo ReadTask(TaskInfo task)
+        public TaskInfo ReadTask(int TaskID)
         {
             TaskInfo taskInfo = new TaskInfo();
-            string sql = "SELECT * FROM Task WHERE TaskID = '" + task.TaskID + "'";
+            string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
             SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            DB.ExecuteReader(sql, null);
+            SQLiteDataReader dr = DB.ExecuteReader(sql, null);
+            while(dr.Read())
+            {
+                taskInfo.TaskID = (int)dr["TaskID"];
+                taskInfo.Name = dr["name"].ToString();
+                taskInfo.StartTime = 
+            }
             return taskInfo;
         }
         public int AddTomatoStartTime(int TaskID)
@@ -71,5 +131,6 @@ namespace DesktopLearningAssistant.TomatoClock
         {
 
         }
+        */
     }
 }
