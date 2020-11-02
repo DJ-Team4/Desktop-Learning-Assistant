@@ -73,7 +73,8 @@ namespace DesktopLearningAssistant.TimeStatistic
             {
                 List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
                 List<UserActivityPiece> piecesWithSpan = userActivityPieces.FindAll(uap => uap.StartTime >= beginTime && uap.CloseTime <= endTime);
-                return MergeUserActivityPiece(piecesWithSpan);
+                List<UserActivity> userActivities = MergeUserActivityPiece(piecesWithSpan).OrderByDescending(ua => ua.SpanTime).ToList();   // 按时间长度降序排序
+                return userActivities;
             }
         }
 
@@ -86,7 +87,8 @@ namespace DesktopLearningAssistant.TimeStatistic
             lock (TDManager.UserActivityPieces)
             {
                 List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;
-                return MergeUserActivityPiece(TDManager.UserActivityPieces);
+                List<UserActivity> userActivities = MergeUserActivityPiece(TDManager.UserActivityPieces).OrderByDescending(ua => ua.SpanTime).ToList();
+                return userActivities;
             }
         }
 
@@ -112,16 +114,6 @@ namespace DesktopLearningAssistant.TimeStatistic
         public List<UserActivity> GetKilledUserActivities()
         {
             return TDManager.KilledActivity;
-        }
-
-        /// <summary>
-        /// 更改软件的类型
-        /// </summary>
-        /// <param name="activityName"></param>
-        /// <param name="typeName"></param>
-        public void ChangeActivityType(string activityName, string typeName)
-        {
-            TDManager.TypeDict[activityName] = typeName;
         }
 
         #endregion

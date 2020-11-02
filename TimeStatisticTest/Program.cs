@@ -26,8 +26,8 @@ namespace TimeStatisticTest
                 DateTime beginTime = DateTime.Now - TimeSpan.FromSeconds(5);
                 DateTime endTime = DateTime.Now;
 
-                List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);   // 获取最近五秒的活动统计
-                // List<UserActivity> userActivities = timeStatisticService.GetAllUserActivities();        // 获取所有的活动统计
+                //List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);   // 获取最近五秒的活动统计
+                List<UserActivity> userActivities = timeStatisticService.GetAllUserActivities();        // 获取所有的活动统计
                 Console.Clear();
                 foreach (UserActivity userActivity in userActivities)
                 {
