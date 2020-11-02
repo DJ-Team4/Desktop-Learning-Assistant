@@ -38,6 +38,14 @@ namespace DesktopLearningAssistant.TimeStatistic.Model
 
         #region 方法
 
+        public UserActivity()
+        {
+            Name = "Null";
+            Detail = "Null";
+            CloseTime = DateTime.Now;
+            SpanTime = TimeSpan.Zero;
+        }
+
         /// <summary>
         /// 从一个活动片中构造活动
         /// </summary>
