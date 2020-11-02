@@ -39,24 +39,24 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <summary>
         /// 所有被关闭了的软件
         /// </summary>
-        public List<UserActivity> KilledActivity
-        {
-            get
-            {
-                return context.KilledActivities.ToList();
-            }
-        }
+        public List<UserActivity> KilledActivity { get; set; }
+        //{
+            //get
+            //{
+                //return context.KilledActivities.ToList();
+            //}
+        //}
 
         /// <summary>
         /// 所有的活动片
         /// </summary>
-        public List<UserActivityPiece> UserActivityPieces
-        {
-            get
-            {
-                return context.UserActivityPieces.ToList(); ;
-            }
-        }
+        public List<UserActivityPiece> UserActivityPieces { get; set; }
+        //{
+            //get
+            //{
+                //return context.UserActivityPieces.ToList(); ;
+            //}
+        //}
 
         /// <summary>
         /// 软件的类型字典集合
@@ -73,13 +73,17 @@ namespace DesktopLearningAssistant.TimeStatistic
         public TimeDataManager()
         {
             ConfigService configService = ConfigService.GetConfigService();
-            string dbPath = configService.TSConfig.DbPath;
-            var builder = new DbContextOptionsBuilder<TimeDataContext>();
-            builder.UseSqlite($"Data Source={dbPath}");
-            context = new TimeDataContext(builder.Options); // KilledActivities和UserActivitiesPieces通过数据库读写
-            context.Database.EnsureCreated();
+            //string dbPath = configService.TSConfig.DbPath;
+            //var builder = new DbContextOptionsBuilder<TimeDataContext>();
+            //builder.UseSqlite($"Data Source={dbPath}");
+            //context = new TimeDataContext(builder.Options); // KilledActivities和UserActivitiesPieces通过数据库读写
+            //context.Database.EnsureCreated();
 
             TypeDict = configService.TSConfig.TypeDict;     // TypeDict通过配置文件读写
+
+            // 临时使用内存数据
+            KilledActivity = new List<UserActivity>();
+            UserActivityPieces = new List<UserActivityPiece>();
         }
 
         /// <summary>
