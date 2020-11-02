@@ -206,6 +206,7 @@
     <Compile Include="TagFile\TagFileService.cs" />
     <Compile Include="TagFile\ITagFileService.cs" />
     <Compile Include="TagFile\InvalidExpressionException.cs" />
+    <Compile Include="TimeStatistic\Model\TypeActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
     <Compile Include="TimeStatistic\ActivityMonitor.cs" />

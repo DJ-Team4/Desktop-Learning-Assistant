@@ -39,6 +39,7 @@ namespace TimeStatisticTest
                 {
                     Console.WriteLine(killedActivity.ToString());
                 }
+                //TimeDataManager.GetTimeDataManager().SaveDataToDb();
                 Thread.Sleep(1000);
             }
                 
