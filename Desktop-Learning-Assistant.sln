@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomatoClock", "TomatoClock\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{6D705A94-8A0E-4466-BA94-6200141A0C9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop-Learning-Assistant-Tests", "Desktop-Learning-AssistantTests\Desktop-Learning-Assistant-Tests.csproj", "{B86F07ED-FB36-4585-ABD3-37E360710D63}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeStatisticTest", "TimeStatisticTest\TimeStatisticTest.csproj", "{BECAA668-E607-4D50-8017-3FB228458BF9}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D705A94-8A0E-4466-BA94-6200141A0C9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B86F07ED-FB36-4585-ABD3-37E360710D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B86F07ED-FB36-4585-ABD3-37E360710D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B86F07ED-FB36-4585-ABD3-37E360710D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B86F07ED-FB36-4585-ABD3-37E360710D63}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BECAA668-E607-4D50-8017-3FB228458BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BECAA668-E607-4D50-8017-3FB228458BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BECAA668-E607-4D50-8017-3FB228458BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
