@@ -40,17 +40,18 @@ namespace DesktopLearningAssistant.TomatoClock
         }
         public bool ModifyTask(TaskInfo task)
         {
-            ReadTask(task);
+            ReadTask(task.TaskID);
             AddTask(task);
 
             return true;
         }
-        public TaskInfo ReadTask(TaskInfo task)
+        public TaskInfo ReadTask(int TaskID)
         {
             TaskInfo taskInfo = new TaskInfo();
-            string sql = "SELECT * FROM Task WHERE TaskID = '" + task.TaskID + "'";
+            string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
             SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
             DB.ExecuteReader(sql, null);
+
             return taskInfo;
         }
         public int AddTomatoStartTime(int TaskID)
