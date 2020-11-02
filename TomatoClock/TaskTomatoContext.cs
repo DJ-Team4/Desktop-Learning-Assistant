@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
@@ -23,7 +24,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             public bool State { get; set; }
         }
 
-        public class Tomato
+        public class TaskTomato
         {
             public int TomatoID { get; set; }
             public DateTime BeginTime { get; set; }
@@ -36,6 +37,15 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         /// <summary> 
         /// 创建 DbContext 类
         /// </summary> 
-        public
+        public class TaskContext : DbContext
+        {
+            public TaskContext() : base("TaskDataBase")
+            {
+                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskContext>());
+            }
+
+            public DbSet<Task> Tasks { get; set; }
+            public DbSet<TaskTomato> TaskTomatoes { get; set; }
+        }
     }
 }
