@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TomatoClock
+namespace DesktopLearningAssistant.TomatoClock.Model
 {
     public class Tomato
     {
+        int TomatoID;
         DateTime StartTime;
         DateTime EndTime;
-        int todo_numebr;
-        int completion_number;
     }
 }

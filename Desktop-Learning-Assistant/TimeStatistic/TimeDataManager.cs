@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.TimeStatistic.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace DesktopLearningAssistant.TimeStatistic
 {
@@ -29,14 +32,31 @@ namespace DesktopLearningAssistant.TimeStatistic
         #region 公有属性
 
         /// <summary>
+        /// 数据库
+        /// </summary>
+        public TimeDataContext context;
+
+        /// <summary>
         /// 所有被关闭了的软件
         /// </summary>
-        public List<UserActivity> KilledActivity { get; set; }
+        public List<UserActivity> KilledActivity
+        {
+            get
+            {
+                return context.KilledActivities.ToList();
+            }
+        }
 
         /// <summary>
         /// 所有的活动片
         /// </summary>
-        public List<UserActivityPiece> UserActivityPieces { get; set; }
+        public List<UserActivityPiece> UserActivityPieces
+        {
+            get
+            {
+                return context.UserActivityPieces.ToList(); ;
+            }
+        }
 
         /// <summary>
         /// 软件的类型字典集合
@@ -52,9 +72,14 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public TimeDataManager()
         {
-            this.KilledActivity = new List<UserActivity>();
-            this.UserActivityPieces = new List<UserActivityPiece>();
-            this.TypeDict = new Dictionary<string, string>();
+            ConfigService configService = ConfigService.GetConfigService();
+            string dbPath = configService.TSConfig.DbPath;
+            var builder = new DbContextOptionsBuilder<TimeDataContext>();
+            builder.UseSqlite($"Data Source={dbPath}");
+            context = new TimeDataContext(builder.Options); // KilledActivities和UserActivitiesPieces通过数据库读写
+            context.Database.EnsureCreated();
+
+            TypeDict = configService.TSConfig.TypeDict;     // TypeDict通过配置文件读写
         }
 
         /// <summary>
@@ -71,6 +96,26 @@ namespace DesktopLearningAssistant.TimeStatistic
                 }
             }
             return uniqueTimeDataManager;
+        }
+
+        /// <summary>
+        /// 通过此接口把新的KilledActivity写入内存
+        /// </summary>
+        /// <param name="ua"></param>
+        public async void AddKilledActivity(UserActivity ua)
+        {
+            await context.KilledActivities.AddAsync(ua);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 通过此接口把新的UserActivityPiece写入内存
+        /// </summary>
+        /// <param name="uap"></param>
+        public async void AddUserActivityPiece(UserActivityPiece uap)
+        {
+            await context.UserActivityPieces.AddAsync(uap);
+            await context.SaveChangesAsync();
         }
 
         #endregion
