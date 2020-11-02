@@ -21,18 +21,18 @@ namespace UI
     /// </summary>
     public partial class NewTagWindow : Window
     {
-        [DllImport("user32.dll")] public static extern int MessageBox
-            (IntPtr hWnd, string msg, string Caps, int type, int Id, int time); //引用DLL
-
+        [DllImport("user32.dll")] public static extern int MessageBoxTimeoutA(IntPtr hWnd, string msg, string Caps, int type, int Id, int time); //引用DLL
         public NewTagWindow()
         {
+
             InitializeComponent();
         }
 
-        private void NewTagBtnOK_OnClick(object sender, RoutedEventArgs e)
-        {
-            MessageBox((IntPtr)0, "新建成功", "提示", 0, 0, 1500); // 直接调用1.5秒后自动关闭
 
+        public void NewTagBtnOK_OnClick(object sender, RoutedEventArgs e)
+        {
+            string NewTag = TxtNewTagName.Text;
+            MessageBoxTimeoutA((IntPtr)0, "创建标签成功", "提示", 0, 0, 1000); // 直接调用 1秒
         }
     }
 }
