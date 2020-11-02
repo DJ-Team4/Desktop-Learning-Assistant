@@ -209,6 +209,7 @@
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
     <Compile Include="TimeStatistic\ActivityMonitor.cs" />
+    <Compile Include="TimeStatistic\TimeDataContext.cs" />
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
