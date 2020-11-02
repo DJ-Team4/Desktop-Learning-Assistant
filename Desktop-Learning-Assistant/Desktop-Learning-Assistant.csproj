@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>DesktopLearningAssistant</RootNamespace>
     <AssemblyName>Desktop-Learning-Assistant</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -209,6 +209,7 @@
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
     <Compile Include="TimeStatistic\ActivityMonitor.cs" />
+    <Compile Include="TimeStatistic\TimeDataContext.cs" />
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
