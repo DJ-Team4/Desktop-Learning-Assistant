@@ -26,18 +26,23 @@ namespace UI
             InitializeComponent();
         }
 
+        public string NewTag { get; set; }
+
         private async Task AddTag()
         {            
-            NewTagWindow newtagWindow = new NewTagWindow();
-            newtagWindow.Show();
-            string newtagName = TxtNewtagName.content;
+
             Tag tag = await TagFileService.GetService().AddTagAsync("newtagName");
        
         }
 
         private void AddFile_OnClick(object sender, RoutedEventArgs e)
         {
+            NewTagWindow newtagWindow = new NewTagWindow();
+            newtagWindow.Show();
+            string newtagName = NewTag;
             AddTag();
+
+
         }
     }
 }

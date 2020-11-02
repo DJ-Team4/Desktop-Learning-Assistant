@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -217,7 +219,6 @@
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
     <Compile Include="TomatoClock\Model\Tomato.cs" />
     <Compile Include="TomatoClock\Time.cs" />
-    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Compile Include="TomatoClock\TomatoTime.cs" />
     <Compile Include="Configuration\ConfigService.cs" />
     <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
