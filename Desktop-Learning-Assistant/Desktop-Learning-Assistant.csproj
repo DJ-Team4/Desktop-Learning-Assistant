@@ -199,6 +199,12 @@
     <Compile Include="TagFile\Expression\ParseException.cs" />
     <Compile Include="TagFile\Expression\TokenizeException.cs" />
     <Compile Include="TagFile\Expression\TagExpression.cs" />
+    <Compile Include="TagFile\Extraction\BasicAcAutomaton.cs" />
+    <Compile Include="TagFile\Extraction\BasicTrieChildren.cs" />
+    <Compile Include="TagFile\Extraction\BasicTrieNode.cs" />
+    <Compile Include="TagFile\Extraction\StringExtension.cs" />
+    <Compile Include="TagFile\Extraction\StringUnicodePoints.cs" />
+    <Compile Include="TagFile\Extraction\Utf32AcAutomaton.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
@@ -219,7 +225,6 @@
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
     <Compile Include="TomatoClock\Model\Tomato.cs" />
     <Compile Include="TomatoClock\Time.cs" />
-    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Compile Include="TomatoClock\TomatoTime.cs" />
     <Compile Include="Configuration\ConfigService.cs" />
     <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />

@@ -45,6 +45,27 @@
     - [EnsureDbAndFolderCreatedAsync](#ensuredbandfoldercreatedasync)
 - [ITagFileService](#itagfileservice)
   - [成员方法](#成员方法)
+    - [GetTagAsync](#gettagasync)
+    - [AddTagAsync](#addtagasync-1)
+    - [RemoveTagAsync](#removetagasync-1)
+    - [RenameTagAsync](#renametagasync)
+    - [IsTagExistAsync](#istagexistasync)
+    - [TagListAsync](#taglistasync)
+    - [GetRelationAsync](#getrelationasync)
+    - [AddRelationAsync](#addrelationasync)
+    - [RemoveRelationAsync](#removerelationasync)
+    - [IsRelationExistAsync](#isrelationexistasync)
+    - [RelationListAsync](#relationlistasync)
+    - [GetFileItemAsync](#getfileitemasync)
+    - [AddShortcutToRepoAsync](#addshortcuttorepoasync)
+    - [MoveFileToRepoAsync](#movefiletorepoasync)
+    - [GetRealFilepath](#getrealfilepath)
+    - [DeleteFileAsync](#deletefileasync)
+    - [DeleteFileToRecycleBinAsync](#deletefiletorecyclebinasync)
+    - [RenameFileItemAsync](#renamefileitemasync)
+    - [FileItemListAsync](#fileitemlistasync)
+    - [QueryAsync](#queryasync)
+    - [FilesWithoutTagAsync](#fileswithouttagasync)
 - [InvalidExpressionException](#invalidexpressionexception)
 - [查询表达式](#查询表达式)
   - [语法](#语法)
@@ -229,9 +250,80 @@ ITagFileService service = TagFileService.GetServcie();
 
 # ITagFileService
 ## 成员方法
-懒得打字了，详见 ITagFileService.cs。
-
 注：调用 `ITagFileService` 的 `RenameTagAsync` 方法与调用 `Tag` 的 `RenameAsync` 方法效果是相同的。其他类似情况依此类推。
+
+### GetTagAsync
+按 TagName 获取 Tag，不存在则返回 null。
+
+### AddTagAsync
+将新 Tag 加入系统中，并返回添加的 Tag 对象。
+
+若该名字的 Tag 已存在，则什么都不做。
+
+### RemoveTagAsync
+将该 Tag 从系统中移除。
+
+若 Tag 不存在，则什么都不做。
+
+### RenameTagAsync
+重命名该 Tag。
+
+若新名字的 Tag 已经存在，则什么都不做并返回 false。
+
+### IsTagExistAsync
+该名字的 Tag 是否存在。
+
+### TagListAsync
+获取含所有 Tag 的 List。
+
+### GetRelationAsync
+获取 TagFileRelation 对象。不存在则返回 null。
+
+### AddRelationAsync
+插入一个新的 Tag-FileItem 关系，并返回实体类对象。
+
+若关系已存在，则什么都不做。
+
+### RemoveRelationAsync
+移除某个 Tag-FileItem 关系。
+
+若该关系不存在，则什么都不做。
+
+### IsRelationExistAsync
+查询关系是否存在。
+
+### RelationListAsync
+获取含所有关系的列表。
+
+### GetFileItemAsync
+按 FileItemId 获取 FileItem。
+
+### AddShortcutToRepoAsync
+将文件以快捷方式的形式加入仓库。
+
+### MoveFileToRepoAsync
+将文件移动到仓库中。
+
+### GetRealFilepath
+获取文件在仓库内的真实路径。
+
+### DeleteFileAsync
+删除文件。
+
+### DeleteFileToRecycleBinAsync
+将文件移动到回收站。
+
+### RenameFileItemAsync
+重命名文件。
+
+### FileItemListAsync
+获取含所有 FileItem 的列表。
+
+### QueryAsync
+表达式查询。
+
+### FilesWithoutTagAsync
+获取不含任何标签的文件。
 
 # InvalidExpressionException
 可能在执行 `ITagFileService.Query` 时抛出，表示查询表达式非法。

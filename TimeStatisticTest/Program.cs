@@ -42,7 +42,6 @@ namespace TimeStatisticTest
                 //TimeDataManager.GetTimeDataManager().SaveDataToDb();
                 Thread.Sleep(1000);
             }
-                
         }
     }
 }
