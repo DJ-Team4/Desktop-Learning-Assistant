@@ -18,7 +18,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         {
             using (var context = new TaskTomatoContext())
             {
-                var task = new TaskList
+                var task = new TaskList()
                 {
                     Name = taskInfo.Name,
                     Notes = taskInfo.Notes,
@@ -50,12 +50,24 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             Console.WriteLine(task.TaskID + "被删除！");
             */
         }
-        public bool ModifyTask(TaskInfo task)
+        public void ModifyTask(TaskInfo taskInfo)
         {
-            ReadTask(task.TaskID);
-            AddTask(task);
-
-            return true;
+            using (var context = new TaskTomatoContext())
+            {
+                var task = new TaskList()
+                {
+                    TaskID = taskInfo.TaskID,
+                    Name = taskInfo.Name,
+                    Notes = taskInfo.Notes,
+                    StartTime = taskInfo.StartTime,
+                    Deadline = taskInfo.Deadline,
+                    TomatoNum = taskInfo.TomatoNum,
+                    TomatoCount = taskInfo.TomatoCount,
+                    State = taskInfo.TaskState
+                };
+                context.Entry(task).State = EntityState.Modified;
+                context.SaveChanges();
+            }
         }
         public TaskInfo ReadTask(int TaskID)
         {
