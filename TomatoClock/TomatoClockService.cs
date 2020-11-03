@@ -16,7 +16,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     {
         public void AddTask(TaskInfo taskInfo)
         {
-            int newTaskID = 0;
             using (var context = new TaskTomatoContext())
             {
                 var task = new TaskList
@@ -31,15 +30,25 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 };
                 context.Tasks.Add(task);
                 context.SaveChanges();
-                newTaskID = task.TaskID;
             }
         }
-        public void DeletTask(TaskInfo task)
+        public void DeletTask(int TaskID)
         {
+            using (var context = new TaskTomatoContext())
+            {
+                var task = context.Tasks.Include(t => t.TaskTomatoLists).FirstOrDefault(tt => tt.TaskID == TaskID);
+                if (task != null)
+                {
+                    context.Tasks.Remove(task);
+                    context.SaveChanges();
+                }
+            }
+            /*
             SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
             string sql = "DELETE FROM Task WHERE TaskID = '" + task.TaskID + "'";
             DB.ExecuteNonQuery(sql, null);
             Console.WriteLine(task.TaskID + "被删除！");
+            */
         }
         public bool ModifyTask(TaskInfo task)
         {
