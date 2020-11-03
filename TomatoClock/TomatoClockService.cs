@@ -135,9 +135,14 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 return TomatoList;
             }
         }
-        private void AddTomatoNum()
+        private int AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
         {
-
+            TimeSpan ts1 = new TimeSpan(iBeginTime.Ticks);
+            TimeSpan ts2 = new TimeSpan(iEndTime.Ticks);
+            TimeSpan ts = ts2.Subtract(ts1);
+            int TimeSpanSecond = int.Parse(ts.TotalSeconds.ToString());
+            if (TimeSpanSecond >= 25 * 60) { return iTomatoCount++; }
+            else { return iTomatoCount; }
         }
     }
 }
