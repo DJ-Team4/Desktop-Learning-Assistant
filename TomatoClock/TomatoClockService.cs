@@ -8,17 +8,30 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Entity;
 using DesktopLearningAssistant.TomatoClock.Model;
-//using DesktopLearningAssistant.TomatoClock.SQLite;
+using DesktopLearningAssistant.TomatoClock.SQLite;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
     class TaskService
     {
-        public void AddTask()
+        public void AddTask(TaskInfo taskInfo)
         {
-            using (var db = new TaskTomatoContext())
+            int newTaskID = 0;
+            using (var context = new TaskTomatoContext())
             {
-                var task = new Task { };
+                var task = new TaskList
+                {
+                    Name = taskInfo.Name,
+                    Notes = taskInfo.Notes,
+                    StartTime = taskInfo.StartTime,
+                    Deadline = taskInfo.Deadline,
+                    TomatoNum = taskInfo.TomatoNum,
+                    TomatoCount = 0,
+                    State = taskInfo.TaskState
+                };
+                context.Tasks.Add(task);
+                context.SaveChanges();
+                newTaskID = task.TaskID;
             }
         }
         public void DeletTask(TaskInfo task)
@@ -31,7 +44,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public bool ModifyTask(TaskInfo task)
         {
             ReadTask(task.TaskID);
-            AddTask();
+            AddTask(task);
 
             return true;
         }
@@ -45,7 +58,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             {
                 taskInfo.TaskID = (int)dr["TaskID"];
                 taskInfo.Name = dr["name"].ToString();
-                taskInfo.StartTime =
             }
             return taskInfo;
         }

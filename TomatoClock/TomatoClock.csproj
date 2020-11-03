@@ -73,6 +73,7 @@
     <Compile Include="SQLiteHelper.cs" />
     <Compile Include="TaskInfo.cs" />
     <Compile Include="TaskTomatoContext.cs" />
+    <Compile Include="TaskTomatoList.cs" />
     <Compile Include="Tomato.cs" />
     <Compile Include="TomatoClockService.cs" />
   </ItemGroup>
