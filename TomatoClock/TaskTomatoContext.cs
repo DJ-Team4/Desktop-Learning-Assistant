@@ -12,7 +12,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         /// <summary> 
         /// 创建 Task 和 Tomato 两个实体类
         /// </summary> 
-        public class Task
+        public class TaskList
         {
             public int TaskID { get; set; } //auto primary key
             public string Name { get; set; }
@@ -24,14 +24,14 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             public bool State { get; set; }
         }
 
-        public class TaskTomato
+        public class TaskTomatoList
         {
-            public int TomatoID { get; set; }
+            public int TomatoID { get; set; }        //primary key
             public DateTime BeginTime { get; set; }
             public DateTime EndTime { get; set; }
 
-            public int TaskID { get; set; } //foreign key
-            public Task Task { get; set; } //m..1
+            public int TaskID { get; set; }         //foreign key
+            public Task Task { get; set; }          //m..1
         }
 
         /// <summary> 
@@ -44,8 +44,8 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskContext>());
             }
 
-            public DbSet<Task> Tasks { get; set; }
-            public DbSet<TaskTomato> TaskTomatoes { get; set; }
+            public DbSet<TaskList> Tasks { get; set; }
+            public DbSet<TaskTomatoList> TaskTomatoes { get; set; }
         }
     }
 }
