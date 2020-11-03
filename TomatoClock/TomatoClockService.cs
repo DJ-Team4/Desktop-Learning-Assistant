@@ -100,10 +100,15 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             return taskInfo;
             */
         }
-        public int AddTomatoStartTime(int TaskID)
+        public int AddTomatoStartTime(int taskID)
         {
-            int TomatoID = 0;
-            return TomatoID;
+            using (var context = new TaskTomatoContext())
+            {
+                var tomato = new TaskTomatoList() { BeginTime = DateTime.Now, TaskID = taskID };
+                context.Entry(tomato).State = EntityState.Added;
+                context.SaveChanges();
+                return tomato.TomatoID;
+            }
         }
         public void AddTomatoEndTime(int TaskID, int TomatoID)
         {
