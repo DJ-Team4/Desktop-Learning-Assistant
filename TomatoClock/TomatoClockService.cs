@@ -16,7 +16,23 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     {
         public void AddTask(TaskInfo taskInfo)
         {
-            
+            int newTaskID = 0;
+            using (var context = new TaskTomatoContext())
+            {
+                var task = new TaskList
+                {
+                    Name = taskInfo.Name,
+                    Notes = taskInfo.Notes,
+                    StartTime = taskInfo.StartTime,
+                    Deadline = taskInfo.Deadline,
+                    TomatoNum = taskInfo.TomatoNum,
+                    TomatoCount = 0,
+                    State = taskInfo.TaskState
+                };
+                context.Tasks.Add(task);
+                context.SaveChanges();
+                newTaskID = task.TaskID;
+            }
         }
         public void DeletTask(TaskInfo task)
         {
