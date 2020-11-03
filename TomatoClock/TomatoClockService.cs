@@ -71,6 +71,23 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         }
         public TaskInfo ReadTask(int TaskID)
         {
+            using (var context = new TaskTomatoContext())
+            {
+                TaskInfo taskInfo = new TaskInfo();
+                var task = context.Tasks.SingleOrDefault(t => t.TaskID == TaskID);
+                if (task != null)
+                {
+                    taskInfo.Name = task.Name;
+                    taskInfo.Notes = task.Notes;
+                    taskInfo.StartTime = task.StartTime;
+                    taskInfo.Deadline = task.Deadline;
+                    taskInfo.TomatoCount = task.TomatoCount;
+                    taskInfo.TomatoNum = task.TomatoNum;
+                    taskInfo.TaskState = task.State;
+                }
+                return taskInfo;
+            }
+            /*
             TaskInfo taskInfo = new TaskInfo();
             string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
             SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
@@ -81,6 +98,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 taskInfo.Name = dr["name"].ToString();
             }
             return taskInfo;
+            */
         }
         public int AddTomatoStartTime(int TaskID)
         {
