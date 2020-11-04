@@ -114,8 +114,13 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         {
             using (var context = new TaskTomatoContext())
             {
-                var tomato = new TaskTomatoList() { TaskID = iTomatoID, TomatoID = iTomatoID, EndTime = DateTime.Now };
+                var tomato = new TaskTomatoList() { TaskID = iTaskID, TomatoID = iTomatoID, EndTime = DateTime.Now };
                 context.Entry(tomato).State = EntityState.Modified;
+                var task = context.Tasks.FirstOrDefault(t => t.TaskID == iTaskID);
+                if (task != null)
+                {
+                    task.TomatoCount = AddTomatoNum(tomato.BeginTime, tomato.EndTime, task.TomatoCount);
+                }
                 context.SaveChanges();
             }
         }
