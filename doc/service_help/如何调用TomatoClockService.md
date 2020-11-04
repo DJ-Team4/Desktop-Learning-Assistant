@@ -67,7 +67,7 @@
 
 # 实体类
 
-## TaskList
+## 1. TaskList
 
 ​	表示任务的实体类。
 
@@ -108,7 +108,7 @@
 
     任务与番茄钟的一对多关系。
 
-## TaskTomatoList
+## 2. TaskTomatoList
 
 ​	表示番茄钟的实体类。
 
@@ -133,3 +133,48 @@
   - #### TaskLists
 
     番茄钟与任务的多对一关系。
+
+
+
+# 服务类
+
+## 1. TaskTomatoService
+
+	### 1.1 对 TaskList 进行操作
+
+	#### 1.1.1 AddTask(TaskInfo taskInfo)
+
+将用户键入的信息以 TaskInfo 结构存入 TaskList 表中。
+
+#### 1.1.2 DeleteTask(int TaskID)
+
+根据 TaskID 进行搜索，将该 ID 的任务删除。
+
+#### 1.1.3 ModifyTask(TaskInfo taskInfo)
+
+更改 ID 为 taskInfo.TaskID 的任务的信息。
+
+#### 1.1.4 ReadTask(int TaskID)
+
+根据 TaskID 来读取任务详情信息。
+
+### 1.2 对 TaskTomatoLIst 进行操作
+
+#### 1.2.1 AddTomatoStartTime(int iTaskID)
+
+为正在进行的任务添加新的番茄钟的起始时间。
+
+#### 1.2.3 AddTomatoEndTime(int iTaskID, int iTomatoID)
+
+为正在进行的任务的番茄钟添加结束时间，并调用私有函数 AddTomatoNum() 判断是否要为对应任务更新番茄钟数量。
+
+#### 1.2.4 ReadTomato(int iTaskID)
+
+提供 ID 为TaskID 的所有番茄钟信息（起止时间），返回 List\<Tomato\>。
+
+#### 1.2.5 AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
+
+私有方法，您不需要关心此方法。在为当前番茄钟添加结束时间后，通过时间差判断是否完成此次番茄钟，若完成则为该任务番茄钟数加一，若未完成则保持番茄数不变。
+
+
+
