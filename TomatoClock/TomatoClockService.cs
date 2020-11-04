@@ -43,12 +43,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                     context.SaveChanges();
                 }
             }
-            /*
-            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            string sql = "DELETE FROM Task WHERE TaskID = '" + task.TaskID + "'";
-            DB.ExecuteNonQuery(sql, null);
-            Console.WriteLine(task.TaskID + "被删除！");
-            */
         }
         public void ModifyTask(TaskInfo taskInfo)
         {
@@ -87,18 +81,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 }
                 return taskInfo;
             }
-            /*
-            TaskInfo taskInfo = new TaskInfo();
-            string sql = "SELECT * FROM Task WHERE TaskID = '" + TaskID + "'";
-            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            SQLiteDataReader dr = DB.ExecuteReader(sql, null);
-            while (dr.Read())
-            {
-                taskInfo.TaskID = (int)dr["TaskID"];
-                taskInfo.Name = dr["name"].ToString();
-            }
-            return taskInfo;
-            */
         }
         public int AddTomatoStartTime(int iTaskID)
         {
@@ -114,8 +96,13 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         {
             using (var context = new TaskTomatoContext())
             {
-                var tomato = new TaskTomatoList() { TaskID = iTomatoID, TomatoID = iTomatoID, EndTime = DateTime.Now };
+                var tomato = new TaskTomatoList() { TaskID = iTaskID, TomatoID = iTomatoID, EndTime = DateTime.Now };
                 context.Entry(tomato).State = EntityState.Modified;
+                var task = context.Tasks.FirstOrDefault(t => t.TaskID == iTaskID);
+                if (task != null)
+                {
+                    task.TomatoCount = AddTomatoNum(tomato.BeginTime, tomato.EndTime, task.TomatoCount);
+                }
                 context.SaveChanges();
             }
         }
@@ -124,7 +111,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             List<Tomato> TomatoList = new List<Tomato>();
             using (var context = new TaskTomatoContext())
             {
-                var query = context.TaskTomatoes.Where(tt => tt.TaskList.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
+                var query = context.TaskTomatoes.Where(tt => tt.TaskLists.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
                 foreach (var tt in query)
                 {
                     Tomato tomato = new Tomato();

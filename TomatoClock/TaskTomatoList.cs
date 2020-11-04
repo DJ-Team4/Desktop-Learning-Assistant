@@ -36,7 +36,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public DateTime EndTime { get; set; }
 
         public int TaskID { get; set; }         //foreign key
-        public TaskList TaskList { get; set; }          //m..1
+        public TaskList TaskLists { get; set; }          //m..1
     }
 
 }
