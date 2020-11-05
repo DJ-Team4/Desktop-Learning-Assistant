@@ -6,70 +6,130 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Data.Entity;
 using DesktopLearningAssistant.TomatoClock.Model;
 using DesktopLearningAssistant.TomatoClock.SQLite;
 
-namespace DesktopLearningAssistant.TomatoClock
+namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
     class TaskService
     {
-
-        public bool AddTask(TaskInfo task)
+        public void AddTask(TaskInfo taskInfo)
         {
-            string sql = "INSERT INTO Task(name,StartTime,Deadline,notes,TomatoNum,TomatoCount,State)" +
-                "values(@name,@StartTime,@Deadline,@notes,@TomatoNum,@TomatoCount,@State)";
-            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            SQLiteParameter[] parameters = new SQLiteParameter[]{
-            new SQLiteParameter("@name",task.Name.ToString()),
-            new SQLiteParameter("@StartTime",task.StartTime.ToString()),
-            new SQLiteParameter("@Deadline",task.Deadline),
-            new SQLiteParameter("@notes",task.Notes.ToString()),
-            new SQLiteParameter("@TomatoNum",0),
-            new SQLiteParameter("@TomatoCount",0),
-            new SQLiteParameter("@State",task.TaskState.ToString())
-            };
-            DB.ExecuteNonQuery(sql, parameters);
-            return true;
+            using (var context = new TaskTomatoContext())
+            {
+                var task = new TaskList()
+                {
+                    Name = taskInfo.Name,
+                    Notes = taskInfo.Notes,
+                    StartTime = taskInfo.StartTime,
+                    Deadline = taskInfo.Deadline,
+                    TomatoNum = taskInfo.TomatoNum,
+                    TomatoCount = 0,
+                    State = taskInfo.TaskState
+                };
+                context.Tasks.Add(task);
+                context.SaveChanges();
+            }
         }
-        public void DeletTask(TaskInfo task)
+        public void DeletTask(int TaskID)
         {
-            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            string sql = "DELETE FROM Task WHERE TaskID = '" + task.TaskID + "'";
-            DB.ExecuteNonQuery(sql, null);
-            Console.WriteLine(task.TaskID + "被删除！");
+            using (var context = new TaskTomatoContext())
+            {
+                var task = context.Tasks.Include(t => t.TaskTomatoLists).FirstOrDefault(tt => tt.TaskID == TaskID);
+                if (task != null)
+                {
+                    context.Tasks.Remove(task);
+                    context.SaveChanges();
+                }
+            }
         }
-        public bool ModifyTask(TaskInfo task)
+        public void ModifyTask(TaskInfo taskInfo)
         {
-            ReadTask(task);
-            AddTask(task);
-
-            return true;
+            using (var context = new TaskTomatoContext())
+            {
+                var task = new TaskList()
+                {
+                    TaskID = taskInfo.TaskID,
+                    Name = taskInfo.Name,
+                    Notes = taskInfo.Notes,
+                    StartTime = taskInfo.StartTime,
+                    Deadline = taskInfo.Deadline,
+                    TomatoNum = taskInfo.TomatoNum,
+                    TomatoCount = taskInfo.TomatoCount,
+                    State = taskInfo.TaskState
+                };
+                context.Entry(task).State = EntityState.Modified;
+                context.SaveChanges();
+            }
         }
-        public TaskInfo ReadTask(TaskInfo task)
+        public TaskInfo ReadTask(int TaskID)
         {
-            TaskInfo taskInfo = new TaskInfo();
-            string sql = "SELECT * FROM Task WHERE TaskID = '" + task.TaskID + "'";
-            SQLiteHelper DB = new SQLiteHelper("D:/TaskInfo.db");
-            DB.ExecuteReader(sql, null);
-            return taskInfo;
+            using (var context = new TaskTomatoContext())
+            {
+                TaskInfo taskInfo = new TaskInfo();
+                var task = context.Tasks.SingleOrDefault(t => t.TaskID == TaskID);
+                if (task != null)
+                {
+                    taskInfo.Name = task.Name;
+                    taskInfo.Notes = task.Notes;
+                    taskInfo.StartTime = task.StartTime;
+                    taskInfo.Deadline = task.Deadline;
+                    taskInfo.TomatoCount = task.TomatoCount;
+                    taskInfo.TomatoNum = task.TomatoNum;
+                    taskInfo.TaskState = task.State;
+                }
+                return taskInfo;
+            }
         }
-        public int AddTomatoStartTime(int TaskID)
+        public int AddTomatoStartTime(int iTaskID)
         {
-            int TomatoID = 0;
-            return TomatoID;
+            using (var context = new TaskTomatoContext())
+            {
+                var tomato = new TaskTomatoList() { BeginTime = DateTime.Now, TaskID = iTaskID };
+                context.Entry(tomato).State = EntityState.Added;
+                context.SaveChanges();
+                return tomato.TomatoID;
+            }
         }
-        public void AddTomatoEndTime(int TaskID, int TomatoID)
+        public void AddTomatoEndTime(int iTaskID, int iTomatoID)
         {
-
+            using (var context = new TaskTomatoContext())
+            {
+                var tomato = new TaskTomatoList() { TaskID = iTaskID, TomatoID = iTomatoID, EndTime = DateTime.Now };
+                context.Entry(tomato).State = EntityState.Modified;
+                var task = context.Tasks.FirstOrDefault(t => t.TaskID == iTaskID);
+                if (task != null)
+                {
+                    task.TomatoCount = AddTomatoNum(tomato.BeginTime, tomato.EndTime, task.TomatoCount);
+                }
+                context.SaveChanges();
+            }
         }
-        public int ReadTomato(int TaskID)
+        public List<Tomato> ReadTomato(int iTaskID)    //提供id为TaskID的所有番茄钟信息（起止时间）以查找时段内的应用程序信息
         {
-            int count = 0;
-            return count;
+            List<Tomato> TomatoList = new List<Tomato>();
+            using (var context = new TaskTomatoContext())
+            {
+                var query = context.TaskTomatoes.Where(tt => tt.TaskLists.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
+                foreach (var tt in query)
+                {
+                    Tomato tomato = new Tomato();
+                    tomato.StartTime = tt.BeginTime;
+                    tomato.EndTime = tt.EndTime;
+                    TomatoList.Add(tomato);
+                }
+                return TomatoList;
+            }
         }
-        private void AddTomatoNum()
+        private int AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
         {
-
+            TimeSpan ts1 = new TimeSpan(iBeginTime.Ticks);
+            TimeSpan ts2 = new TimeSpan(iEndTime.Ticks);
+            TimeSpan ts = ts2.Subtract(ts1);
+            int TimeSpanSecond = int.Parse(ts.TotalSeconds.ToString());
+            if (TimeSpanSecond >= 25 * 60) { return iTomatoCount++; }
+            else { return iTomatoCount; }
         }
     }
 }

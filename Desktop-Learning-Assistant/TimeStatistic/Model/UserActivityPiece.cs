@@ -57,7 +57,7 @@ namespace DesktopLearningAssistant.TimeStatistic.Model
         public override bool Equals(object obj)
         {
             UserActivityPiece uap2 = obj as UserActivityPiece;
-            if (uap2.Name == this.Name && uap2.Detail == this.Detail && uap2.StartTime == this.StartTime)
+            if (uap2.Name == this.Name)
                 return true;
             else
                 return false;
