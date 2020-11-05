@@ -69,7 +69,7 @@ namespace DesktopLearningAssistant.TimeStatistic
 
         #endregion
 
-        #region 方法
+        #region 公有方法
 
         /// <summary>
         /// 构造方法
@@ -95,6 +95,14 @@ namespace DesktopLearningAssistant.TimeStatistic
                 }
             }
             return uniqueMonitor;
+        }
+
+        /// <summary>
+        /// 释放单例对象
+        /// </summary>
+        public static void Dispose()
+        {
+            uniqueMonitor = null;
         }
 
         /// <summary>
@@ -139,7 +147,7 @@ namespace DesktopLearningAssistant.TimeStatistic
 
                     lock (TDManager)
                     {
-                        List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;  // 为了简便书写，作了两个引用
+                        List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;  // 为了简便书写，作了引用
                         if (userActivityPieces.Count == 0)
                         {
                             userActivityPieces.Add(currentTP);
@@ -158,7 +166,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                             }
                             if (Process.GetProcesses().Count(p => p.ProcessName == lastUAP.Name) == 0)     // 当前窗口发送了变化时，检测上一个窗口的进程是否被关闭（可能也只是隐藏）。
                             {
-                                TDManager.KilledActivity.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
+                                TDManager.KilledActivities.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
                             }
                         }
                     }

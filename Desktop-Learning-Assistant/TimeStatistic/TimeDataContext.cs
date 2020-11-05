@@ -22,7 +22,7 @@ namespace DesktopLearningAssistant.TimeStatistic
             base.OnConfiguring(optionsBuilder);
         }
 
-        //Entity mappings
+        // Entity mappings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserActivity>().HasKey(ua => new { ua.Name, ua.CloseTime});     // 确认主键
@@ -30,7 +30,7 @@ namespace DesktopLearningAssistant.TimeStatistic
             modelBuilder.Entity<UserActivityPiece>().HasKey(uap => new { uap.Name, uap.StartTime });    // 确认主键
         }
 
-        public DbSet<UserActivity> KilledActivities;
-        public DbSet<UserActivityPiece> UserActivityPieces;
+        public DbSet<UserActivity> KilledActivities { get; set; }
+        public DbSet<UserActivityPiece> UserActivityPieces { get; set; }
     }
 }
