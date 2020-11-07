@@ -40,7 +40,8 @@ namespace UI
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             PointLabel = chartPoint =>
-                string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+             string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
             SeriesCollection = new SeriesCollection
             {
                 new ColumnSeries
@@ -113,6 +114,25 @@ namespace UI
             }
             else
                 timer.Stop();
+        }
+
+        private void File_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Link;
+            else
+                e.Effects = DragDropEffects.None;
+        }
+
+        private void File_Drop(object sender, DragEventArgs e)
+        {
+            Array file = (System.Array)e.Data.GetData(DataFormats.FileDrop);
+            string fileText = null;
+            foreach (object I in file)
+            {
+                fileText += I.ToString();
+                fileText += "\n";
+            }
         }
     }
 }
