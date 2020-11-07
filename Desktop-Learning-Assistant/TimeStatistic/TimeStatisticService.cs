@@ -54,14 +54,21 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public static TimeStatisticService GetTimeStatisticService()
         {
-            if (uniqueTimeStatisticService == null)
+            if (uniqueTimeStatisticService != null) return uniqueTimeStatisticService;
+
+            lock (locker)
             {
-                lock (locker)
-                {
-                    uniqueTimeStatisticService = new TimeStatisticService();
-                }
+                uniqueTimeStatisticService = new TimeStatisticService();
             }
             return uniqueTimeStatisticService;
+        }
+
+        /// <summary>
+        /// 释放单例对象
+        /// </summary>
+        public static void Dispose()
+        {
+            uniqueTimeStatisticService = null;
         }
 
         /// <summary>
