@@ -9,7 +9,7 @@ namespace DesktopLearningAssistant.TomatoClock.Model
     public class Tomato
     {
         int TomatoID;
-        DateTime StartTime;
-        DateTime EndTime;
+        public DateTime StartTime;
+        public DateTime EndTime;
     }
 }
