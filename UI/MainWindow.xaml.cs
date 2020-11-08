@@ -41,109 +41,12 @@ namespace UI
         {
             InitializeComponent();
             
-            this.DataContext = new ViewModel();
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             this.DataContext = mainWindowViewModel;
         }
-/// <summary>
-/// Button点击更改按钮背景
-/// </summary>
-        public class ViewModel : INotifyPropertyChanged
-        {
-            private bool _isPlaying = true;
-            private RelayCommand _playCommand;
 
-            public ViewModel()
-            {
-                isPlaying = true;
-            }
-
-            public bool isPlaying
-            {
-                get { return _isPlaying; }
-                set
-                {
-                    _isPlaying = value;
-                    OnPropertyChanged("isPlaying");
-                }
-            }
-
-            public ICommand PlayCommand
-            {
-                get
-                {
-                    return _playCommand ?? new RelayCommand((x) =>
-                    {
-                        var buttonType = x.ToString();
-
-                        if (null != buttonType)
-                        {
-                            if (buttonType.Contains("Start"))
-                            {
-                                isPlaying = true;
-                            }
-                            else if (buttonType.Contains("Pause"))
-                            {
-                                isPlaying = false;
-                            }
-                        }
-                    });
-                }
-            }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            public void OnPropertyChanged(string propertyName)
-            {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
-            }
-        }
-
-        public class RelayCommand : ICommand
-        {
-            private readonly Predicate<object> _canExecute;
-            private readonly Action<object> _execute;
-
-            public event EventHandler CanExecuteChanged;
-
-            public RelayCommand(Action<object> execute) : this(execute, null) { }
-
-            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-            {
-                _execute = execute;
-                _canExecute = canExecute;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-
-                if (_canExecute == null)
-                {
-                    return true;
-                }
-
-                return _canExecute(parameter);
-            }
-
-            public void Execute(object parameter)
-            {
-                _execute(parameter);
-            }
-
-            public void RaiseCanExecuteChanged()
-            {
-                if (CanExecuteChanged != null)
-                {
-                    CanExecuteChanged(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        //***********************
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -225,17 +128,18 @@ namespace UI
             tagWindow.Show();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.Show();
+
+        }
 
         private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
-
- 
-            timer.Start();
+           timer.Start();
            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-
            this.ButtonImage.Source = pause;
-
-
         }
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
@@ -243,11 +147,10 @@ namespace UI
             timer.Stop();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
         {
-            Settings settings = new Settings();
-            settings.Show();
-
+            TomatoWindow tomatoWindow =new TomatoWindow();
+            tomatoWindow.Show();
         }
     }
 }
