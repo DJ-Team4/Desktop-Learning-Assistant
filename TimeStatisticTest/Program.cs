@@ -15,6 +15,7 @@ namespace TimeStatisticTest
 {
     class Program
     {
+        /*
         static void Main(string[] args)
         {
             ActivityMonitor monitor = ActivityMonitor.GetMonitor();
@@ -41,6 +42,19 @@ namespace TimeStatisticTest
                 }
                 //TimeDataManager.GetTimeDataManager().SaveDataToDb();
                 Thread.Sleep(1000);
+            }
+        }
+        */
+        static void Main(string[] args)
+        {
+            string appdata = Environment.GetEnvironmentVariable("AppData");
+            string recentFilePath = $"{appdata}\\Microsoft\\Windows\\Recent";
+            DirectoryInfo directoryInfo = new DirectoryInfo(recentFilePath);
+            List<FileInfo> fileInfos = new List<FileInfo>(directoryInfo.GetFiles());
+            fileInfos.Sort((fi1, fi2) => fi1.CreationTime < fi2.CreationTime ? 1 : -1);
+            foreach (var fileInfo in fileInfos)
+            {
+                Console.WriteLine($"{fileInfo.Name}\t{fileInfo.CreationTime}");
             }
         }
     }
