@@ -83,9 +83,11 @@
                 <Grid>
                     <Label Content="当前任务" Margin="10,10,187.6,415" Background="AliceBlue" />
                     <ProgressBar BorderBrush="Coral"
+                                 BorderThickness="10"
+                                 Background="WhiteSmoke"
                                  pu:ProgressBarHelper.ProgressBarStyle="Ring"
                                  pu:ProgressBarHelper.CornerRadius="15"
-                                 pu:ProgressBarHelper.IsPercentVisible="True" Margin="45,49,39.6,226"/>
+                                 pu:ProgressBarHelper.IsPercentVisible="True" Margin="50,45,34.6,226"/>
                     <Label Content="写选题报告" Margin="101,10,90.6,416" Background="AliceBlue" RenderTransformOrigin="0.5,0.5" >
                         <Label.RenderTransform>
                             <TransformGroup>
@@ -119,9 +121,28 @@
 
                     <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
                     <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,107,58.6,298" Height="55" Width="161" />
-                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="120,107,126.6,298" Width="31"/>
-                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="156,107,58.6,298" Width="63"/>
+                    <TextBlock Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,107,58.6,298" Height="55" Width="144" />
+                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="132,107,122.6,298" Width="23"/>
+                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="157,107,58.6,298" Width="62"/>
+
+                    <Button x:Name="btn" Click="TimeCountStart_OnClick"
+                            MouseRightButtonDown="TimeCountPause_Click"
+                            Margin="126,167,100.6,248" Background="Transparent">
+                        <Image x:Name="ButtonImage" Height="32" Width="34" Source="Icon/Start.jpeg">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isPlaying}" Value="True">
+                                            <Setter  Property="Source" Value= "Icon/Start.jpeg"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding isPlaying}" Value="False">
+                                            <Setter Property="Source" Value="Icon/Pause.jpg" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
 
                 </Grid>
             </TabItem>
