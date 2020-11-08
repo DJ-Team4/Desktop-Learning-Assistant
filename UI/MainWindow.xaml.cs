@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,6 +19,7 @@ using Panuon.UI.Silver;
 using LiveCharts;
 using LiveCharts.Wpf;
 using UI.Process;
+using System.ComponentModel;
 
 namespace UI
 {
@@ -37,11 +40,110 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
+            
+            this.DataContext = new ViewModel();
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             this.DataContext = mainWindowViewModel;
         }
+/// <summary>
+/// Button点击更改按钮背景
+/// </summary>
+        public class ViewModel : INotifyPropertyChanged
+        {
+            private bool _isPlaying = true;
+            private RelayCommand _playCommand;
+
+            public ViewModel()
+            {
+                isPlaying = true;
+            }
+
+            public bool isPlaying
+            {
+                get { return _isPlaying; }
+                set
+                {
+                    _isPlaying = value;
+                    OnPropertyChanged("isPlaying");
+                }
+            }
+
+            public ICommand PlayCommand
+            {
+                get
+                {
+                    return _playCommand ?? new RelayCommand((x) =>
+                    {
+                        var buttonType = x.ToString();
+
+                        if (null != buttonType)
+                        {
+                            if (buttonType.Contains("Start"))
+                            {
+                                isPlaying = true;
+                            }
+                            else if (buttonType.Contains("Pause"))
+                            {
+                                isPlaying = false;
+                            }
+                        }
+                    });
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void OnPropertyChanged(string propertyName)
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+            }
+        }
+
+        public class RelayCommand : ICommand
+        {
+            private readonly Predicate<object> _canExecute;
+            private readonly Action<object> _execute;
+
+            public event EventHandler CanExecuteChanged;
+
+            public RelayCommand(Action<object> execute) : this(execute, null) { }
+
+            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+            {
+                _execute = execute;
+                _canExecute = canExecute;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+
+                if (_canExecute == null)
+                {
+                    return true;
+                }
+
+                return _canExecute(parameter);
+            }
+
+            public void Execute(object parameter)
+            {
+                _execute(parameter);
+            }
+
+            public void RaiseCanExecuteChanged()
+            {
+                if (CanExecuteChanged != null)
+                {
+                    CanExecuteChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        //***********************
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -71,7 +173,7 @@ namespace UI
             //处理倒计时的类
             timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-            timer.Start();
+           //  timer.Start();
         }
 
         /// <summary>
@@ -107,6 +209,8 @@ namespace UI
 
         private void File_DragEnter(object sender, DragEventArgs e)
         {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effects = DragDropEffects.Link;
             else
@@ -115,19 +219,34 @@ namespace UI
 
         private void File_Drop(object sender, DragEventArgs e)
         {
-            Array file = (System.Array)e.Data.GetData(DataFormats.FileDrop);
-            string fileText = null;
-            foreach (object I in file)
-            {
-                fileText += I.ToString();
-                fileText += "\n";
-            }
+            MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            TagWindow tagWindow=new TagWindow();
+            tagWindow.Show();
         }
+
+
+        private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
+        {
+
+ 
+            timer.Start();
+           ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+
+           this.ButtonImage.Source = pause;
+
+
+        }
+
+        private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
+        {
+            timer.Stop();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Settings settings = new Settings();
             settings.Show();
+
         }
     }
 }

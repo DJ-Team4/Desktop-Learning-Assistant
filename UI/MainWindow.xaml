@@ -7,7 +7,7 @@
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="360">
+        Title="MainWindow" Height="500" Width="360" AllowDrop="True">
     <Grid>
         <TabControl
                 pu:TabControlHelper.ItemHeight="30"
@@ -26,44 +26,30 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" DataTooltip="{x:Null}">
-                                    <lvc:PieChart.Series>
-                                        <lvc:PieSeries Values="3" DataLabels="True"
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="4" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="6" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="2" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                    </lvc:PieChart.Series>
-                                </lvc:PieChart>
+                                <!--lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}" DataClick="Chart_OnDataClick">
+                                    <lvc:PieChart.DataTooltip>
+                                        <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
+                                    </lvc:PieChart.DataTooltip>
+                                </-->
                             </Grid>
                         </TabItem>
                         <TabItem Header="昨日">
                             <Grid>
-                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" DataTooltip="{x:Null}">
-                                    <lvc:PieChart.Series>
-                                        <lvc:PieSeries Values="3" DataLabels="True"
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="4" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="6" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                        <lvc:PieSeries Values="2" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                                    </lvc:PieChart.Series>
+                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}">
+                                    <lvc:PieChart.DataTooltip>
+                                        <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
+                                    </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
                             </Grid>
                         </TabItem>
                         <TabItem Header="一周">
                             <Grid>
-                                <lvc:CartesianChart>
+                                <lvc:CartesianChart Series="{Binding LineSeriesCollection}">
                                     <lvc:CartesianChart.AxisY>
-                                        <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                                        <lvc:Axis></lvc:Axis>
                                     </lvc:CartesianChart.AxisY>
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding Labels}"></lvc:Axis>
+                                        <lvc:Axis Labels="{Binding LineXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
                             </Grid>
@@ -82,8 +68,13 @@
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
                     <Label Content="当前任务" Margin="10,10,187.6,415" Background="AliceBlue" />
-
-                    <Label Content="写选题报告" Margin="95,56,96.6,370" Background="AliceBlue" RenderTransformOrigin="0.5,0.5" >
+                    <ProgressBar BorderBrush="Coral"
+                                 BorderThickness="10"
+                                 Background="WhiteSmoke"
+                                 pu:ProgressBarHelper.ProgressBarStyle="Ring"
+                                 pu:ProgressBarHelper.CornerRadius="15"
+                                 pu:ProgressBarHelper.IsPercentVisible="True" Margin="50,45,34.6,226"/>
+                    <Label Content="写选题报告" Margin="101,10,90.6,416" Background="AliceBlue" RenderTransformOrigin="0.5,0.5" >
                         <Label.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -93,20 +84,20 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <Label Content="正在使用" Margin="10,184,187.6,241" Background="AliceBlue" />
-                    <Label Content="专注" Margin="189,184,46.6,241" Background="AliceBlue" />
+                    <Label Content="正在使用" Margin="10,215,187.6,210"  />
+                    <Label Content="专注" Margin="213,215,22.6,210"  />
 
 
                     <Label Content="Label1" Background="AliceBlue" Margin="10,261,157.6,159" />
                     <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 1 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,261,36.6,159"/>
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,261,22.6,159"/>
                     <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 1 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,316,36.6,104"/>
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,316,22.6,104"/>
                     <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 1 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,366,36.6,54"/>
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,366,22.6,54"/>
 
 
 
@@ -116,27 +107,51 @@
 
                     <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
                     <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Text="  25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,102,46.6,298" Height="60" Width="193" />
-                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="60" Margin="116,102,126.6,298" Width="35"/>
-                    <TextBlock Text="  00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="60" Margin="156,102,46.6,298" Width="75"/>
+                    <TextBlock Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,107,58.6,298" Height="55" Width="144" />
+                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="132,107,122.6,298" Width="23"/>
+                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="157,107,58.6,298" Width="62"/>
+
+                    <Button x:Name="btn" Click="TimeCountStart_OnClick"
+                            MouseRightButtonDown="TimeCountPause_Click"
+                            Margin="126,167,100.6,248" Background="Transparent">
+                        <Image x:Name="ButtonImage" Height="32" Width="34" Source="Icon/Start.jpeg">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isPlaying}" Value="True">
+                                            <Setter  Property="Source" Value= "Icon/Start.jpeg"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding isPlaying}" Value="False">
+                                            <Setter Property="Source" Value="Icon/Pause.jpg" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="文件管理" Name="FileManagementTabItem" >
+            <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
                 <Grid>
-                    <TextBox 
+                    <Border
                         BorderBrush="Black"
-                        BorderThickness="3"
+                        BorderThickness="30"
                         Opacity="0.2"
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
-                        pu:TextBoxHelper.CornerRadius="3" Margin="25,26,42,266" Text="" 
+                        pu:TextBoxHelper.CornerRadius="3"
+                        Margin="25,26,42,266"
+                        AllowDrop="True"
                         DragEnter="File_DragEnter"
-                        Drop="File_Drop"
-                        />
+                        Drop="File_Drop">
+                        <!--<Grid VerticalAlignment="Stretch" 
+                              HorizontalAlignment="Stretch"
+                              Background="Red"/>-->
+                    </Border>
 
 
-                    <Label Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
+                    <Label Name="Label" Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
 
                     <Label Content="需求分析报告.docx" Margin="57,261,78,166.8" />
                     <Label Content="选题报告.pdf" Height="31" Width="225" Margin="56,295,-13,134.8" />
@@ -148,7 +163,7 @@
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
                             pu:ButtonHelper.CornerRadius="15" Margin="80,385,102,35.8" Background="aliceblue"/>
-                    <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="91" Source="Icon/plus.png" Opacity="0.9"/>
+                    <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
                     <Image HorizontalAlignment="Left" Height="26" Margin="12,295,0,0" VerticalAlignment="Top" Width="33" Source="Icon/PDF.png"/>
                     <Image HorizontalAlignment="Left" Height="26" Margin="12,264,0,0" VerticalAlignment="Top" Width="29" Source="Icon/word (1).png"/>
 
