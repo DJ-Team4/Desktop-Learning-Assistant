@@ -26,7 +26,7 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" DataTooltip="{x:Null}">
+                                <!--lvc:PieChart Name="today_piechart" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:PieChart.Series>
                                         <lvc:PieSeries Values="3" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
@@ -37,12 +37,12 @@
                                         <lvc:PieSeries Values="2" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
                                     </lvc:PieChart.Series>
-                                </lvc:PieChart>
+                                </-->
                             </Grid>
                         </TabItem>
                         <TabItem Header="昨日">
                             <Grid>
-                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" DataTooltip="{x:Null}">
+                                <!--lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" DataTooltip="{x:Null}">
                                     <lvc:PieChart.Series>
                                         <lvc:PieSeries Values="3" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
@@ -53,19 +53,19 @@
                                         <lvc:PieSeries Values="2" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
                                     </lvc:PieChart.Series>
-                                </lvc:PieChart>
+                                </-->
                             </Grid>
                         </TabItem>
                         <TabItem Header="一周">
                             <Grid>
-                                <lvc:CartesianChart>
+                                <!--lvc:CartesianChart>
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisY>
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding Labels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
-                                </lvc:CartesianChart>
+                                </-->
                             </Grid>
                         </TabItem>
                     </TabControl>
