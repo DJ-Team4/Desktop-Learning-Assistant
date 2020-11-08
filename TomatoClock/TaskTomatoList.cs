@@ -45,7 +45,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     {
         public int FileID { get; set; }   //primary key
         [Required]
-        public string FilePath { get; set; }
+        public List<string> TaskFilePathList { get; set; }
 
         public int TaskID { get; set; }   //foreign key
     }

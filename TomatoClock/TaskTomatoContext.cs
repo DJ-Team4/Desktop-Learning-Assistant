@@ -19,5 +19,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
 
         public DbSet<TaskList> Tasks { get; set; }
         public DbSet<TaskTomatoList> TaskTomatoes { get; set; }
+        public DbSet<TaskFileList> TaskFileLists { get; set; }
     }
 }
