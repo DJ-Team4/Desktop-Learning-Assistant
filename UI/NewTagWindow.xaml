@@ -6,21 +6,21 @@
         xmlns:local="clr-namespace:UI"
         xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"
-        Title="NewTagWindow" Height="231.6" Width="317.6">
+        Title="NewTagWindow" Height="231.6" Width="280" WindowStyle="None">
 
     <Grid Margin="0,0,3.2,4.4">
 
-        <Grid Margin="0,0,10,0">
+        <Grid Margin="0,0,0,0.2">
 
-            <Label Content="新建标签名" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Height="29" Width="75" RenderTransformOrigin="-1.698,-0.216"/>
+            <Label Content="新建标签名" HorizontalAlignment="Left" Margin="0,76,0,0" VerticalAlignment="Top" Height="35" Width="89" RenderTransformOrigin="-1.698,-0.216"/>
 
             <TextBox Background="Aliceblue" Name="TxtNewTagName"
-                     silver:TextBoxHelper.CornerRadius="2" Margin="0,25,109,144.4" HorizontalAlignment="Right" Width="95"/>
+                     silver:TextBoxHelper.CornerRadius="2" Margin="0,73,33.4,118.6" HorizontalAlignment="Right" Width="148"/>
             <Button
                 Content="确认"
                 Foreground="black"
                 silver:ButtonHelper.ButtonStyle="Outline"
-                silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="69,120,109.4,44.6"
+                silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="118,137,78.4,44.6"
                 Click="NewTagBtnOK_OnClick"
                 />
 
