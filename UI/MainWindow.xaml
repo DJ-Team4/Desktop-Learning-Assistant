@@ -76,14 +76,44 @@
             </TabItem>
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
-                    <Label Content="写选题报告" Margin="24,19,34,414.8" Background="AliceBlue" />
+                    <Label Content="当前任务" Margin="10,10,187.6,415" Background="AliceBlue" />
+
+                    <Label Content="写选题报告" Margin="95,56,96.6,370" Background="AliceBlue" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="3.923"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.131"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <Label Content="正在使用" Margin="10,184,187.6,241" Background="AliceBlue" />
+                    <Label Content="专注" Margin="189,184,46.6,241" Background="AliceBlue" />
 
 
-                    <TextBlock Text="00" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
-                    <TextBlock Text=":" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Text="25" Name="MinuteArea" VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Margin="85,79,146,358.8" Height="23" />
-                    <TextBlock Text=":" Name="MinuteSplitSecond"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="127,79,117,358.8"/>
-                    <TextBlock Text="00"  Name="SecondArea" VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="164,79,59,358.8"/>
+                    <Label Content="Label1" Background="AliceBlue" Margin="10,261,157.6,159" />
+                    <RadioButton 
+                                 pu:RadioButtonHelper.Header="Option 1 : "
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,261,36.6,159"/>
+                    <RadioButton 
+                                 pu:RadioButtonHelper.Header="Option 1 : "
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,316,36.6,104"/>
+                    <RadioButton 
+                                 pu:RadioButtonHelper.Header="Option 1 : "
+                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="189,366,36.6,54"/>
+
+
+
+                    <Label Content="Label2" Background="AliceBlue" Margin="10,319,157.6,104" />
+                    <Label Content="Label3" Background="AliceBlue" Margin="10,369,157.6,54" />
+
+
+                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
+                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
+                    <TextBlock Text="  25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,102,46.6,298" Height="60" Width="193" />
+                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="60" Margin="116,102,126.6,298" Width="35"/>
+                    <TextBlock Text="  00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="60" Margin="156,102,46.6,298" Width="75"/>
 
                 </Grid>
             </TabItem>
@@ -95,7 +125,10 @@
                         Opacity="0.2"
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
-                        pu:TextBoxHelper.CornerRadius="3" Margin="25,26,42,266" Text="" />
+                        pu:TextBoxHelper.CornerRadius="3" Margin="25,26,42,266" Text="" 
+                        DragEnter="File_DragEnter"
+                        Drop="File_Drop"
+                        />
 
 
                     <Label Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
@@ -117,17 +150,12 @@
 
                 </Grid>
             </TabItem>
-            <Label Content="Label" Height="100" Width="100"/>
+
+
             <Image Height="100" Width="100"/>
-
+            <Label Content="Label" Height="100" Width="100"/>
+            <Label Content="Label" Width="100" Background="AliceBlue" Height="27" />
         </TabControl>
-        <Button Click="Button_Click" HorizontalAlignment="Left" Margin="20,430,0,0" VerticalAlignment="Top" Width="32" RenderTransformOrigin="0.178,0.95" Height="31" pu:ButtonHelper.ButtonStyle="Link">
-            <WrapPanel>
-                <Image Source="Icon/设 置.png" Height="32" Width="30"/>
-            </WrapPanel>
-        </Button>
-
-
     </Grid>
 
 </Window>
