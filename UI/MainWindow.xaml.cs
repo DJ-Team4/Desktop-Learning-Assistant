@@ -241,6 +241,7 @@ namespace UI
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             timer.Stop();
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
