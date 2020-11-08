@@ -16,6 +16,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     public class TaskList
     {
         [Key,Column(Order =1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TaskID { get; set; } //auto primary key
         [Required]
         public string Name { get; set; }
@@ -31,6 +32,8 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
 
     public class TaskTomatoList
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TomatoID { get; set; }        //primary key
         [Required]
         public DateTime BeginTime { get; set; }
@@ -43,6 +46,8 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
 
     public class TaskFileList
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FileID { get; set; }   //primary key
         [Required]
         public List<string> TaskFilePathList { get; set; }
