@@ -26,6 +26,7 @@ namespace UI
     public partial class MainWindow : Window
     {
         public SeriesCollection SeriesCollection { get; set; }
+        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
@@ -39,20 +40,8 @@ namespace UI
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
-            PointLabel = chartPoint =>
-             string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
-
-            SeriesCollection = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Values = new ChartValues<decimal> {5, 6, 2, 7}
-                }
-            };
-            DataContext = this;
+            this.DataContext = mainWindowViewModel;
         }
-
-        public Func<ChartPoint, string> PointLabel { get; set; }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -133,6 +122,12 @@ namespace UI
                 fileText += I.ToString();
                 fileText += "\n";
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.Show();
         }
     }
 }

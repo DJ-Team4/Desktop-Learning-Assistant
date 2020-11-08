@@ -2,11 +2,37 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800">
+        Title="Settings" Height="400" Width="600">
     <Grid>
-        
+        <TabControl 
+            HorizontalAlignment="Left" 
+            Height="371" 
+            VerticalAlignment="Top" 
+            Width="593"
+            pu:TabControlHelper.ItemHeight="30"
+            pu:TabControlHelper.CanRemove="False"
+            pu:TabControlHelper.SelectedBackground="AliceBlue"
+            TabStripPlacement="Left" 
+            Margin="0,0,0,-0.333">
+            <TabItem Header="白名单">
+                <Grid>
+                    <Label Content="选择默认设置的白名单以统计任务效率" HorizontalAlignment="Left" Margin="137,34,0,0" VerticalAlignment="Top" Height="33" Width="251"/>
+                    <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" Height="225" Margin="32,84,0,0" VerticalAlignment="Top" Width="463">
+                        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="22,10,0,0" VerticalAlignment="Top"/>
+                        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="22,46,0,0" VerticalAlignment="Top"/>
+                        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="22,83,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <Button Click="Button_Click" Content="确定" HorizontalAlignment="Left" Margin="420,328,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.884,6.097"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
