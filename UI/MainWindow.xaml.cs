@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,8 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
-
+            
+            Debug.WriteLine("hello");
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             PointLabel = chartPoint =>
@@ -118,6 +120,8 @@ namespace UI
 
         private void File_DragEnter(object sender, DragEventArgs e)
         {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effects = DragDropEffects.Link;
             else
@@ -126,13 +130,10 @@ namespace UI
 
         private void File_Drop(object sender, DragEventArgs e)
         {
-            Array file = (System.Array)e.Data.GetData(DataFormats.FileDrop);
-            string fileText = null;
-            foreach (object I in file)
-            {
-                fileText += I.ToString();
-                fileText += "\n";
-            }
+            MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            TagWindow tagWindow=new TagWindow();
+            tagWindow.Show();
         }
     }
 }
