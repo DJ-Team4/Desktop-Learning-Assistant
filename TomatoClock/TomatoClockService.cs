@@ -82,6 +82,15 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 return taskInfo;
             }
         }
+        private void ChangeTaskToFinishState(int iTaskID)
+        {
+            using (var context = new TaskTomatoContext())
+            {
+                var task = new TaskList() { TaskID = iTaskID, State = 1 };
+                context.Entry(task).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
         public int AddTomatoStartTime(int iTaskID)
         {
             using (var context = new TaskTomatoContext())
@@ -131,5 +140,12 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             if (TimeSpanSecond >= 25 * 60) { return iTomatoCount++; }
             else { return iTomatoCount; }
         }
+
+        private void GetFilePath()
+        {
+
+        }
+
+        
     }
 }

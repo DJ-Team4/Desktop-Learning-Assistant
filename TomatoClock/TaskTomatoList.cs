@@ -25,6 +25,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public int TomatoNum { get; set; }
         public int TomatoCount { get; set; }
         public int State { get; set; }
+        public List<TaskList> TaskLists { get; set; }
         public List<TaskTomatoList> TaskTomatoLists { get; set; } //1..m
     }
 
@@ -36,7 +37,16 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public DateTime EndTime { get; set; }
 
         public int TaskID { get; set; }         //foreign key
+        [Required]
         public TaskList TaskLists { get; set; }          //m..1
     }
 
+    public class TaskFileList
+    {
+        public int FileID { get; set; }   //primary key
+        [Required]
+        public string FilePath { get; set; }
+
+        public int TaskID { get; set; }   //foreign key
+    }
 }
