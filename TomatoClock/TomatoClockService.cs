@@ -1,14 +1,11 @@
 ﻿using System;
+using System.IO;
+using IWshRuntimeLibrary;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
-using System.Data.Common;
-using System.Data.SQLite;
 using System.Data.Entity;
 using DesktopLearningAssistant.TomatoClock.Model;
-using DesktopLearningAssistant.TomatoClock.SQLite;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
@@ -140,12 +137,27 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             if (TimeSpanSecond >= 25 * 60) { return iTomatoCount++; }
             else { return iTomatoCount; }
         }
-
-        private void GetFilePath()
+        private List<string> GetFilePath(DateTime iBeginTime, DateTime iEndTime)
         {
-
+            string appdata = Environment.GetEnvironmentVariable("AppData");
+            string RecentFilePath = $"{appdata}\\Microsoft\\Windows\\Rencent";
+            DirectoryInfo directoryInfo = new DirectoryInfo(RecentFilePath);
+            List<FileInfo> fileInfos = new List<FileInfo>(directoryInfo.GetFiles());
+            List<string > FilePathList = new List<string>();
+            foreach (var fileInfo in fileInfos)
+            {
+                if (DateTime.Compare(fileInfo.CreationTime,iBeginTime)>0 && DateTime.Compare(fileInfo.CreationTime,iEndTime)<0)
+                {
+                    if (!fileInfo.Exists)
+                    {
+                        WshShell shell = new WshShell();
+                        IWshShortcut lnkPath = (IWshShortcut)shell.CreateShortcut(fileInfo.FullName);
+                        string FileRealPath = lnkPath.TargetPath;
+                        FilePathList.Add(FileRealPath);
+                    }
+                }
+            }
+            return FilePathList;
         }
-
-        
     }
 }
