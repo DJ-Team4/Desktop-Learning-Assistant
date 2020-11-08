@@ -173,5 +173,9 @@
       <Name>Desktop-Learning-Assistant</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\Pause.jpg" />
+    <Resource Include="Icon\Start.jpeg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
