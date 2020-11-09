@@ -53,18 +53,17 @@ namespace DesktopLearningAssistant.Configuration
         /// <returns></returns>
         public static ConfigService GetConfigService()
         {
-            if (uniqueConfigService == null)
+            if (uniqueConfigService != null) return uniqueConfigService;
+
+            lock (locker)
             {
-                lock(locker)
+                if (File.Exists(configPath))
                 {
-                    if (File.Exists(configPath))
-                    {
-                        LoadFromJson();     // 配置文件存在时，从配置文件中加载配置信息
-                    }
-                    else
-                    {
-                        uniqueConfigService = new ConfigService();      // 否则生成一个新的配置类
-                    }
+                    LoadFromJson();     // 配置文件存在时，从配置文件中加载配置信息
+                }
+                else
+                {
+                    uniqueConfigService = new ConfigService();      // 否则生成一个新的配置类
                 }
             }
             return uniqueConfigService;
