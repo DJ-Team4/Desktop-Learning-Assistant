@@ -161,7 +161,6 @@ namespace DesktopLearningAssistant.TimeStatistic
 
                     UserActivityPiece currentUAP = new UserActivityPiece
                     {
-                        Id = TDManager.UserActivityPieces.Count,
                         Name = proc.ProcessName,
                         Detail = proc.MainWindowTitle,
                         StartTime = DateTime.Now,

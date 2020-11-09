@@ -15,7 +15,7 @@ namespace DesktopLearningAssistant.TimeStatistic.Model
         #region 公共属性
 
         /// <summary>
-        /// ID
+        /// ID，自增，不需要手动设置
         /// </summary>
         public long Id { get; set; }
 
