@@ -24,19 +24,12 @@ namespace UI.FileWindow
         public FileWindow()
         {
             InitializeComponent();
+            DataContext = new FileWinVM();
         }
 
-        public string NewTag { get; set; }
-
-        private async Task AddTag()
-        {            
-
-            Tag tag = await TagFileService.GetService().AddTagAsync("newtagName");
-       
-        }
-
-        private void AddFile_OnClick(object sender, RoutedEventArgs e)
+        private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("select");
         }
     }
 }

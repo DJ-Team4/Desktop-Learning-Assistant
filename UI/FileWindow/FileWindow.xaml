@@ -7,6 +7,7 @@
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"
         Title="文件管理">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -22,22 +23,37 @@
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
 
+            <Grid.Resources>
+                <Thickness x:Key="ToolbarItemMargin">4,4,4,4</Thickness>
+            </Grid.Resources>
+
             <!-- Home Button -->
             <Button Grid.Column="0"
+                    Name="homeButton"
                     BorderThickness="0"
+                    Margin="{StaticResource ToolbarItemMargin}"
                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                 <Image Source="../Icon/home.jpg" />
             </Button>
 
             <!-- Refresh Button -->
+            <Button Grid.Column="1"
+                    Name="refreshButtn"
+                    BorderThickness="0"
+                    Margin="{StaticResource ToolbarItemMargin}"
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="../Icon/refresh.jpg" />
+            </Button>
 
             <!-- Tag Search Box -->
             <TextBox Grid.Column="2"
-                     x:Name="tagSearchBox" />
+                     x:Name="tagSearchBox"
+                     Margin="{StaticResource ToolbarItemMargin}" />
 
             <!-- Filename Search Box -->
             <TextBox Grid.Column="3"
-                     Name="filenameSearchBox" />
+                     Name="filenameSearchBox"
+                     Margin="{StaticResource ToolbarItemMargin}" />
         </Grid>
 
         <!-- Main Part -->
@@ -47,22 +63,27 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <!-- pu:TreeViewHelper.ItemHeight="30"
+            pu:TreeViewHelper.SelectMode="ChildOnly" -->
             <!-- Left Part: Tree View -->
-            <TreeView Grid.Column="0"
-                      Background="AliceBlue"
-                      pu:TreeViewHelper.ItemHeight="30"
-                      pu:TreeViewHelper.SelectMode="ChildOnly">
-                <TreeViewItem Header="综合">
-                    <Label Content="●主页" />
-                    <Label Content="●搜索结果" />
-
+            <TreeView Grid.Column="0">
+                <TreeViewItem Header="综合"
+                              IsExpanded="True">
+                    <TreeViewItem Header="主页" Selected="TreeViewItem_Selected"/>
+                    <TreeViewItem Header="搜索结果" />
                 </TreeViewItem>
 
-                <TreeViewItem Header="标签">
-                    <Label Content="●数据结构" />
-                    <Label Content="●算法" />
-                    <Label Content="●Java" />
-
+                <TreeViewItem Header="标签"
+                              IsExpanded="True"
+                              ItemsSource="{Binding Tags}">
+                    <!--TODO template-->
+                    <DataTemplate DataType="TreeItemVM">
+                        <TreeViewItem Header="{Binding Name}" />
+                    </DataTemplate>
+                    <!--<TreeViewItem Header="tag1" />
+                    <TreeViewItem Header="tag2" />
+                    <TreeViewItem Header="tag3" />
+                    <TreeViewItem Header="tag4" />-->
                 </TreeViewItem>
             </TreeView>
 
@@ -71,46 +92,6 @@
                   Background="LightYellow" />
 
         </Grid>
-
-        <!--<Image HorizontalAlignment="Left"
-               Height="21"
-               Margin="163,16,0,0"
-               VerticalAlignment="Top"
-               Width="18"
-               Source="../Icon/Search.png"
-               RenderTransformOrigin="0.896,0.323"
-               Grid.Column="1" />
-        <Image HorizontalAlignment="Left"
-               Height="26"
-               Margin="41,11,0,0"
-               VerticalAlignment="Top"
-               Width="37"
-               Source="../Icon/refresh.jpg" />
-        <Image HorizontalAlignment="Left"
-               Height="26"
-               Margin="10,11,0,0"
-               VerticalAlignment="Top"
-               Width="23"
-               Source="../Icon/home.jpg" />
-
-        <Image Name="Tag"
-               Margin="69,11,4,426.4"
-               RenderTransformOrigin="0.122,1.04"
-               Source="../Icon/tag.jpg">
-            <Image.ContextMenu>
-                <ContextMenu Name="TagContextMenu"
-                             StaysOpen="true">
-                    <MenuItem Header="增加标签"
-                              Click="AddFile_OnClick" />
-                    <MenuItem Header="修改标签" />
-                    <MenuItem Header="删除标签" />
-                    <MenuItem Header="Recent Files">
-                        <MenuItem Header="ReadMe.txt" />
-                        <MenuItem Header="Schedule.xls" />
-                    </MenuItem>
-                </ContextMenu>
-            </Image.ContextMenu>
-        </Image>-->
 
     </Grid>
 </Window>
