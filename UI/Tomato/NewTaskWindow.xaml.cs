@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace UI
 {
     /// <summary>
-    /// TomatoWindow.xaml 的交互逻辑
+    /// NewTaskWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class TomatoWindow : Window
+    public partial class NewTaskWindow : Window
     {
-        public TomatoWindow()
+        public NewTaskWindow()
         {
             InitializeComponent();
         }

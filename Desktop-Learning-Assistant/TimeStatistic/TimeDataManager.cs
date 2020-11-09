@@ -90,21 +90,20 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public static TimeDataManager GetTimeDataManager()
         {
-            if (uniqueTimeDataManager == null)
-            {
-                lock (locker)
-                {
-                    uniqueTimeDataManager = new TimeDataManager();
-                    uniqueTimeDataManager.EnsureDbCreated();            // 只检查一次是否建库建表
-                    uniqueTimeDataManager.LoadDataFromDb();             // 读入数据
+            if (uniqueTimeDataManager != null) return uniqueTimeDataManager;
 
-                    int SaveToDbTimeSlice = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
-                    System.Timers.Timer timer = new System.Timers.Timer();
-                    timer.Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
-                    timer.Enabled = true;
-                    timer.Elapsed += TimeWriteToDb;
-                    timer.Start();
-                }
+            lock (locker)
+            {
+                uniqueTimeDataManager = new TimeDataManager();
+                uniqueTimeDataManager.EnsureDbCreated();            // 只检查一次是否建库建表
+                uniqueTimeDataManager.LoadDataFromDb();             // 读入数据
+
+                int SaveToDbTimeSlice = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;    // 定时写入数据库时间
+                System.Timers.Timer timer = new System.Timers.Timer();
+                timer.Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
+                timer.Enabled = true;
+                timer.Elapsed += TimeWriteToDb;
+                timer.Start();
             }
             return uniqueTimeDataManager;
         }
@@ -120,11 +119,11 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <summary>
         /// 确保数据库已被创建
         /// </summary>
-        public async void EnsureDbCreated()
+        public void EnsureDbCreated()
         {
             using(var context = new TimeDataContext(options))
             {
-                await context.Database.EnsureCreatedAsync();
+                context.Database.EnsureCreated();
             }
         }
 
@@ -154,8 +153,8 @@ namespace DesktopLearningAssistant.TimeStatistic
             {
                 int newUAPCount = UserActivityPieces.Count - lastUAPCount;
                 int newKACount = KilledActivities.Count - lastKACount;
-                context.UserActivityPieces.AddRangeAsync(UserActivityPieces.GetRange(lastUAPCount, newUAPCount));
-                context.KilledActivities.AddRangeAsync(KilledActivities.GetRange(lastKACount, newKACount));
+                context.UserActivityPieces.AddRange(UserActivityPieces.GetRange(lastUAPCount, newUAPCount));
+                context.KilledActivities.AddRange(KilledActivities.GetRange(lastKACount, newKACount));
                 context.SaveChanges();
                 lastUAPCount = UserActivityPieces.Count;    // 更新一下位置记录，避免重复写入
                 lastKACount = KilledActivities.Count;

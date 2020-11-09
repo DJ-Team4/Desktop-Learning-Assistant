@@ -15,17 +15,18 @@ namespace TimeStatisticTest
 {
     class Program
     {
+        /*
         static void Main(string[] args)
         {
             ActivityMonitor monitor = ActivityMonitor.GetMonitor();
             monitor.Start();
             TimeStatisticService timeStatisticService = TimeStatisticService.GetTimeStatisticService();
+            DateTime beginTime = DateTime.Now;
+            DateTime endTime = DateTime.Now;
 
             while (true)
             {
-                DateTime beginTime = DateTime.Now - TimeSpan.FromSeconds(5);
-                DateTime endTime = DateTime.Now;
-
+                endTime = DateTime.Now;
                 //List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);   // 获取最近五秒的活动统计
                 List<UserActivity> userActivities = timeStatisticService.GetAllUserActivities();        // 获取所有的活动统计
                 Console.Clear();
@@ -41,6 +42,19 @@ namespace TimeStatisticTest
                 }
                 //TimeDataManager.GetTimeDataManager().SaveDataToDb();
                 Thread.Sleep(1000);
+            }
+        }
+        */
+        static void Main(string[] args)
+        {
+            string appdata = Environment.GetEnvironmentVariable("AppData");
+            string recentFilePath = $"{appdata}\\Microsoft\\Windows\\Recent";
+            DirectoryInfo directoryInfo = new DirectoryInfo(recentFilePath);
+            List<FileInfo> fileInfos = new List<FileInfo>(directoryInfo.GetFiles());
+            fileInfos.Sort((fi1, fi2) => fi1.CreationTime < fi2.CreationTime ? 1 : -1);
+            foreach (var fileInfo in fileInfos)
+            {
+                Console.WriteLine($"{fileInfo.Name}\t{fileInfo.CreationTime}");
             }
         }
     }

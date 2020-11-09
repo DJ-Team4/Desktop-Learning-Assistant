@@ -87,12 +87,11 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public static ActivityMonitor GetMonitor()
         {
-            if (uniqueMonitor == null)
+            if (uniqueMonitor != null) return uniqueMonitor;
+
+            lock (locker)
             {
-                lock (locker)
-                {
-                    uniqueMonitor = new ActivityMonitor();
-                }
+                uniqueMonitor = new ActivityMonitor();
             }
             return uniqueMonitor;
         }
@@ -110,12 +109,11 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public void Start()
         {
-            if (!monitorStarted)
-            {
-                monitorStarted = true;
-                Thread thread = new Thread(new ThreadStart(Work));
-                thread.Start();
-            }
+            if (monitorStarted) return;
+
+            monitorStarted = true;
+            Thread thread = new Thread(new ThreadStart(Work));
+            thread.Start();
         }
         #endregion
 
