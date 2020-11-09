@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,6 +19,7 @@ using Panuon.UI.Silver;
 using LiveCharts;
 using LiveCharts.Wpf;
 using UI.Process;
+using System.ComponentModel;
 
 namespace UI
 {
@@ -37,11 +40,13 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
+            
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             this.DataContext = mainWindowViewModel;
         }
+
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -62,7 +67,7 @@ namespace UI
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(10000000); //时间间隔为一秒
-            timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += new EventHandler(Timer_Tick);
             //转换成秒数
             Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
@@ -71,7 +76,7 @@ namespace UI
             //处理倒计时的类
             timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-            timer.Start();
+           //  timer.Start();
         }
 
         /// <summary>
@@ -93,7 +98,7 @@ namespace UI
             return false;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (OnCountDown())
             {
@@ -107,6 +112,8 @@ namespace UI
 
         private void File_DragEnter(object sender, DragEventArgs e)
         {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effects = DragDropEffects.Link;
             else
@@ -115,19 +122,44 @@ namespace UI
 
         private void File_Drop(object sender, DragEventArgs e)
         {
-            Array file = (System.Array)e.Data.GetData(DataFormats.FileDrop);
-            string fileText = null;
-            foreach (object I in file)
-            {
-                fileText += I.ToString();
-                fileText += "\n";
-            }
+            MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            var tagWindow = new FileWindow.FileWindow();
+            tagWindow.Show();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Settings settings = new Settings();
             settings.Show();
+
+        }
+
+        private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
+        {
+           timer.Start();
+           ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+           this.ButtonImage.Source = pause;
+        }
+
+        private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
+        {
+            timer.Stop();
+        }
+
+        private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
+        {
+            TomatoWindow tomatoWindow =new TomatoWindow();
+            tomatoWindow.Show();
+        }
+
+        /// <summary>
+        /// 点击“文件管理”按钮
+        /// </summary>
+        private void OpenFileWinButton_Click(object sender, RoutedEventArgs e)
+        {
+            //打开文件管理窗口
+            new FileWindow.FileWindow().Show();
         }
     }
 }
