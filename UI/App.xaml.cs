@@ -21,8 +21,13 @@ namespace UI
         /// <param name="e"></param>
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // 启动主窗口
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
+
+            // 启动屏幕监控
+            ActivityMonitor am = ActivityMonitor.GetMonitor();
+            am.Start();
         }
 
         /// <summary>
