@@ -4,7 +4,7 @@ using IWshRuntimeLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DesktopLearningAssistant.TomatoClock.Model;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
@@ -13,7 +13,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     {
         public void AddTask(TaskInfo taskInfo)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 var task = new TaskList()
                 {
@@ -29,11 +29,11 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 context.SaveChanges();
             }
         }
-        public void DeletTask(int TaskID)
+        public void DeletTask(int iTaskID)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
-                var task = context.Tasks.Include(t => t.TaskTomatoLists).FirstOrDefault(tt => tt.TaskID == TaskID);
+                var task = context.Tasks.Include(t => t.TaskTomatoLists).FirstOrDefault(tt => tt.TaskID == iTaskID);
                 if (task != null)
                 {
                     context.Tasks.Remove(task);
@@ -43,7 +43,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         }
         public void ModifyTask(TaskInfo taskInfo)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 var task = new TaskList()
                 {
@@ -60,12 +60,12 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 context.SaveChanges();
             }
         }
-        public TaskInfo ReadTask(int TaskID)
+        public TaskInfo ReadTask(int iTaskID)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 TaskInfo taskInfo = new TaskInfo();
-                var task = context.Tasks.SingleOrDefault(t => t.TaskID == TaskID);
+                var task = context.Tasks.SingleOrDefault(t => t.TaskID == iTaskID);
                 if (task != null)
                 {
                     taskInfo.Name = task.Name;
@@ -81,7 +81,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         }
         private void ChangeTaskToFinishState(int iTaskID)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 var task = new TaskList() { TaskID = iTaskID, State = 1 };
                 context.Entry(task).State = EntityState.Modified;
@@ -90,7 +90,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         }
         public int AddTomatoStartTime(int iTaskID)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 var tomato = new TaskTomatoList() { BeginTime = DateTime.Now, TaskID = iTaskID };
                 context.Entry(tomato).State = EntityState.Added;
@@ -100,7 +100,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         }
         public void AddTomatoEndTime(int iTaskID, int iTomatoID)
         {
-            using (var context = new TaskTomatoContext())
+            using (var context =Context)
             {
                 var tomato = new TaskTomatoList() { TaskID = iTaskID, TomatoID = iTomatoID, EndTime = DateTime.Now };
                 context.Entry(tomato).State = EntityState.Modified;
@@ -112,7 +112,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 var taskfile = context.TaskFileLists.FirstOrDefault(f => f.TaskID == iTaskID);
                 if (taskfile != null)
                 {
-                    taskfile.TaskFilePathList = GetFilePath(tomato.BeginTime, tomato.EndTime);
+                    
                 }
                 context.SaveChanges();
             }
@@ -120,12 +120,13 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public List<Tomato> ReadTomato(int iTaskID)    //提供id为TaskID的所有番茄钟信息（起止时间）以查找时段内的应用程序信息
         {
             List<Tomato> TomatoList = new List<Tomato>();
-            using (var context = new TaskTomatoContext())
+            using (var context = Context)
             {
                 var query = context.TaskTomatoes.Where(tt => tt.TaskLists.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
                 foreach (var tt in query)
                 {
                     Tomato tomato = new Tomato();
+                    tomato.TomatoID = tt.TomatoID;
                     tomato.StartTime = tt.BeginTime;
                     tomato.EndTime = tt.EndTime;
                     TomatoList.Add(tomato);
@@ -142,13 +143,13 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             if (TimeSpanSecond >= 25 * 60) { return iTomatoCount++; }
             else { return iTomatoCount; }
         }
-        private List<string> GetFilePath(DateTime iBeginTime, DateTime iEndTime)
+        private void GetFilePath(DateTime iBeginTime, DateTime iEndTime, int iTaskID)
         {
             string appdata = Environment.GetEnvironmentVariable("AppData");
             string RecentFilePath = $"{appdata}\\Microsoft\\Windows\\Rencent";
             DirectoryInfo directoryInfo = new DirectoryInfo(RecentFilePath);
             List<FileInfo> fileInfos = new List<FileInfo>(directoryInfo.GetFiles());
-            List<string > FilePathList = new List<string>();
+            //List<string> FilePathList = new List<string>();
             foreach (var fileInfo in fileInfos)
             {
                 if (DateTime.Compare(fileInfo.CreationTime,iBeginTime)>0 && DateTime.Compare(fileInfo.CreationTime,iEndTime)<0)
@@ -158,11 +159,38 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                         WshShell shell = new WshShell();
                         IWshShortcut lnkPath = (IWshShortcut)shell.CreateShortcut(fileInfo.FullName);
                         string FileRealPath = lnkPath.TargetPath;
-                        FilePathList.Add(FileRealPath);
+                        using (var context = Context)
+                        {
+                            var file = new TaskFileList() { FilePath = FileRealPath, TaskID = iTaskID };
+                            context.TaskFileLists.Add(file);
+                            context.SaveChanges();
+                        }
+
                     }
                 }
             }
-            return FilePathList;
+            
+        }
+
+        //private readonly TaskTomatoContext context;
+        /// <summary>
+        /// 用于操作数据库的 DbContext
+        /// </summary>
+        private TaskTomatoContext Context
+        {
+            get
+            {
+                var builder = new DbContextOptionsBuilder<TaskTomatoContext>();
+                builder.UseSqlite($"Data Source={TaskTomatoConfig.DbPath}");
+                TaskTomatoContext context = new TaskTomatoContext(builder.Options);
+                context.Database.EnsureCreated();
+                return context;
+            }
+        }
+
+        class TaskTomatoConfig
+        {
+            public static string DbPath { get; } = "TaskTomatoDB.db";
         }
     }
 }

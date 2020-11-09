@@ -28,7 +28,9 @@ namespace DesktopLearningAssistant.TomatoClock
             TaskService taskServicetest = new TaskService();
             taskServicetest.AddTask(test);
             TaskInfo test1 = taskServicetest.ReadTask(test.TaskID);
+            Print(test1);
 
+            /*
             Console.WriteLine("Change tast notes:\n");
             test.Notes = Console.ReadLine();
             taskServicetest.ModifyTask(test);
@@ -36,11 +38,13 @@ namespace DesktopLearningAssistant.TomatoClock
 
             Print(test1);
             Print(test2);
-
+            */
             Console.WriteLine("Delete task: \n");
             taskServicetest.DeletTask(test.TaskID);
             if(test.TaskID == 0) Console.WriteLine("Task Deleted!");
             taskServicetest.ReadTask(test.TaskID);
+
+            Console.ReadLine();
             
         }
         public static void Print(TaskInfo taskInfo)

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SQLite;
-using System.Data.Entity;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using DesktopLearningAssistant.TomatoClock.Model;
+using System.Collections.ObjectModel;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
@@ -26,8 +24,14 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public int TomatoNum { get; set; }
         public int TomatoCount { get; set; }
         public int State { get; set; }
-        public List<TaskList> TaskLists { get; set; }
-        public List<TaskTomatoList> TaskTomatoLists { get; set; } //1..m
+        //public List<TaskList> TaskLists { get; set; }
+        //public List<TaskTomatoList> TaskTomatoLists { get; set; } //1..m
+        //public List<TaskFileList> TaskFileLists { get; set; }
+
+        public virtual ICollection<TaskTomatoList> TaskTomatoLists { get; set; }
+            = new ObservableCollection<TaskTomatoList>();
+        public virtual ICollection<TaskFileList> TaskFileLists { get; set; }
+            = new ObservableCollection<TaskFileList>();
     }
 
     public class TaskTomatoList
@@ -39,9 +43,10 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        [ForeignKey("TaskLists")]
         public int TaskID { get; set; }         //foreign key
         [Required]
-        public TaskList TaskLists { get; set; }          //m..1
+        public virtual TaskList TaskLists { get; set; }          //m..1
     }
 
     public class TaskFileList
@@ -50,8 +55,10 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FileID { get; set; }   //primary key
         [Required]
-        public List<string> TaskFilePathList { get; set; }
+        public string FilePath { get; set; }
 
+        [ForeignKey("TaskLists")]
         public int TaskID { get; set; }   //foreign key
+        public virtual TaskList TaskLists { get; set; }
     }
 }
