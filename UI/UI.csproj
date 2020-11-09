@@ -52,6 +52,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,6 +76,9 @@
     <Compile Include="NewTagWindow.xaml.cs">
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tomato\NewTaskWindow.xaml.cs">
+      <DependentUpon>NewTaskWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Process\TimeCount.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -82,7 +87,7 @@
       <DependentUpon>TagWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeStatisticsData.cs" />
-    <Compile Include="TomatoWindow.xaml.cs">
+    <Compile Include="Tomato\TomatoWindow.xaml.cs">
       <DependentUpon>TomatoWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -101,6 +106,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Tomato\NewTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,7 +118,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TomatoWindow.xaml">
+    <Page Include="Tomato\TomatoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,12 +165,12 @@
     <Resource Include="Icon\书.png" />
     <Resource Include="Icon\右箭头.png" />
     <Resource Include="Icon\微信.png" />
-    <Resource Include="Icon\搜索.png" />
+    <Resource Include="Icon\Search.png" />
     <Resource Include="Icon\文件夹.png" />
     <Resource Include="Icon\时钟.png" />
     <Resource Include="Icon\浏览器.png" />
-    <Resource Include="Icon\番茄已完成.png" />
-    <Resource Include="Icon\番茄未完成.png" />
+    <Resource Include="Icon\tomatofinished.png" />
+    <Resource Include="Icon\tomatounfinished.png" />
     <Resource Include="Icon\箭头%281%29.png" />
     <Resource Include="Icon\详情-1.png" />
     <Resource Include="Icon\详情.png" />
@@ -181,6 +190,15 @@
       <Name>Desktop-Learning-Assistant</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\Pause.jpg" />
+    <Resource Include="Icon\Start.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\Change.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\Set.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
 </Project>

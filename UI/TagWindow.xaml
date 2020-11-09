@@ -14,7 +14,7 @@
             <ColumnDefinition Width="121*"/>
         </Grid.ColumnDefinitions>
 
-        <Image HorizontalAlignment="Left" Height="21" Margin="163,16,0,0" VerticalAlignment="Top" Width="18" Source="Icon/搜索.png" RenderTransformOrigin="0.896,0.323" Grid.Column="1"/>
+        <Image HorizontalAlignment="Left" Height="21" Margin="163,16,0,0" VerticalAlignment="Top" Width="18" Source="Icon/Search.png" RenderTransformOrigin="0.896,0.323" Grid.Column="1"/>
         <Image HorizontalAlignment="Left" Height="26" Margin="41,11,0,0" VerticalAlignment="Top" Width="37" Source="Icon/refresh.jpg"/>
         <Image HorizontalAlignment="Left" Height="26" Margin="10,11,0,0" VerticalAlignment="Top" Width="23" Source="Icon/home.jpg"/>
 
