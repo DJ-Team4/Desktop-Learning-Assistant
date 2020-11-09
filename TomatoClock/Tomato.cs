@@ -11,5 +11,6 @@ namespace DesktopLearningAssistant.TomatoClock.Model
         int TomatoID;
         public DateTime StartTime;
         public DateTime EndTime;
+
     }
 }
