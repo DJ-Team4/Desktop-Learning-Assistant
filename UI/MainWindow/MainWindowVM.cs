@@ -7,6 +7,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.TimeStatistic;
+using System.Threading;
 
 namespace UI
 {
@@ -16,11 +17,9 @@ namespace UI
 
         public MainWindowViewModel()
         {
-            GetLineSeriesData();
-            GetColunmSeriesData();
-            GetPieSeriesData_today();
-            GetPieSeriesData_yesterday();
+            Timer updateTimer = new Timer(new TimerCallback((object state) => { this.Update(); }), this, 0, 500);     // 定时更新ViewModel的数据
         }
+
         #region 属性
         /// <summary>
         /// 折线图集合
@@ -49,8 +48,18 @@ namespace UI
         public List<string> ColumnXLabels { get; set; } = new List<string>();
         #endregion
 
-        #region 方法
-        void GetLineSeriesData()
+        #region 私有方法
+
+        private void Update()
+        {
+            GetLineSeriesData();
+            GetColunmSeriesData();
+            GetPieSeriesData_today();
+            GetPieSeriesData_yesterday();
+        }
+
+
+        private void GetLineSeriesData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
             List<List<double>> values = new List<List<double>>
@@ -72,7 +81,7 @@ namespace UI
             }
         }
 
-        void GetColunmSeriesData()
+        private void GetColunmSeriesData()
         {
             List<double> columnValues = new List<double> ();
             List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
@@ -92,7 +101,7 @@ namespace UI
 
         }
 
-        void GetPieSeriesData_today()
+        private void GetPieSeriesData_today()
         {
             List<string> titles=new List<string> ();
             List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today,DateTime.Now);
@@ -120,7 +129,7 @@ namespace UI
             }
         }
 
-        void GetPieSeriesData_yesterday()
+        private void GetPieSeriesData_yesterday()
         {
             List<string> titles = new List<string> ();
             List<double> pieValues = new List<double> ();
@@ -146,7 +155,7 @@ namespace UI
             }
         }
 
-        void ThreeColumnData()
+        private void ThreeColumnData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
             //三列示例数据
@@ -173,7 +182,7 @@ namespace UI
         /// 获取当前月的每天的日期
         /// </summary>
         /// <returns>日期集合</returns>
-        List<string> GetCurrentMonthDates()
+        private List<string> GetCurrentMonthDates()
         {
             List<string> dates = new List<string>();
             DateTime dt = DateTime.Now;
@@ -191,6 +200,7 @@ namespace UI
             }
             return dates;
         }
+
         #endregion
     }
 }
