@@ -115,8 +115,8 @@ namespace UI
         }
         void GetPieSeriesData_yesterday()
         {
-            List<string> titles = new List<string> { "C#", "Java", "Python" };
-            List<double> pieValues = new List<double> { 60, 30, 10 };
+            List<string> titles = new List<string> { "", "", "","" };
+            List<double> pieValues = new List<double> { 0,0,0,0 };
             ChartValues<double> chartvalue = new ChartValues<double>();
             for (int i = 0; i < titles.Count; i++)
             {
