@@ -7,9 +7,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="TomatoWindow" Height="500" Width="360" WindowStyle="None">
+        Title="番茄任务" Height="500" Width="360">
     <Grid>
-        <TextBox  x:Name="SearchBox"  TabIndex="0" Opacity="0.9" BorderThickness="1" Margin="25,10,0,429.6" HorizontalAlignment="Left" Width="275"  
+        <TextBox  x:Name="SearchBox"  TabIndex="0" Opacity="0.9" BorderThickness="1" Margin="25,10,0,415.4" HorizontalAlignment="Left" Width="275"  
                   ToolTipService.ToolTip="Please input keywords" ToolTipService.InitialShowDelay="1" ToolTipService.Placement="MousePoint">
             <TextBox.Resources>
                 <VisualBrush  x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
@@ -31,17 +31,21 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Image HorizontalAlignment="Left" Height="33" Margin="261,22,0,0" VerticalAlignment="Top" Width="34" Source="../Icon/Search.png"/>
-        <Label Content="待完成" HorizontalAlignment="Left" Margin="25,81,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
-        <Label Content="已完成" HorizontalAlignment="Left" Margin="25,183,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
+        <Image HorizontalAlignment="Left" Height="33" Margin="260,16,0,0" VerticalAlignment="Top" Width="34" Source="../Icon/Search.png"/>
+        <Label Content="待完成" Background="AliceBlue" HorizontalAlignment="Left" Margin="25,81,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
+        <Label Content="已完成" Background="AliceBlue" HorizontalAlignment="Left" Margin="25,183,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
         <Label Content="需求分析报告.docx" HorizontalAlignment="Left" Margin="47,110,0,0" VerticalAlignment="Top" Height="24" Width="117"/>
         <Label Content="选题报告.pdf" HorizontalAlignment="Left" Margin="47,220,0,0" VerticalAlignment="Top" Height="24" Width="117"/>
 
         <Image HorizontalAlignment="Left" Height="17" Margin="105,139,0,0" VerticalAlignment="Top" Width="24" Source="../Icon/tomatounfinished.png"/>
         <Image HorizontalAlignment="Left" Height="17" Margin="76,139,0,0" VerticalAlignment="Top" Width="24" Source="../Icon/tomatofinished.png"/>
         <Image HorizontalAlignment="Left" Height="17" Margin="76,249,0,0" VerticalAlignment="Top" Width="24" Source="../Icon/tomatofinished.png"/>
-        <Image HorizontalAlignment="Left" Height="42" Margin="305,19,0,0" VerticalAlignment="Top" Width="43" Source="../Icon/plus.png"
+        <Image HorizontalAlignment="Left" Height="49" Margin="292,359,0,0" VerticalAlignment="Top" Width="51" Source="../Icon/plus.png"
              MouseLeftButtonDown="NewTaskWindow_Click"  
+               />
+        <Image HorizontalAlignment="Left" Height="43" Margin="298,417,0,0" VerticalAlignment="Top" Width="40"
+               Source="../Icon/More.png"
+               MouseLeftButtonDown="AllTasks_OnMouseLeftButtonDown"
                />
 
     </Grid>

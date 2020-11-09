@@ -1,0 +1,49 @@
+﻿<Window x:Class="UI.NewTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        xmlns:TimeTool="clr-namespace:Loya.Dameer;assembly=Loya.Dameer"
+        xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+
+        mc:Ignorable="d"
+        Title="新建任务" Height="450" Width="400" >
+    <Grid>
+        <Label Content="任务名" HorizontalAlignment="Left" Margin="35,26,0,0" VerticalAlignment="Top" Height="34" Width="104" Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <Label Content="开始时间" HorizontalAlignment="Left" Margin="35,77,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <Label Content="截止时间" HorizontalAlignment="Left" Margin="35,128,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <Label Content="备注" HorizontalAlignment="Left" Margin="35,231,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <Label Content="所需番茄钟" HorizontalAlignment="Left" Margin="35,176,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <TextBox HorizontalAlignment="Left" Height="34" Margin="177,26,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="140"/>
+        <TextBox HorizontalAlignment="Left" Height="34" Margin="177,176,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="140"/>
+        <TextBox HorizontalAlignment="Left" Height="97" Margin="178,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="149"/>
+        <TimeTool:Dameer  Foreground="Black" 
+                          Format="Custom"
+                          CustomFormat="yyyy-MM-dd HH:mm:ss"
+                          ShowCheckBox="false"
+                          Value="11/11/2020 1:50 PM"
+                          Margin="178,75,37.6,304">
+
+
+        </TimeTool:Dameer>
+        <TimeTool:Dameer  Foreground="Black" 
+                          Format="Custom"
+                          CustomFormat="yyyy-MM-dd HH:mm:ss"
+                          ShowCheckBox="false"
+                          Value="11/11/2020 3:50 PM"
+                          Margin="177,128,42.6,258">
+
+
+        </TimeTool:Dameer>
+
+        <Button
+            Content="确认"
+            Foreground="black"
+            silver:ButtonHelper.ButtonStyle="Outline"
+            silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="284,359,24.6,21"
+            Click="NewTask_Click"
+        />
+
+    </Grid>
+</Window>

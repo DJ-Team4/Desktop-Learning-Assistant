@@ -43,6 +43,13 @@ namespace TimeStatisticTest
                 //TimeDataManager.GetTimeDataManager().SaveDataToDb();
                 Thread.Sleep(1000);
             }
+        }*/
+        static void Main(string[] args)
+        {
+            string appdata = Environment.GetEnvironmentVariable("AppData");
+            string recentFilePath = $"{appdata}\\Microsoft\\Windows\\Recent";
+            DirectoryInfo directoryInfo = new DirectoryInfo(recentFilePath);
+            Console.WriteLine(recentFilePath);
         }
         */
         static void Main(string[] args)

@@ -49,6 +49,10 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Loya.Dameer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Loya.dameer\Loya.Dameer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.9.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.9\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
@@ -101,6 +105,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Util.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Loya.dameer\Util.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -111,25 +119,29 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileWindow\FileWinVM.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="MainWindow\MainWindowVM.cs" />
     <Compile Include="NewTagWindow.xaml.cs">
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tomato\NewTaskWindow.xaml.cs">
+    <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
+    <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
+      <DependentUpon>AllTasksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TomatoWindow\NewTaskWindow.xaml.cs">
       <DependentUpon>NewTaskWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Process\TimeCount.cs" />
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="SettingsWindow\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileWindow\FileWindow.xaml.cs">
       <DependentUpon>FileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeStatisticsData.cs" />
-    <Compile Include="Tomato\TomatoWindow.xaml.cs">
+    <Compile Include="TomatoWindow\TomatoWindow.xaml.cs">
       <DependentUpon>TomatoWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -137,7 +149,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -145,11 +157,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tomato\NewTaskWindow.xaml">
+    <Page Include="TomatoWindow\AllTasksWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings.xaml">
+    <Page Include="TomatoWindow\NewTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow\Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -157,7 +173,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tomato\TomatoWindow.xaml">
+    <Page Include="TomatoWindow\TomatoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -211,7 +227,7 @@
     <Resource Include="Icon\tomatofinished.png" />
     <Resource Include="Icon\tomatounfinished.png" />
     <Resource Include="Icon\箭头%281%29.png" />
-    <Resource Include="Icon\详情-1.png" />
+    <Resource Include="Icon\More.png" />
     <Resource Include="Icon\详情.png" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +254,9 @@
       <Project>{3bdcedcd-9866-44ad-b45e-347b30b7460e}</Project>
       <Name>Desktop-Learning-Assistant</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MainWindow\Set.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
