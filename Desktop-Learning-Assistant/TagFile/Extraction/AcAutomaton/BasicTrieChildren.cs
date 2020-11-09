@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Extraction
+namespace DesktopLearningAssistant.TagFile.Extraction.AcAutomaton
 {
     /// <summary>
     /// 孩子节点集合，包装了一下 Dictionary
