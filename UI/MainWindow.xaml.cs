@@ -67,7 +67,7 @@ namespace UI
 
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(10000000); //时间间隔为一秒
-            timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += new EventHandler(Timer_Tick);
             //转换成秒数
             Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
@@ -98,7 +98,7 @@ namespace UI
             return false;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (OnCountDown())
             {
@@ -124,7 +124,7 @@ namespace UI
         {
             MessageBox.Show("File Drop");
             Debug.WriteLine("drop");
-            TagWindow tagWindow=new TagWindow();
+            var tagWindow = new FileWindow.FileWindow();
             tagWindow.Show();
         }
 
@@ -154,6 +154,15 @@ namespace UI
         {
             TomatoWindow tomatoWindow =new TomatoWindow();
             tomatoWindow.Show();
+        }
+
+        /// <summary>
+        /// 点击“文件管理”按钮
+        /// </summary>
+        private void OpenFileWinButton_Click(object sender, RoutedEventArgs e)
+        {
+            //打开文件管理窗口
+            new FileWindow.FileWindow().Show();
         }
     }
 }

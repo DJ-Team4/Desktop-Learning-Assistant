@@ -26,16 +26,16 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <!--lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}" DataClick="Chart_OnDataClick">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
-                                </-->
+                                </lvc:PieChart>
                             </Grid>
                         </TabItem>
                         <TabItem Header="昨日">
                             <Grid>
-                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}">
+                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_yesterday}">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
@@ -152,11 +152,13 @@
                     <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" Source="Icon/file.jpeg"
                            VerticalAlignment="Top" Width="24"/>
 
-                    <Button
-                            Content="打开"
+                    <Button Content="文件管理"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
-                            pu:ButtonHelper.CornerRadius="15" Margin="80,385,102,35.8" Background="aliceblue"/>
+                            pu:ButtonHelper.CornerRadius="15"
+                            Margin="80,385,102,35.8"
+                            Background="aliceblue"
+                            Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
                     <Image HorizontalAlignment="Left" Height="26" Margin="12,295,0,0" VerticalAlignment="Top" Width="33" Source="Icon/PDF.png"/>
                     <Image HorizontalAlignment="Left" Height="26" Margin="12,264,0,0" VerticalAlignment="Top" Width="29" Source="Icon/word (1).png"/>
