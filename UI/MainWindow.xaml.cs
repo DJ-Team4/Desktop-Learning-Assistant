@@ -139,12 +139,15 @@ namespace UI
         {
            timer.Start();
            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-           this.ButtonImage.Source = pause;
+          this.ButtonImage.Source = pause;
         }
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             timer.Stop();
+            ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
+            this.ButtonImage.Source = start;
+
         }
 
         private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
