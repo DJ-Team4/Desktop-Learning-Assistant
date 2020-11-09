@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
@@ -12,10 +13,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
     /// </summary> 
     public class TaskTomatoContext : DbContext
     {
-        public TaskTomatoContext() : base("TaskDataBase")
-        {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskTomatoContext>());
-        }
+        public TaskTomatoContext() : base() { }
 
         public DbSet<TaskList> Tasks { get; set; }
         public DbSet<TaskTomatoList> TaskTomatoes { get; set; }
