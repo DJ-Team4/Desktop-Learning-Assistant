@@ -37,12 +37,6 @@ namespace UI.FileWindow
 
         private void AddFile_OnClick(object sender, RoutedEventArgs e)
         {
-            NewTagWindow newtagWindow = new NewTagWindow();
-            newtagWindow.Show();
-            string newtagName = NewTag;
-            AddTag();
-
-
         }
     }
 }
