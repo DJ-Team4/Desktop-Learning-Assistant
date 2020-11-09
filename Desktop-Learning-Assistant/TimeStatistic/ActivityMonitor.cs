@@ -43,6 +43,16 @@ namespace DesktopLearningAssistant.TimeStatistic
         private bool monitorStarted = false;
 
         /// <summary>
+        /// 是否要求关闭监控线程
+        /// </summary>
+        private bool closeFlag = false;
+
+        /// <summary>
+        /// 监控线程任务
+        /// </summary>
+        private Task monitorTask;
+
+        /// <summary>
         /// Monitor的检查周期，单位：毫秒
         /// </summary>
         private int timeSlice;
@@ -112,9 +122,16 @@ namespace DesktopLearningAssistant.TimeStatistic
             if (monitorStarted) return;
 
             monitorStarted = true;
-            Thread thread = new Thread(new ThreadStart(Work));
-            thread.Start();
+            monitorTask = new Task(Work);
+            monitorTask.Start();
         }
+
+        public void Stop()
+        {
+            closeFlag = true;   // 要求停止监控
+            monitorTask.Wait(); // 等待线程关闭
+        }
+
         #endregion
 
         #region 私有方法
@@ -124,7 +141,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         private void Work()
         {
-            while (true)
+            while (!closeFlag)
             {
                 Thread.Sleep(timeSlice);    // 定时轮询
 
@@ -135,8 +152,16 @@ namespace DesktopLearningAssistant.TimeStatistic
                     GetWindowThreadProcessId(hWnd, out pid);
                     Process proc = Process.GetProcessById(Convert.ToInt32(pid));
 
-                    UserActivityPiece currentTP = new UserActivityPiece
+                    // 如果是新发现的进程，则加入类型字典中
+                    ConfigService configService = ConfigService.GetConfigService();
+                    if (!configService.TSConfig.TypeDict.ContainsKey(proc.ProcessName))
                     {
+                        ConfigService.GetConfigService().TSConfig.TypeDict.Add(proc.ProcessName, "其他");
+                    }
+
+                    UserActivityPiece currentUAP = new UserActivityPiece
+                    {
+                        Id = TDManager.UserActivityPieces.Count,
                         Name = proc.ProcessName,
                         Detail = proc.MainWindowTitle,
                         StartTime = DateTime.Now,
@@ -148,15 +173,15 @@ namespace DesktopLearningAssistant.TimeStatistic
                         List<UserActivityPiece> userActivityPieces = TDManager.UserActivityPieces;  // 为了简便书写，作了引用
                         if (userActivityPieces.Count == 0)
                         {
-                            userActivityPieces.Add(currentTP);
+                            userActivityPieces.Add(currentUAP);
                             continue;
                         }
 
                         UserActivityPiece lastUAP = userActivityPieces[userActivityPieces.Count - 1];    // 上一个用户活动
                         lastUAP.CloseTime = DateTime.Now;        // 更新上一个用户活动的结束时间
-                        if (!lastUAP.Equals(currentTP))
+                        if (!lastUAP.Equals(currentUAP))
                         {
-                            userActivityPieces.Add(currentTP);
+                            userActivityPieces.Add(currentUAP);
 
                             if ((lastUAP.Name == "explorer" || lastUAP.Name == "Idle") && userActivityPieces.Count >= 3)    // Windows在杀进程前会先转入explorer或Idle，所以出现这种情况时需要再回溯一层UAP
                             {
@@ -175,6 +200,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                 }
             }
         }
+
         #endregion
     }
 }
