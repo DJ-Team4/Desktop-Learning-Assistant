@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,6 +19,7 @@ using Panuon.UI.Silver;
 using LiveCharts;
 using LiveCharts.Wpf;
 using UI.Process;
+using System.ComponentModel;
 
 namespace UI
 {
@@ -26,6 +29,7 @@ namespace UI
     public partial class MainWindow : Window
     {
         public SeriesCollection SeriesCollection { get; set; }
+        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
@@ -36,22 +40,13 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
+            
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
-            PointLabel = chartPoint =>
-                string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
-            SeriesCollection = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Values = new ChartValues<decimal> {5, 6, 2, 7}
-                }
-            };
-            DataContext = this;
+            this.DataContext = mainWindowViewModel;
         }
 
-        public Func<ChartPoint, string> PointLabel { get; set; }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -81,7 +76,7 @@ namespace UI
             //处理倒计时的类
             timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-            timer.Start();
+           //  timer.Start();
         }
 
         /// <summary>
@@ -113,6 +108,49 @@ namespace UI
             }
             else
                 timer.Stop();
+        }
+
+        private void File_DragEnter(object sender, DragEventArgs e)
+        {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Link;
+            else
+                e.Effects = DragDropEffects.None;
+        }
+
+        private void File_Drop(object sender, DragEventArgs e)
+        {
+            MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            TagWindow tagWindow=new TagWindow();
+            tagWindow.Show();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.Show();
+
+        }
+
+        private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
+        {
+           timer.Start();
+           ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+           this.ButtonImage.Source = pause;
+        }
+
+        private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
+        {
+            timer.Stop();
+        }
+
+        private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
+        {
+            TomatoWindow tomatoWindow =new TomatoWindow();
+            tomatoWindow.Show();
         }
     }
 }
