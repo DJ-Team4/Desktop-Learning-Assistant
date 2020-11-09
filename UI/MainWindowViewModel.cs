@@ -90,19 +90,20 @@ namespace UI
 
         void GetPieSeriesData_today()
         {
-            List<string> titles=new List<string> { "", "", "", "" };
+            List<string> titles = new List<string> { "", "", "", "" };
             List<UserActivity> ActivityData = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
-            for(int i=0;i<4;i++)
+            int count = Math.Min(4, ActivityData.Count);
+            for (int i = 0; i < count; i++)
             {
                 titles[i] = ActivityData[i].Name;
             }
             List<double> pieValues = new List<double> { 0, 0, 0, 0 };
-            for(int i=0;i<4;i++)
+            for (int i = 0; i < count; i++)
             {
                 pieValues[i] = ActivityData[i].SpanTime.TotalHours;
             }
             ChartValues<double> chartvalue = new ChartValues<double>();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < count; i++)
             {
                 chartvalue = new ChartValues<double>();
                 chartvalue.Add(pieValues[i]);
