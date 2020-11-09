@@ -13,6 +13,7 @@ namespace UI
     class MainWindowViewModel
     {
         ITimeStatisticService timeStatisticService = new TimeStatisticService();
+
         public MainWindowViewModel()
         {
             GetLineSeriesData();
@@ -73,16 +74,19 @@ namespace UI
 
         void GetColunmSeriesData()
         {
-            List<string> titles = new List<string> { "Edge", "Chrome", "Firefox", "Other" };
-            List<double> columnValues = new List<double> { 10, 70, 15, 5 };
-
-            for (int i = 0; i < titles.Count; i++)
+            List<double> columnValues = new List<double> ();
+            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
+            for (int i = 0; i < userActivities.Count; i++)
             {
-                ColumnXLabels.Add(titles[i]);
+                ColumnXLabels.Add(userActivities[i].Name);
             }
+            
             ColumnSeries colunmseries = new ColumnSeries();
             colunmseries.DataLabels = true;
-            colunmseries.Title = "浏览器份额";
+            for (int i = 0; i < userActivities.Count; i++)
+            {
+                columnValues.Add(userActivities[i].SpanTime.TotalHours);
+            }
             colunmseries.Values = new ChartValues<double>(columnValues);
             ColunmSeriesCollection.Add(colunmseries);
 
@@ -90,23 +94,24 @@ namespace UI
 
         void GetPieSeriesData_today()
         {
-            List<string> titles = new List<string> { "", "", "", "" };
-            List<UserActivity> ActivityData = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
-            int count = Math.Min(4, ActivityData.Count);
-            for (int i = 0; i < count; i++)
+            List<string> titles=new List<string> ();
+            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today,DateTime.Now);
+            for(int i=0;i < ActivityData.Count && i < 4;i++)
             {
-                titles[i] = ActivityData[i].Name;
+                titles.Add(ActivityData[i].TypeName);
             }
-            List<double> pieValues = new List<double> { 0, 0, 0, 0 };
-            for (int i = 0; i < count; i++)
+            List<double> pieValues = new List<double> ();
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
             {
-                pieValues[i] = ActivityData[i].SpanTime.TotalHours;
+                pieValues.Add(ActivityData[i].SpanTime.TotalMinutes);
             }
-            ChartValues<double> chartvalue = new ChartValues<double>();
-            for (int i = 0; i < count; i++)
+            ChartValues<double> chartvalue;
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
             {
-                chartvalue = new ChartValues<double>();
-                chartvalue.Add(pieValues[i]);
+                chartvalue = new ChartValues<double>
+                {
+                    pieValues[i]
+                };
                 PieSeries series = new PieSeries();
                 series.DataLabels = true;
                 series.Title = titles[i];
@@ -114,10 +119,20 @@ namespace UI
                 PieSeriesCollection_today.Add(series);
             }
         }
+
         void GetPieSeriesData_yesterday()
         {
-            List<string> titles = new List<string> { "C#", "Java", "Python" };
-            List<double> pieValues = new List<double> { 60, 30, 10 };
+            List<string> titles = new List<string> ();
+            List<double> pieValues = new List<double> ();
+            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today.AddDays(-1), DateTime.Today.AddSeconds(-1));
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            {
+                titles.Add(ActivityData[i].TypeName);
+            }
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            {
+                pieValues.Add(ActivityData[i].SpanTime.TotalHours);
+            }
             ChartValues<double> chartvalue = new ChartValues<double>();
             for (int i = 0; i < titles.Count; i++)
             {
@@ -130,6 +145,7 @@ namespace UI
                 PieSeriesCollection_yesterday.Add(series);
             }
         }
+
         void ThreeColumnData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
