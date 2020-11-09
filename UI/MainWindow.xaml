@@ -67,7 +67,7 @@
             </TabItem>
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
-                    <Label Content="当前任务" Margin="0,0,187.6,442"  Background="AliceBlue" />
+                    <Label Content="当前任务" Margin="2,2,209.6,447"   HorizontalAlignment="Center" VerticalAlignment="Center" Background="AliceBlue" Height="35" />
                     <Label Content="六级试卷" Margin="117,10,83.6,420.8"  />
 
                     <ProgressBar BorderBrush="Coral"
@@ -80,33 +80,33 @@
                     <Label Content="专注" Margin="201,216,34.6,209.8"  />
 
 
-                    <Label Content="Chrome" Background="AliceBlue" Margin="10,261,157.6,159" />
+                    <Label Content="Chrome" Background="AliceBlue" Margin="10,274,157.6,173" />
                     <Border>
-                    <RadioButton 
+                        <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 1 : "
                                  pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,261,22.6,159"
-                                 Background="Coral"
+                                 Background="ForestGreen"
                                  />
                     </Border>
                     <Border>
-                    <RadioButton 
+                        <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 2 : "
                                  pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,316,22.6,104"
-                                 Background="Coral"
+                                 Background="ForestGreen"
                                  />
                     </Border>
 
                     <Border>
-                    <RadioButton 
+                        <RadioButton 
                                  pu:RadioButtonHelper.Header="Option 3 : "
                                  pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,366,22.6,54"
-                                  Background="Coral"
+                                  Background="ForestGreen"
                                  />
 
                     </Border>
 
-                    <Label Content="Steam" Background="AliceBlue" Margin="10,319,157.6,104" />
-                    <Label Content="网易有道词典" Background="AliceBlue" Margin="10,369,157.6,54" />
+                    <Label Content="Steam" Background="AliceBlue" Margin="10,330,157.6,122" />
+                    <Label Content="网易有道词典" Background="AliceBlue" Margin="10,383,157.6,65" />
 
 
                     <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
@@ -115,13 +115,15 @@
                     <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="132,107,122.6,298" Width="23"/>
                     <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="157,107,58.6,298" Width="62"/>
 
-                    <Button x:Name="btn" Click="TimeCountStart_OnClick"
+                    <Button x:Name="btn" 
+                            BorderBrush="Transparent"
+                            Click="TimeCountStart_OnClick"
                             MouseRightButtonDown="TimeCountPause_Click"
-                            Margin="117,165,99.6,242.8" Background="Transparent">
-                        <Image x:Name="ButtonImage" Height="35" Width="43" Source="Icon/Start.jpeg">
+                            Margin="122,168,100.6,268" Background="Transparent">
+                        <Image x:Name="ButtonImage" Height="39" Width="48" Source="Icon/Start.jpeg" >
                         </Image>
                     </Button>
-                     <Image Source="Icon/Change.jpg" Margin="231,421,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
+                    <Image Source="Icon/More.png" Margin="231,421,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
                 </Grid>
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
