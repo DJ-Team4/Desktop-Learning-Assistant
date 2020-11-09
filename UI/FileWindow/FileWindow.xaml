@@ -8,12 +8,71 @@
         mc:Ignorable="d"
         Title="文件管理">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="56*" />
-            <ColumnDefinition Width="121*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <Image HorizontalAlignment="Left"
+        <!-- Tool Bar -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Home Button -->
+            <Button Grid.Column="0"
+                    BorderThickness="0"
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Image Source="../Icon/home.jpg" />
+            </Button>
+
+            <!-- Refresh Button -->
+
+            <!-- Tag Search Box -->
+            <TextBox Grid.Column="2"
+                     x:Name="tagSearchBox" />
+
+            <!-- Filename Search Box -->
+            <TextBox Grid.Column="3"
+                     Name="filenameSearchBox" />
+        </Grid>
+
+        <!-- Main Part -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Part: Tree View -->
+            <TreeView Grid.Column="0"
+                      Background="AliceBlue"
+                      pu:TreeViewHelper.ItemHeight="30"
+                      pu:TreeViewHelper.SelectMode="ChildOnly">
+                <TreeViewItem Header="综合">
+                    <Label Content="●主页" />
+                    <Label Content="●搜索结果" />
+
+                </TreeViewItem>
+
+                <TreeViewItem Header="标签">
+                    <Label Content="●数据结构" />
+                    <Label Content="●算法" />
+                    <Label Content="●Java" />
+
+                </TreeViewItem>
+            </TreeView>
+
+            <!-- Right Part: File Area-->
+            <Grid Grid.Column="1"
+                  Background="LightYellow" />
+
+        </Grid>
+
+        <!--<Image HorizontalAlignment="Left"
                Height="21"
                Margin="163,16,0,0"
                VerticalAlignment="Top"
@@ -51,97 +110,7 @@
                     </MenuItem>
                 </ContextMenu>
             </Image.ContextMenu>
-        </Image>
-
-        <TreeView Background="AliceBlue"
-                  pu:TreeViewHelper.ItemHeight="30"
-                  pu:TreeViewHelper.SelectMode="ChildOnly"
-                  Margin="4,47,11,10.4">
-            <TreeViewItem Header="综合">
-                <Label Content="●主页" />
-                <Label Content="●搜索结果" />
-
-            </TreeViewItem>
-
-            <TreeViewItem Header="标签">
-                <Label Content="●数据结构" />
-                <Label Content="●算法" />
-                <Label Content="●Java" />
-
-            </TreeViewItem>
-        </TreeView>
-        <TextBox x:Name="SearchBox"
-                 TabIndex="0"
-                 Opacity="0.9"
-                 BorderThickness="1"
-                 Margin="1,10,0,428.4"
-                 HorizontalAlignment="Left"
-                 Width="220"
-                 ToolTipService.ToolTip="Please input keywords"
-                 ToolTipService.InitialShowDelay="1"
-                 ToolTipService.Placement="MousePoint"
-                 Grid.Column="1">
-            <TextBox.Resources>
-                <VisualBrush  x:Key="HelpBrush"
-                              TileMode="None"
-                              Opacity="0.5"
-                              Stretch="None"
-                              AlignmentX="Left">
-                    <VisualBrush.Visual>
-                        <TextBlock FontStyle="Italic"
-                                   Foreground="Black"
-                                   Text="请输入标签进行添加或搜索" />
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </TextBox.Resources>
-            <TextBox.Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Style.Triggers>
-                        <Trigger Property="Text"
-                                 Value="{x:Null}">
-                            <Setter Property="Background"
-                                    Value="{StaticResource HelpBrush}" />
-                        </Trigger>
-                        <Trigger Property="Text"
-                                 Value="">
-                            <Setter Property="Background"
-                                    Value="{StaticResource HelpBrush}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-
-        </TextBox>
-
-        <Grid RenderTransformOrigin="0.499,0.302"
-              Margin="0,0,4.6,10.4"
-              Height="375"
-              VerticalAlignment="Bottom"
-              Grid.Column="1">
-            <Label Content="C#"
-                   HorizontalAlignment="Left"
-                   Background="AliceBlue"
-                   BorderThickness="0.5"
-                   BorderBrush="Black"
-                   Margin="6,-34,0,0"
-                   VerticalAlignment="Top"
-                   Height="25"
-                   Width="34"
-                   Grid.Column="1" />
-            <Label Content="Java"
-                   HorizontalAlignment="Left"
-                   Background="AliceBlue"
-                   BorderThickness="0.5"
-                   BorderBrush="Black"
-                   Margin="57,-34,0,0"
-                   VerticalAlignment="Top"
-                   Height="25"
-                   Width="41"
-                   Grid.Column="1" />
-            <TextBox Background="Aliceblue"
-                     pu:TextBoxHelper.CornerRadius="15"
-                     Margin="6,24,4,10" />
-        </Grid>
+        </Image>-->
 
     </Grid>
 </Window>
