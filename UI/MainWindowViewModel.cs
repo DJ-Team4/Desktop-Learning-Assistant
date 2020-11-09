@@ -5,17 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using LiveCharts;
 using LiveCharts.Wpf;
+using DesktopLearningAssistant.TimeStatistic.Model;
+using DesktopLearningAssistant.TimeStatistic;
 
 namespace UI
 {
     class MainWindowViewModel
     {
+        ITimeStatisticService timeStatisticService = new TimeStatisticService();
         public MainWindowViewModel()
         {
             GetLineSeriesData();
             GetColunmSeriesData();
-            GetPieSeriesData();
-            GetPieSeriesData();
+            GetPieSeriesData_today();
+            GetPieSeriesData_yesterday();
         }
         #region 属性
         /// <summary>
@@ -31,7 +34,8 @@ namespace UI
         /// <summary>
         /// 饼图图集合
         /// </summary>
-        public SeriesCollection PieSeriesCollection { get; set; } = new SeriesCollection();
+        public SeriesCollection PieSeriesCollection_today { get; set; } = new SeriesCollection();
+        public SeriesCollection PieSeriesCollection_yesterday { get; set; } = new SeriesCollection();
 
         /// <summary>
         /// 折线图X坐标
@@ -84,7 +88,33 @@ namespace UI
 
         }
 
-        void GetPieSeriesData()
+        void GetPieSeriesData_today()
+        {
+            List<string> titles = new List<string> { "", "", "", "" };
+            List<UserActivity> ActivityData = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
+            int count = Math.Min(4, ActivityData.Count);
+            for (int i = 0; i < count; i++)
+            {
+                titles[i] = ActivityData[i].Name;
+            }
+            List<double> pieValues = new List<double> { 0, 0, 0, 0 };
+            for (int i = 0; i < count; i++)
+            {
+                pieValues[i] = ActivityData[i].SpanTime.TotalHours;
+            }
+            ChartValues<double> chartvalue = new ChartValues<double>();
+            for (int i = 0; i < count; i++)
+            {
+                chartvalue = new ChartValues<double>();
+                chartvalue.Add(pieValues[i]);
+                PieSeries series = new PieSeries();
+                series.DataLabels = true;
+                series.Title = titles[i];
+                series.Values = chartvalue;
+                PieSeriesCollection_today.Add(series);
+            }
+        }
+        void GetPieSeriesData_yesterday()
         {
             List<string> titles = new List<string> { "C#", "Java", "Python" };
             List<double> pieValues = new List<double> { 60, 30, 10 };
@@ -97,7 +127,7 @@ namespace UI
                 series.DataLabels = true;
                 series.Title = titles[i];
                 series.Values = chartvalue;
-                PieSeriesCollection.Add(series);
+                PieSeriesCollection_yesterday.Add(series);
             }
         }
         void ThreeColumnData()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Extraction
+namespace DesktopLearningAssistant.TagFile.Extraction.AcAutomaton
 {
     /// <summary>
     /// 支持 Unicode 字符的 AC 自动机（内部表示为 UTF-32）。
