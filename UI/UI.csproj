@@ -200,6 +200,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileWindow\FileWinVM.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="NewTagWindow.xaml.cs">
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
@@ -211,8 +212,8 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TagWindow.xaml.cs">
-      <DependentUpon>TagWindow.xaml</DependentUpon>
+    <Compile Include="FileWindow\FileWindow.xaml.cs">
+      <DependentUpon>FileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeStatisticsData.cs" />
     <Compile Include="Tomato\TomatoWindow.xaml.cs">
@@ -242,7 +243,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TagWindow.xaml">
+    <Page Include="FileWindow\FileWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

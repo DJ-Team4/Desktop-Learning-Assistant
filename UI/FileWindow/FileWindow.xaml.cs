@@ -14,14 +14,14 @@ using System.Windows.Shapes;
 using DesktopLearningAssistant.TagFile;
 using DesktopLearningAssistant.TagFile.Model;
 
-namespace UI
+namespace UI.FileWindow
 {
     /// <summary>
     /// TagWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class TagWindow : Window
+    public partial class FileWindow : Window
     {
-        public TagWindow()
+        public FileWindow()
         {
             InitializeComponent();
         }
