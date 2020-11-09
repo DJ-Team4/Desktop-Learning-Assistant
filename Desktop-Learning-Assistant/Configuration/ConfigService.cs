@@ -64,15 +64,17 @@ namespace DesktopLearningAssistant.Configuration
                 else
                 {
                     uniqueConfigService = new ConfigService();      // 否则生成一个新的配置类
+                    SetDefault();
+                    SaveAsJson();       // 将默认配置写入Json文件
                 }
             }
             return uniqueConfigService;
         }
 
         /// <summary>
-        /// 从JSON文件中加载配置信息
+        /// 从JSON文件中加载配置信息，并据此创建单例对象
         /// </summary>
-        private static void LoadFromJson()
+        public static void LoadFromJson()
         {
             try
             {
@@ -89,17 +91,27 @@ namespace DesktopLearningAssistant.Configuration
         /// <summary>
         /// 将配置类写入JSON文件
         /// </summary>
-        private static void SaveAsJson()
+        public static void SaveAsJson()
         {
             string jsonStr = JsonConvert.SerializeObject(uniqueConfigService);
             try
             {
+                File.Delete(configPath);
                 File.WriteAllText(configPath, jsonStr);
             }
             catch (Exception)
             {
                 throw;          // TODO: 写入Log日志
             }
+        }
+
+        /// <summary>
+        /// 将所有类型设置为默认值
+        /// </summary>
+        private static void SetDefault()
+        {
+            if (uniqueConfigService == null) return;
+            uniqueConfigService.TSConfig.SetDefault();
         }
     }
 }

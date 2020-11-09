@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -211,12 +211,11 @@
     <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
     <Compile Include="TomatoClock\Model\Tomato.cs" />
+    <Compile Include="TomatoClock\Time.cs" />
+    <Compile Include="TomatoClock\TomatoTime.cs" />
     <Compile Include="Configuration\ConfigService.cs" />
     <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
     <Compile Include="Configuration\Config\TomatoClockConfig.cs" />
-    <Compile Include="TomatoClock\TaskTomatoContext.cs" />
-    <Compile Include="TomatoClock\TaskTomatoList.cs" />
-    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UI.Tomato;
 
 namespace UI
 {
@@ -28,6 +29,12 @@ namespace UI
         {
             NewTaskWindow newTaskWindow = new NewTaskWindow();
             newTaskWindow.Show();
+        }
+
+        private void AllTasks_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            AllTasksWindow allTasksWindow=new AllTasksWindow();
+            allTasksWindow.Show();
         }
     }
 }
