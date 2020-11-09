@@ -27,7 +27,8 @@ namespace DesktopLearningAssistant.TimeStatistic
         {
             modelBuilder.Entity<UserActivity>().HasKey(ua => new { ua.Name, ua.CloseTime});     // 确认主键
 
-            modelBuilder.Entity<UserActivityPiece>().HasKey(uap => new { uap.Name, uap.StartTime });    // 确认主键
+            modelBuilder.Entity<UserActivityPiece>().HasKey(uap => new { uap.Id });             // 确认主键
+            modelBuilder.Entity<UserActivityPiece>().Property(uap => uap.Id).ValueGeneratedOnAdd();     // 主键自增
         }
 
         public DbSet<UserActivity> KilledActivities { get; set; }

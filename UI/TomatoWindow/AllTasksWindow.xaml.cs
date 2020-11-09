@@ -38,16 +38,16 @@ namespace UI.Tomato
         public string Name { set; get; }
         public DateTime StartTime { set; get; }
         public DateTime EndTime { set; get; }
-        public List<DesktopLearningAssistant.TomatoClock.Tomato> TomaList { set; get; }
-        public List<DesktopLearningAssistant.TomatoClock.Tomato> present_tomato { get; set; }
+        public List<DesktopLearningAssistant.TomatoClock.Model.Tomato> TomaList { set; get; }
+        public List<DesktopLearningAssistant.TomatoClock.Model.Tomato> present_tomato { get; set; }
         public int TaskState { get; set; }
         public string Notes { get; set; }
 
 
 
         public AllTaskShow(int taskId, string name, DateTime startTime, DateTime EndTime,
-            List<DesktopLearningAssistant.TomatoClock.Tomato> tomaList,
-            List<DesktopLearningAssistant.TomatoClock.Tomato> present_tomato, int TaskState, string notes        )
+            List<DesktopLearningAssistant.TomatoClock.Model.Tomato> tomaList,
+            List<DesktopLearningAssistant.TomatoClock.Model.Tomato> present_tomato, int TaskState, string notes        )
         {
             this.TaskID = taskId;
             this.Name = name;

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.Configuration;
 
 namespace UI
 {
@@ -28,6 +29,9 @@ namespace UI
             // 启动屏幕监控
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.Start();
+
+            // 读入配置
+            ConfigService.LoadFromJson();
         }
 
         /// <summary>
@@ -37,9 +41,16 @@ namespace UI
         /// <param name="e"></param>
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            // 关闭屏幕监控
+            ActivityMonitor am = ActivityMonitor.GetMonitor();
+            am.Stop();
+
             // 将屏幕时间统计数据写入DB
             TimeDataManager timeDataManager = TimeDataManager.GetTimeDataManager();
             timeDataManager.SaveDataToDb();
+
+            // 写入配置
+            ConfigService.SaveAsJson();
         }
     }
 }

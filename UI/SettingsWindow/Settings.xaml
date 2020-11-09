@@ -36,7 +36,14 @@
             </TabItem>
             <TabItem Header="软件类型设置">
                 <Grid>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="259" Margin="23,55,0,0" VerticalAlignment="Top" Width="441"/>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="284" Margin="10,39,0,0" VerticalAlignment="Top" Width="454">
+                        <Grid>
+                            <Label Content="软件" Width="50" Height="25" Margin="54,10,348.8,247.4"/>
+                            <Label Content="类型" Width="50" Margin="214,10,188.8,243.4"/>
+                            <ComboBox Name="SoftWareComboBox" Margin="41,40,338.8,210.4" ItemsSource="{Binding Path=SoftWareList}" SelectionChanged="SoftWareSelectionChanged"/>
+                            <ComboBox Name="TypeComboBox" Margin="200,44,179.8,206.4" ItemsSource="{Binding Path=TypeList}" SelectionChanged="TypeSelectionChange"/>
+                        </Grid>
+                    </Border>
                     <Button Content="确定" HorizontalAlignment="Left" Margin="389,328,0,0" VerticalAlignment="Top" Width="75"/>
                     <Label Content="设置各软件的软件类型" Margin="168,10,169.333,332.667"/>
                 </Grid>
