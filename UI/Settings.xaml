@@ -17,11 +17,11 @@
             pu:TabControlHelper.CanRemove="False"
             pu:TabControlHelper.SelectedBackground="AliceBlue"
             TabStripPlacement="Left" 
-            Margin="0,0,0,-0.333" SelectionChanged="TabControl_SelectionChanged">
+            Margin="0,0,0,-0.333">
             <TabItem Header="白名单">
                 <Grid>
                     <Label Content="选择默认设置的白名单以统计任务效率" HorizontalAlignment="Left" Margin="137,34,0,0" VerticalAlignment="Top" Height="33" Width="251"/>
-                    <Button Click="Button_Click" Content="确定" HorizontalAlignment="Left" Margin="375,322,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.884,6.097"/>
+                    <Button Content="确定" HorizontalAlignment="Left" Margin="375,322,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.884,6.097"/>
                     <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="208" VerticalAlignment="Top" Width="352" Margin="68,72,0,0">
                         <CheckBox Content="CheckBox" Margin="8.667,8.667,249.333,173.333"/>
                     </Border>
@@ -37,7 +37,7 @@
             <TabItem Header="软件类型设置">
                 <Grid>
                     <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="259" Margin="23,55,0,0" VerticalAlignment="Top" Width="441"/>
-                    <Button Content="确定" HorizontalAlignment="Left" Margin="389,328,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+                    <Button Content="确定" HorizontalAlignment="Left" Margin="389,328,0,0" VerticalAlignment="Top" Width="75"/>
                     <Label Content="设置各软件的软件类型" Margin="168,10,169.333,332.667"/>
                 </Grid>
             </TabItem>
