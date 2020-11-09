@@ -26,16 +26,16 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <!--lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}" DataClick="Chart_OnDataClick">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
-                                </-->
+                                </lvc:PieChart>
                             </Grid>
                         </TabItem>
                         <TabItem Header="昨日">
                             <Grid>
-                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection}">
+                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_yesterday}">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
