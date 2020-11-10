@@ -26,7 +26,8 @@ namespace UI.Tomato
             TaskInfo _task = new TaskInfo();
 
 
-            // AllTasksListView.Items.Add(new  )
+            AllTasksListView.Items.Add(new AllTaskShow(1, "六级试卷", "2016-09-27 01:02:03", "2016-09-28 01:02:03",
+                4, 1, false, "19年12月试卷"));
         }
      
     }
@@ -36,25 +37,25 @@ namespace UI.Tomato
     {
         public int TaskID { set; get; }
         public string Name { set; get; }
-        public DateTime StartTime { set; get; }
-        public DateTime EndTime { set; get; }
-        public List<DesktopLearningAssistant.TomatoClock.Model.Tomato> TomaList { set; get; }
-        public List<DesktopLearningAssistant.TomatoClock.Model.Tomato> present_tomato { get; set; }
-        public int TaskState { get; set; }
+        public string StartTime { set; get; }
+        public string EndTime { set; get; }
+        public int todo_numebr { get; set; }
+        public bool TaskState { get; set; }
+        public int completion_number { get; set; }
         public string Notes { get; set; }
 
 
 
-        public AllTaskShow(int taskId, string name, DateTime startTime, DateTime EndTime,
-            List<DesktopLearningAssistant.TomatoClock.Model.Tomato> tomaList,
-            List<DesktopLearningAssistant.TomatoClock.Model.Tomato> present_tomato, int TaskState, string notes        )
+        public AllTaskShow(int taskId, string name, string startTime, string endTime,
+            int todoNumebr,
+            int completion_number, bool TaskState, string notes )
         {
             this.TaskID = taskId;
             this.Name = name;
             this.StartTime = startTime;
-            this.EndTime = EndTime;
-            this.TomaList = tomaList;
-            this.present_tomato = present_tomato;
+            this.EndTime = endTime;
+            this.todo_numebr = todoNumebr;
+            this.completion_number = completion_number;
             this.TaskState = TaskState;
             this.Notes = notes;
 
