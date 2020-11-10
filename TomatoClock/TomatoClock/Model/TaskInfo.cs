@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DesktopLearningAssistant.TomatoClock.Model
 {
@@ -15,6 +12,8 @@ namespace DesktopLearningAssistant.TomatoClock.Model
         public string Notes { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime Deadline { get; set; }
+        public int TomatoNum { get; set; }
+        public int TomatoCount { get; set; }
         public int TaskState { get; set; }   //记录任务完成状态
     }
 

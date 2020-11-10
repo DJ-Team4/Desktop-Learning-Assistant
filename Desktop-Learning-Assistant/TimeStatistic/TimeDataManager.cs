@@ -131,7 +131,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public void LoadDataFromDb()
         {
-            using (var context = new TimeDataContext(options))
+  /*          using (var context = new TimeDataContext(options))
             {
                 UserActivityPieces = context.UserActivityPieces.ToList();
                 
@@ -142,6 +142,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                 lastUAPCount = UserActivityPieces.Count;
                 lastKACount = KilledActivities.Count;
             }
+            */
         }
 
         /// <summary>
