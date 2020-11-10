@@ -20,6 +20,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using UI.Process;
 using System.ComponentModel;
+using System.Threading;
 
 namespace UI
 {
@@ -137,8 +138,18 @@ namespace UI
 
         private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
-           timer.Start();
-           ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+          timer.Start();
+          Thread thread = new Thread(new ThreadStart(() =>
+          {
+              for (int i = 1; i <= 2500; i++)
+              {
+                  this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+                  Thread.Sleep(10000);
+              }
+          }));
+          thread.Start();
+
+            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
           this.ButtonImage.Source = pause;
         }
 
@@ -164,6 +175,7 @@ namespace UI
             //打开文件管理窗口
             new FileWindow.FileWindow().Show();
         }
+
     }
 }
 
