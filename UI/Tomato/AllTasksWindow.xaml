@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Tomato"
         mc:Ignorable="d"
-        Title="所有任务" Height="450" Width="750" >
+        Title="所有任务" Height="450" Width="780" >
     <Grid>
-        <ListView  Name="AllTasksListView" HorizontalAlignment="Left" Height="336" Margin="31,40,0,0" VerticalAlignment="Top" Width="664">
+        <ListView  Name="AllTasksListView" HorizontalAlignment="Left" Height="336" Margin="31,40,0,0" VerticalAlignment="Top" Width="703">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="任务ID" Width="50" DisplayMemberBinding="{Binding TaskID}" />
-                    <GridViewColumn Header="任务名称" Width="100" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="开始时间" Width="90" DisplayMemberBinding="{Binding StartTime}"/>
-                    <GridViewColumn Header="截止时间" Width="90" DisplayMemberBinding="{Binding EndTime}"/>
-                    <GridViewColumn Header="设定番茄数" Width="80" DisplayMemberBinding="{Binding TomatoList}"/>
-                    <GridViewColumn Header="已完成番茄数" Width="90" DisplayMemberBinding="{Binding present_tomato}"/>
-                    <GridViewColumn Header="任务状态" Width="60" DisplayMemberBinding="{Binding TaskState}"/>
-                    <GridViewColumn Header="备注" Width="100" DisplayMemberBinding="{Binding Notes}"/>
+                    <GridViewColumn Header="ID" Width="20" DisplayMemberBinding="{Binding TaskID}" />
+                    <GridViewColumn Header="任务名称" Width="90" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="开始时间" Width="130" DisplayMemberBinding="{Binding StartTime}"/>
+                    <GridViewColumn Header="截止时间" Width="130" DisplayMemberBinding="{Binding EndTime}"/>
+                    <GridViewColumn Header="设定番茄数" Width="70" DisplayMemberBinding="{Binding todo_numebr}"/>
+                    <GridViewColumn Header="已完成番茄数" Width="80" DisplayMemberBinding="{Binding completion_number}"/>
+                    <GridViewColumn Header="任务状态" Width="55" DisplayMemberBinding="{Binding TaskState}"/>
+                    <GridViewColumn Header="备注" Width="120" DisplayMemberBinding="{Binding Notes}"/>
                 </GridView>
             </ListView.View>
         </ListView>

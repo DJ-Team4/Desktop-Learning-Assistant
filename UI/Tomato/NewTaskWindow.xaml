@@ -14,7 +14,7 @@
         <Label Content="开始时间" HorizontalAlignment="Left" Margin="35,77,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
         <Label Content="截止时间" HorizontalAlignment="Left" Margin="35,128,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
         <Label Content="备注" HorizontalAlignment="Left" Margin="35,231,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
-        <Label Content="所需番茄钟" HorizontalAlignment="Left" Margin="35,176,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
+        <Label Content="所需番茄数" HorizontalAlignment="Left" Margin="35,176,0,0" VerticalAlignment="Top" Height="34" Width="104"  Background="AliceBlue" VerticalContentAlignment="Center"/>
         <TextBox HorizontalAlignment="Left" Height="34" Margin="177,26,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="140"/>
         <TextBox HorizontalAlignment="Left" Height="34" Margin="177,176,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="140"/>
         <TextBox HorizontalAlignment="Left" Height="97" Margin="178,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="149"/>
