@@ -209,6 +209,7 @@
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
+    <Compile Include="TomatoClock\Model\AppInfo.cs" />
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
     <Compile Include="TomatoClock\Model\Tomato.cs" />
     <Compile Include="TomatoClock\TaskTomatoContext.cs" />
