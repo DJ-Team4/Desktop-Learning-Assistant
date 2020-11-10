@@ -128,7 +128,7 @@
                         <Image x:Name="ButtonImage" Height="39" Width="48" Source="../Icon/Start.jpeg" >
                         </Image>
                     </Button>
-                    <Image Source="../Icon/More.png" Margin="231,421,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
+                    <Image Source="../Icon/More.png" Margin="238,426,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
                 </Grid>
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
@@ -154,7 +154,7 @@
 
                     <Label Content="需求分析报告.docx" Margin="57,261,78,166.8" />
                     <Label Content="选题报告.pdf" Height="31" Width="225" Margin="56,295,-13,134.8" />
-                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" Source="../Icon/file.jpeg"
+                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" 
                            VerticalAlignment="Top" Width="24"/>
 
                     <Button Content="文件管理"
@@ -165,9 +165,6 @@
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
-                    <Image HorizontalAlignment="Left" Height="26" Margin="12,295,0,0" VerticalAlignment="Top" Width="33" Source="../Icon/PDF.png"/>
-                    <Image HorizontalAlignment="Left" Height="26" Margin="12,264,0,0" VerticalAlignment="Top" Width="29" Source="../Icon/word (1).png"/>
-
 
                 </Grid>
             </TabItem>

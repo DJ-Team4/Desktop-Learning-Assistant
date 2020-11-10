@@ -204,6 +204,10 @@
     <Compile Include="TagFile\TagFileService.cs" />
     <Compile Include="TagFile\ITagFileService.cs" />
     <Compile Include="TagFile\InvalidExpressionException.cs" />
+    <Compile Include="TomatoClock\Model\TaskInfo.cs" />
+    <Compile Include="TomatoClock\Model\Tomato.cs" />
+    <Compile Include="TomatoClock\TaskTomatoContext.cs" />
+    <Compile Include="TomatoClock\TaskTomatoList.cs" />
     <Compile Include="TimeStatistic\Model\TypeActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
@@ -212,23 +216,12 @@
     <Compile Include="TimeStatistic\TimeDataManager.cs" />
     <Compile Include="TimeStatistic\TimeStatisticService.cs" />
     <Compile Include="TimeStatistic\ITimeStatisticService.cs" />
-    <Compile Include="TomatoClock\Model\TaskInfo.cs" />
-    <Compile Include="TomatoClock\Model\Tomato.cs" />
-    <Compile Include="TomatoClock\Time.cs" />
-    <Compile Include="TomatoClock\TomatoTime.cs" />
     <Compile Include="Configuration\ConfigService.cs" />
     <Compile Include="Configuration\Config\TimeStatisticConfig.cs" />
     <Compile Include="Configuration\Config\TomatoClockConfig.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="TomatoClock\TomatoClockService.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -250,6 +243,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="TomatoClock\.DS_Store" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -257,7 +251,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="TomatoClock\App.config" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">

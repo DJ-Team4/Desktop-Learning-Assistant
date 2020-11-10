@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DesktopLearningAssistant.TomatoClock.Model;
+using DesktopLearningAssistant.TomatoClock.SQLite;
 using UI.Tomato;
 
 namespace UI
@@ -20,6 +22,9 @@ namespace UI
     /// </summary>
     public partial class TomatoWindow : Window
     {
+        public TaskInfo taskinfo;
+        public TaskService tasksercive;
+
         public TomatoWindow()
         {
             InitializeComponent();
@@ -35,6 +40,12 @@ namespace UI
         {
             AllTasksWindow allTasksWindow=new AllTasksWindow();
             allTasksWindow.Show();
+        }
+
+        private void SearchTask_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            taskinfo.TaskID = int.Parse(SearchBox.Text);
+            tasksercive.ReadTask(taskinfo.TaskID);
         }
     }
 }

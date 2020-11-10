@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,55 +13,67 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DesktopLearningAssistant.TomatoClock.Model;
+using DesktopLearningAssistant.TomatoClock;
+using DesktopLearningAssistant.TomatoClock.SQLite;
 
 namespace UI.Tomato
 {
     /// <summary>
     /// AllTasksWindow.xaml 的交互逻辑
     /// </summary>
+    ///
+ 
     public partial class AllTasksWindow : Window
     {
+        public TaskInfo taskinfo;
+        public TaskService tasksercive;
+
         public AllTasksWindow()
         {
-            InitializeComponent();
-            TaskInfo _task = new TaskInfo();
+           InitializeComponent(); 
 
+           taskinfo=new TaskInfo();
+           int taskid = taskinfo.TaskID;
+           string name = taskinfo.Name;
+           DateTime startTime = taskinfo.StartTime;
+           DateTime deadLine = taskinfo.Deadline;
+           int tomatoNum = taskinfo.TomatoNum;
+           int tomatoCount = taskinfo.TomatoCount;
+           int taskState = taskinfo.TaskState;
+           string notes = taskinfo.Notes;
 
-            AllTasksListView.Items.Add(new AllTaskShow(1, "六级试卷", "2016-09-27 01:02:03", "2016-09-28 01:02:03",
-                4, 1, false, "19年12月试卷"));
+           AllTasksDataGrid.Items.Add(new {taskid, name, startTime, deadLine, tomatoNum, tomatoCount, taskState,notes});
+
         }
-     
-    }
 
 
-    class AllTaskShow
-    {
-        public int TaskID { set; get; }
-        public string Name { set; get; }
-        public string StartTime { set; get; }
-        public string EndTime { set; get; }
-        public int todo_numebr { get; set; }
-        public bool TaskState { get; set; }
-        public int completion_number { get; set; }
-        public string Notes { get; set; }
-
-
-
-        public AllTaskShow(int taskId, string name, string startTime, string endTime,
-            int todoNumebr,
-            int completion_number, bool TaskState, string notes )
+        private void Modify_OnClick(object sender, RoutedEventArgs e)
         {
-            this.TaskID = taskId;
-            this.Name = name;
-            this.StartTime = startTime;
-            this.EndTime = endTime;
-            this.todo_numebr = todoNumebr;
-            this.completion_number = completion_number;
-            this.TaskState = TaskState;
-            this.Notes = notes;
-
+            if (AllTasksDataGrid.SelectedItem != null)
+            {
+                tasksercive.ModifyTask(taskinfo);
+                MessageBox.Show("修改成功", "提示");
+            }
         }
 
+        private void Delete_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (AllTasksDataGrid.SelectedItem != null)
+            {
+                taskinfo.TaskID = int.Parse(AllTasksDataGrid.SelectedValue.ToString());
+                tasksercive.DeletTask(taskinfo.TaskID);
+                MessageBox.Show("删除成功", "提示");
+            }
+        }
 
+        private void Add_OnClick(object sender, RoutedEventArgs e)
+        {
+            tasksercive.AddTask(taskinfo);
+            MessageBox.Show("添加成功", "提示");
+
+        }
     }
+
+  
+
 }

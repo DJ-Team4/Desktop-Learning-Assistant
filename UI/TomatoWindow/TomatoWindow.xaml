@@ -31,7 +31,9 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Image HorizontalAlignment="Left" Height="33" Margin="260,16,0,0" VerticalAlignment="Top" Width="34" Source="../Icon/Search.png"/>
+        <Image HorizontalAlignment="Left" Height="33" Margin="260,16,0,0" VerticalAlignment="Top" Width="34" Source="../Icon/Search.png"
+               MouseLeftButtonDown="SearchTask_OnMouseLeftButtonDown"
+               />
         <Label Content="待完成" Background="AliceBlue" HorizontalAlignment="Left" Margin="25,81,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
         <Label Content="已完成" Background="AliceBlue" HorizontalAlignment="Left" Margin="25,183,0,0" VerticalAlignment="Top" Height="24" Width="58"/>
         <Label Content="需求分析报告.docx" HorizontalAlignment="Left" Margin="47,110,0,0" VerticalAlignment="Top" Height="24" Width="117"/>

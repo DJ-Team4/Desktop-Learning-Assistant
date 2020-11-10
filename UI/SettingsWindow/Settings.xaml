@@ -26,7 +26,6 @@
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="写代码">
                                 <StackPanel HorizontalAlignment="Left" Height="100" Margin="59,78,0,0" VerticalAlignment="Top" Width="100">
-                                    <
                                     <Grid Background="#FFE5E5E5" Margin="0, 0, 0, 0">
                                         <CheckBox Content="CheckBox" Margin="313,10,25.8,134.8"/>
 

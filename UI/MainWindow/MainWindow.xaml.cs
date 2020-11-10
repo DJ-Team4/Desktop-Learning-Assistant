@@ -51,7 +51,6 @@ namespace UI
                 (object state) => 
                 {
                     this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
-                    Console.WriteLine("Timer Invoke");
                 }), this, 0, 500);
         }
 
@@ -144,7 +143,7 @@ namespace UI
 
         private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
-          timer.Start();
+          tomatoTimer.Start();
           Thread thread = new Thread(new ThreadStart(() =>
           {
               for (int i = 1; i <= 2500; i++)
