@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
-//using Castle.Core.Internal;
 using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.TimeStatistic.Model;
 

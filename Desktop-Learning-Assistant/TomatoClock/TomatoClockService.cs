@@ -9,7 +9,7 @@ using DesktopLearningAssistant.TomatoClock.Model;
 
 namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
-    class TaskService
+    public class TaskService
     {
         #region 接口函数
         public void AddTask(TaskInfo taskInfo)

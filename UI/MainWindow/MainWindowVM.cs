@@ -7,6 +7,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.TimeStatistic;
+using System.Threading;
 
 namespace UI
 {
@@ -16,11 +17,9 @@ namespace UI
 
         public MainWindowViewModel()
         {
-            GetLineSeriesData();
-            GetColunmSeriesData();
-            GetPieSeriesData_today();
-            GetPieSeriesData_yesterday();
+            Update();
         }
+
         #region 属性
         /// <summary>
         /// 折线图集合
@@ -49,8 +48,24 @@ namespace UI
         public List<string> ColumnXLabels { get; set; } = new List<string>();
         #endregion
 
-        #region 方法
-        void GetLineSeriesData()
+        #region 公有方法
+
+        /// <summary>
+        /// 更新界面数据
+        /// </summary>
+        public void Update()
+        {
+            GetLineSeriesData();
+            GetColunmSeriesData();
+            GetPieSeriesData_today();
+            GetPieSeriesData_yesterday();
+        }
+
+        #endregion
+
+        #region 私有方法
+
+        private void GetLineSeriesData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
             List<List<double>> values = new List<List<double>>
@@ -72,81 +87,73 @@ namespace UI
             }
         }
 
-        void GetColunmSeriesData()
+        /// <summary>
+        /// 今日每个软件的时间统计柱状图
+        /// </summary>
+        private void GetColunmSeriesData()
         {
+            ColumnXLabels.Clear();
+            ColunmSeriesCollection.Clear();
+            ColumnSeries colunmSeries = new ColumnSeries();
+
             List<double> columnValues = new List<double> ();
             List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
-            for (int i = 0; i < userActivities.Count; i++)
+            for (int i = 0; i < userActivities.Count && i < 5; i++)
             {
                 ColumnXLabels.Add(userActivities[i].Name);
-            }
+                columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
+             }
             
-            ColumnSeries colunmseries = new ColumnSeries();
-            colunmseries.DataLabels = true;
-            for (int i = 0; i < userActivities.Count; i++)
-            {
-                columnValues.Add(userActivities[i].SpanTime.TotalHours);
-            }
-            colunmseries.Values = new ChartValues<double>(columnValues);
-            ColunmSeriesCollection.Add(colunmseries);
-
+            colunmSeries.DataLabels = true;
+            colunmSeries.Values = new ChartValues<double>(columnValues);
+            ColunmSeriesCollection.Add(colunmSeries);
         }
 
-        void GetPieSeriesData_today()
+        /// <summary>
+        /// 根据给定的时间返回一个饼状图
+        /// </summary>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        private SeriesCollection GetPieSeries(DateTime beginTime, DateTime endTime)
         {
-            List<string> titles=new List<string> ();
-            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today,DateTime.Now);
-            for(int i=0;i < ActivityData.Count && i < 4;i++)
-            {
-                titles.Add(ActivityData[i].TypeName);
-            }
-            List<double> pieValues = new List<double> ();
+            SeriesCollection seriesCollection = new SeriesCollection();
+
+            // 数据迁移
+            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(beginTime, endTime);
             for (int i = 0; i < ActivityData.Count && i < 4; i++)
             {
-                pieValues.Add(ActivityData[i].SpanTime.TotalMinutes);
-            }
-            ChartValues<double> chartvalue;
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
-            {
-                chartvalue = new ChartValues<double>
+                PieSeries series = new PieSeries();
+                ChartValues<double> chartValue = new ChartValues<double>
                 {
-                    pieValues[i]
+                    Math.Round(ActivityData[i].SpanTime.TotalMinutes, 2)
                 };
-                PieSeries series = new PieSeries();
                 series.DataLabels = true;
-                series.Title = titles[i];
-                series.Values = chartvalue;
-                PieSeriesCollection_today.Add(series);
+                series.Title = ActivityData[i].TypeName;
+                series.Values = chartValue;
+                seriesCollection.Add(series);
             }
+
+            return seriesCollection;
         }
 
-        void GetPieSeriesData_yesterday()
+        /// <summary>
+        /// 更新今日的饼状图
+        /// </summary>
+        private void GetPieSeriesData_today()
         {
-            List<string> titles = new List<string> ();
-            List<double> pieValues = new List<double> ();
-            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today.AddDays(-1), DateTime.Today.AddSeconds(-1));
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
-            {
-                titles.Add(ActivityData[i].TypeName);
-            }
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
-            {
-                pieValues.Add(ActivityData[i].SpanTime.TotalHours);
-            }
-            ChartValues<double> chartvalue = new ChartValues<double>();
-            for (int i = 0; i < titles.Count; i++)
-            {
-                chartvalue = new ChartValues<double>();
-                chartvalue.Add(pieValues[i]);
-                PieSeries series = new PieSeries();
-                series.DataLabels = true;
-                series.Title = titles[i];
-                series.Values = chartvalue;
-                PieSeriesCollection_yesterday.Add(series);
-            }
+            PieSeriesCollection_today = GetPieSeries(DateTime.Today, DateTime.Now);
         }
 
-        void ThreeColumnData()
+        /// <summary>
+        /// 更新昨日的饼状图
+        /// </summary>
+        private void GetPieSeriesData_yesterday()
+        {
+            PieSeriesCollection_yesterday = GetPieSeries(DateTime.Today.AddDays(-1), DateTime.Today.AddSeconds(-1));
+        }
+
+        private void ThreeColumnData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
             //三列示例数据
@@ -173,7 +180,7 @@ namespace UI
         /// 获取当前月的每天的日期
         /// </summary>
         /// <returns>日期集合</returns>
-        List<string> GetCurrentMonthDates()
+        private List<string> GetCurrentMonthDates()
         {
             List<string> dates = new List<string>();
             DateTime dt = DateTime.Now;
@@ -191,6 +198,7 @@ namespace UI
             }
             return dates;
         }
+
         #endregion
     }
 }

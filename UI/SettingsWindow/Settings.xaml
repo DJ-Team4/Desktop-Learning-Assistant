@@ -22,12 +22,23 @@
                 <Grid>
                     <Label Content="选择默认设置的白名单以统计任务效率" HorizontalAlignment="Left" Margin="137,34,0,0" VerticalAlignment="Top" Height="33" Width="251"/>
                     <Button Content="确定" HorizontalAlignment="Left" Margin="375,322,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.884,6.097"/>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="208" VerticalAlignment="Top" Width="352" Margin="68,72,0,0">
-                        <CheckBox Content="CheckBox" Margin="8.667,8.667,249.333,173.333"/>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,81,0,0" Height="225" Width="438">
+                        <TabControl Margin="0,0,0,0">
+                            <TabItem Header="写代码">
+                                <StackPanel HorizontalAlignment="Left" Height="100" Margin="59,78,0,0" VerticalAlignment="Top" Width="100">
+                                    <Grid Background="#FFE5E5E5" Margin="0, 0, 0, 0">
+                                        <CheckBox Content="CheckBox" Margin="313,10,25.8,134.8"/>
+
+                                    </Grid>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="剪视频">
+                                <Grid Background="#FFE5E5E5" Margin="0, 0, 0, 0">
+
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
                     </Border>
-                    <CheckBox Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="77,112,0,0"/>
-                    <CheckBox Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="77,144,0,0"/>
-                    <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="77,179,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>

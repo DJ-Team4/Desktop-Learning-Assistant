@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -40,9 +40,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
         [Required]
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
-        public List<string> DefaultFocusApp { get; set; }   //Get the default focused App list
-        
-        //public DateTime LastWorkTime { get; set; }   //Save the last time the task being opend
+        public List<string> DefaultFocusApp { get; set; }
 
         [ForeignKey("TaskLists")]
         public int TaskID { get; set; }         //foreign key
