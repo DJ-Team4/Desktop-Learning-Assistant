@@ -68,14 +68,19 @@
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
                     <Label Content="当前任务" Margin="2,2,209.6,447"   HorizontalAlignment="Center" VerticalAlignment="Center" Background="AliceBlue" Height="35" />
-                    <Label Content="六级试卷" Margin="117,10,83.6,420.8"  />
+                    <Label Content="六级试卷" Margin="117,10,83.6,442"  />
 
-                    <ProgressBar BorderBrush="Coral"
-                                 BorderThickness="10"
+                    <ProgressBar 
+                                 Name="TomatoProgressBar"
+                                 BorderBrush="Coral"
+                                 BorderThickness="12"
                                  Background="WhiteSmoke"
                                  pu:ProgressBarHelper.ProgressBarStyle="Ring"
                                  pu:ProgressBarHelper.CornerRadius="15"
-                                 pu:ProgressBarHelper.IsPercentVisible="True" Margin="50,47,34.6,243"/>
+                                 pu:ProgressBarHelper.IsPercentVisible="false"
+                                 Margin="50,47,34.6,243"
+                                 
+                                 />
                     <Label Content="正在使用..." Margin="10,215,187.6,210"  />
                     <Label Content="专注" Margin="201,216,34.6,209.8"  />
 
@@ -109,11 +114,11 @@
                     <Label Content="网易有道词典" Background="AliceBlue" Margin="10,383,157.6,65" />
 
 
-                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="10,79,232.6,358"/>
-                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="AliceBlue" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40" Background="AliceBlue" Margin="0,107,58.6,298" Height="55" Width="144" />
-                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="132,107,122.6,298" Width="23"/>
-                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="AliceBlue" Height="55" Margin="157,107,58.6,298" Width="62"/>
+                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="10,79,232.6,358"/>
+                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
+                    <TextBlock Background="Transparent" Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40"  Margin="0,107,58.6,298" Height="55" Width="144" />
+                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="134,119,120.6,310" Width="23"/>
+                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="157,107,58.6,298" Width="62"/>
 
                     <Button x:Name="btn" 
                             BorderBrush="Transparent"
@@ -123,7 +128,7 @@
                         <Image x:Name="ButtonImage" Height="39" Width="48" Source="../Icon/Start.jpeg" >
                         </Image>
                     </Button>
-                    <Image Source="../Icon/More.png" Margin="231,421,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
+                    <Image Source="../Icon/More.png" Margin="238,426,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
                 </Grid>
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
@@ -149,7 +154,7 @@
 
                     <Label Content="需求分析报告.docx" Margin="57,261,78,166.8" />
                     <Label Content="选题报告.pdf" Height="31" Width="225" Margin="56,295,-13,134.8" />
-                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" Source="../Icon/file.jpeg"
+                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" 
                            VerticalAlignment="Top" Width="24"/>
 
                     <Button Content="文件管理"
@@ -160,9 +165,6 @@
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
-                    <Image HorizontalAlignment="Left" Height="26" Margin="12,295,0,0" VerticalAlignment="Top" Width="33" Source="../Icon/PDF.png"/>
-                    <Image HorizontalAlignment="Left" Height="26" Margin="12,264,0,0" VerticalAlignment="Top" Width="29" Source="../Icon/word (1).png"/>
-
 
                 </Grid>
             </TabItem>

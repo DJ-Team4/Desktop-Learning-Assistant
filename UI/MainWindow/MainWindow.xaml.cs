@@ -51,7 +51,6 @@ namespace UI
                 (object state) => 
                 {
                     this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
-                    Console.WriteLine("Timer Invoke");
                 }), this, 0, 500);
         }
 
@@ -144,8 +143,18 @@ namespace UI
 
         private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
-           tomatoTimer.Start();
-           ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+          tomatoTimer.Start();
+          Thread thread = new Thread(new ThreadStart(() =>
+          {
+              for (int i = 1; i <= 2500; i++)
+              {
+                  this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+                  Thread.Sleep(10000);
+              }
+          }));
+          thread.Start();
+
+            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
           this.ButtonImage.Source = pause;
         }
 
@@ -171,6 +180,7 @@ namespace UI
             //打开文件管理窗口
             new FileWindow.FileWindow().Show();
         }
+
     }
 }
 

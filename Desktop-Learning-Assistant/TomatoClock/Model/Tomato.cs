@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DesktopLearningAssistant.TomatoClock.Model
 {
@@ -7,5 +8,6 @@ namespace DesktopLearningAssistant.TomatoClock.Model
         public int TomatoID;
         public DateTime StartTime;
         public DateTime EndTime;
+        public List<string> FocusApp;
     }
 }
