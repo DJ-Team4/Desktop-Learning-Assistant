@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.Configuration.Config;
+using System.Windows.Documents;
 
 namespace DesktopLearningAssistant.TimeStatistic
 {
@@ -56,6 +57,22 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// Monitor的检查周期，单位：毫秒
         /// </summary>
         private int timeSlice;
+
+        #endregion
+
+        #region 公有变量
+
+        /// <summary>
+        /// 数据更新委托
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void DataUpdateEventHandler(object sender, EventArgs e);
+
+        /// <summary>
+        /// 数据更新事件
+        /// </summary>
+        public event DataUpdateEventHandler DataUpdateEvent;
 
         #endregion
 
@@ -191,6 +208,10 @@ namespace DesktopLearningAssistant.TimeStatistic
                                 TDManager.KilledActivities.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
                             }
                         }
+                    }
+                    if (!closeFlag)
+                    {
+                        Task.Run(new Action(() => { uniqueMonitor.DataUpdateEvent?.Invoke(this, new EventArgs()); }));      // 异步调用委托
                     }
                 }
                 catch (Exception)

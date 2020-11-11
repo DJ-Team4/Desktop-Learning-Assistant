@@ -22,6 +22,11 @@ namespace DesktopLearningAssistant.Configuration
         /// </summary>
         public TimeStatisticConfig TSConfig { get; set; }
 
+        /// <summary>
+        /// 番茄钟/任务管理模块配置项
+        /// </summary>
+        public TomatoClockConfig TCConfig { get; set; }
+
         #endregion
 
         /// <summary>
@@ -112,6 +117,7 @@ namespace DesktopLearningAssistant.Configuration
         {
             if (uniqueConfigService == null) return;
             uniqueConfigService.TSConfig.SetDefault();
+            uniqueConfigService.TCConfig.SetDefault();
         }
     }
 }

@@ -21,6 +21,7 @@ using LiveCharts.Wpf;
 using UI.Process;
 using System.ComponentModel;
 using System.Threading;
+using DesktopLearningAssistant.TimeStatistic;
 
 namespace UI
 {
@@ -35,7 +36,6 @@ namespace UI
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
 
-        private Timer updateMainVMTimer;
         private DispatcherTimer tomatoTimer;
 
         public MainWindow()
@@ -46,12 +46,14 @@ namespace UI
 
             this.DataContext = mainWindowViewModel;
 
-            // 定时更新ViewModel数据
-            updateMainVMTimer = new Timer(new TimerCallback(
-                (object state) => 
-                {
-                    this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
-                }), this, 0, 500);
+            // 当数据发生变化时，更新ViewModel数据
+            ActivityMonitor am = ActivityMonitor.GetMonitor();
+            am.DataUpdateEvent += Am_DataUpdateEvent;
+        }
+
+        private void Am_DataUpdateEvent(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
         }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)

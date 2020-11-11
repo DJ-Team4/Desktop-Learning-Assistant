@@ -134,13 +134,12 @@ namespace DesktopLearningAssistant.TimeStatistic
             using (var context = new TimeDataContext(options))
             {
                 UserActivityPieces = context.UserActivityPieces.ToList();
-                
-                UserActivityPieces.Add(new UserActivityPiece() 
-                {  Name = "Idle", StartTime = DateTime.Now, Detail = "", CloseTime = DateTime.Now });    // 添加一个Idle，以避免ActivityMonitor修改数据库中读出的最后一项数据
-
                 KilledActivities = context.KilledActivities.ToList();
                 lastUAPCount = UserActivityPieces.Count;
                 lastKACount = KilledActivities.Count;
+
+                UserActivityPieces.Add(new UserActivityPiece()
+                { Name = "Idle", StartTime = DateTime.Now, Detail = "", CloseTime = DateTime.Now });    // 添加一个Idle，以避免ActivityMonitor修改数据库中读出的最后一项数据
             }
         }
 

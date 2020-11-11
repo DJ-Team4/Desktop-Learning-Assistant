@@ -226,7 +226,7 @@
     <Resource Include="Icon\浏览器.png" />
     <Resource Include="Icon\tomatofinished.png" />
     <Resource Include="Icon\tomatounfinished.png" />
-    <Resource Include="Icon\箭头%281%29.png" />
+    <Resource Include="Icon\箭头.png" />
     <Resource Include="Icon\More.png" />
     <Resource Include="Icon\详情.png" />
   </ItemGroup>
