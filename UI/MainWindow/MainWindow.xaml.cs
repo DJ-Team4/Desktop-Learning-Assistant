@@ -35,19 +35,24 @@ namespace UI
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
 
-        private DispatcherTimer timer;
-        //
+        private Timer updateMainVMTimer;
+        private DispatcherTimer tomatoTimer;
 
         public MainWindow()
         {
             InitializeComponent();
             
-
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
 
             this.DataContext = mainWindowViewModel;
-        }
 
+            // 定时更新ViewModel数据
+            updateMainVMTimer = new Timer(new TimerCallback(
+                (object state) => 
+                {
+                    this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
+                }), this, 0, 500);
+        }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -66,9 +71,9 @@ namespace UI
         {
             //设置定时器
 
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(10000000); //时间间隔为一秒
-            timer.Tick += new EventHandler(Timer_Tick);
+            tomatoTimer = new DispatcherTimer();
+            tomatoTimer.Interval = new TimeSpan(10000000); //时间间隔为一秒
+            tomatoTimer.Tick += new EventHandler(Timer_Tick);
             //转换成秒数
             Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
@@ -108,7 +113,7 @@ namespace UI
                 SecondArea.Text = timeCount.GetSecond();
             }
             else
-                timer.Stop();
+                tomatoTimer.Stop();
         }
 
         private void File_DragEnter(object sender, DragEventArgs e)
@@ -138,7 +143,7 @@ namespace UI
 
         private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
-          timer.Start();
+          tomatoTimer.Start();
           Thread thread = new Thread(new ThreadStart(() =>
           {
               for (int i = 1; i <= 2500; i++)
@@ -155,7 +160,7 @@ namespace UI
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
-            timer.Stop();
+            tomatoTimer.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
             this.ButtonImage.Source = start;
 

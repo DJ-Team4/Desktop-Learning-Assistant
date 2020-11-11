@@ -15,7 +15,7 @@
                 pu:TabControlHelper.SelectedBackground="AliceBlue"
                 TabStripPlacement="Left" 
                 Margin="0,0,-0.4,9.4" HorizontalAlignment="Left" Width="354">
-            <TabItem Header="时间统计" >
+            <TabItem Header="时间统计" Name="TimeStatisticTabItem">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="33*"/>
@@ -26,7 +26,7 @@
                                  TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick" Opacity="0.8">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
@@ -55,7 +55,7 @@
                             </Grid>
                         </TabItem>
                     </TabControl>
-                    <lvc:CartesianChart Series="{Binding ColunmSeriesCollection}" Margin="0,26.6,0,-0.2" Grid.Row="1">
+                    <lvc:CartesianChart Series="{Binding ColunmSeriesCollection}" Margin="0,26.6,0,-0.2" Grid.Row="1" AnimationsSpeed="0">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
@@ -165,7 +165,6 @@
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
-
 
                 </Grid>
             </TabItem>

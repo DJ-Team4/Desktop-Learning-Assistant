@@ -140,9 +140,9 @@
 
 ## 1. TaskTomatoService
 
-	### 1.1 对 TaskList 进行操作
+### 1.1 对 TaskList 进行操作
 
-	#### 1.1.1 AddTask(TaskInfo taskInfo)
+#### 1.1.1 AddTask(TaskInfo taskInfo)
 
 将用户键入的信息以 TaskInfo 结构存入 TaskList 表中。
 
@@ -166,15 +166,25 @@
 
 #### 1.2.3 AddTomatoEndTime(int iTaskID, int iTomatoID)
 
-为正在进行的任务的番茄钟添加结束时间，并调用私有函数 AddTomatoNum() 判断是否要为对应任务更新番茄钟数量。
+为正在进行的任务的番茄钟添加结束时间，并调用私有函数 AddTomatoNum() 判断是否要为对应任务更新番茄钟数量，调用私有函数GiveFilePath() 获取当前番茄钟内所有打开文件的信息。
 
 #### 1.2.4 ReadTomato(int iTaskID)
 
 提供 ID 为TaskID 的所有番茄钟信息（起止时间），返回 List\<Tomato\>。
 
-#### 1.2.5 AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
+#### 1.2.5 RecentTenApp(DateTime iTime)
+
+提供时间节点 iTime 之前最新完成的十个任务的任务名，返回任务名列表 List\<string>
+
+### 1.3 私有方法
+
+#### 1.3.1 AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
 
 私有方法，您不需要关心此方法。在为当前番茄钟添加结束时间后，通过时间差判断是否完成此次番茄钟，若完成则为该任务番茄钟数加一，若未完成则保持番茄数不变。
+
+#### 1.3.2 GetFilePath(DateTime iBeginTime, DateTime iEndTime, int iTaskID)
+
+私有方法，您不需要关心此方法。在为当前番茄钟添加结束时间后，通过开始和结束两个时间节点在系统 Recent 文件夹中获取所给时间段段内的所有使用过的文件信息，将快捷方式路径解析为实际路径，并返回文件实际路径列表。
 
 
 

@@ -16,5 +16,4 @@ namespace DesktopLearningAssistant.TomatoClock.Model
         public int TomatoCount { get; set; }
         public int TaskState { get; set; }   //记录任务完成状态
     }
-
 }

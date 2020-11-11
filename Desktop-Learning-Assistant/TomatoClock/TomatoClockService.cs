@@ -11,6 +11,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
 {
     public class TaskService
     {
+        #region 接口函数
         public void AddTask(TaskInfo taskInfo)
         {
             using (var context = Context)
@@ -112,7 +113,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                 var taskfile = context.TaskFileLists.FirstOrDefault(f => f.TaskID == iTaskID);
                 if (taskfile != null)
                 {
-                    
+                    GetFilePath(tomato.BeginTime, tomato.EndTime, iTaskID);
                 }
                 context.SaveChanges();
             }
@@ -122,18 +123,57 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             List<Tomato> TomatoList = new List<Tomato>();
             using (var context = Context)
             {
-                var query = context.TaskTomatoes.Where(tt => tt.TaskLists.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
+                var query = context.TaskTomatoes.Where(tt => tt.TaskID == iTaskID).OrderBy(tt => tt.TomatoID);
                 foreach (var tt in query)
                 {
-                    Tomato tomato = new Tomato();
-                    tomato.TomatoID = tt.TomatoID;
-                    tomato.StartTime = tt.BeginTime;
-                    tomato.EndTime = tt.EndTime;
+                    Tomato tomato = new Tomato
+                    {
+                        TomatoID = tt.TomatoID,
+                        StartTime = tt.BeginTime,
+                        EndTime = tt.EndTime
+                    };
                     TomatoList.Add(tomato);
                 }
                 return TomatoList;
             }
         }
+        public List<string> RecentTenApp(DateTime iTime)
+        {
+            List<string> AppList = new List<string>();
+
+            Dictionary<string, DateTime> RecentOpen = new Dictionary<string, DateTime>();
+
+            // Get Dictionary<TaskName,EachToamtoEndTime> to order
+            using (var context = Context)
+            {
+                var query = context.Tasks.Where(t => t.State == 1).OrderBy(t => t.TaskID);
+                foreach (var t in query)
+                {
+                    var tquery = context.TaskTomatoes.Where(tt => tt.TaskID == t.TaskID).OrderBy(tt => tt.TomatoID);
+                    foreach (var tt in tquery)
+                    {
+                        if (DateTime.Compare(iTime, tt.EndTime) > 0)
+                        {
+                            if (RecentOpen.ContainsKey(t.Name) && DateTime.Compare(RecentOpen[t.Name], tt.EndTime) > 0)
+                                RecentOpen[t.Name] = tt.EndTime;
+                            else
+                                RecentOpen.Add(t.Name, tt.EndTime);
+                        }
+                    }
+                }
+            }
+            Dictionary<string,DateTime> RecentOpenDesc = RecentOpen.OrderByDescending(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
+            foreach (var key in RecentOpenDesc.Keys)
+            {
+                if (AppList.Count <= 10)
+                    AppList.Add(key);
+            }
+
+            return AppList;
+        }
+        #endregion
+
+        #region 私有函数
         private int AddTomatoNum(DateTime iBeginTime, DateTime iEndTime, int iTomatoCount)
         {
             TimeSpan ts1 = new TimeSpan(iBeginTime.Ticks);
@@ -171,6 +211,7 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
             }
             
         }
+        #endregion
 
         //private readonly TaskTomatoContext context;
         /// <summary>
