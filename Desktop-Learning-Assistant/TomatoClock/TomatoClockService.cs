@@ -162,7 +162,6 @@ namespace DesktopLearningAssistant.TomatoClock.SQLite
                     }
                 }
             }
-
             Dictionary<string,DateTime> RecentOpenDesc = RecentOpen.OrderByDescending(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
             foreach (var key in RecentOpenDesc.Keys)
             {
