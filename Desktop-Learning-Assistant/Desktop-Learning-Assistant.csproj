@@ -207,7 +207,7 @@
     <Compile Include="TomatoClock\Model\TaskInfo.cs" />
     <Compile Include="TomatoClock\Model\Tomato.cs" />
     <Compile Include="TomatoClock\TaskTomatoContext.cs" />
-    <Compile Include="TomatoClock\TaskTomatoList.cs" />
+    <Compile Include="TomatoClock\Model\TaskTomatoList.cs" />
     <Compile Include="TimeStatistic\Model\TypeActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivity.cs" />
     <Compile Include="TimeStatistic\Model\UserActivityPiece.cs" />
@@ -243,15 +243,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="TomatoClock\.DS_Store" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TomatoClock\App.config" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
