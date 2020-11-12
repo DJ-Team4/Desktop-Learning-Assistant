@@ -43,11 +43,6 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public List<UserActivityPiece> UserActivityPieces { get; set; }
 
-        /// <summary>
-        /// 软件的类型字典集合
-        /// </summary>
-        public Dictionary<string, string> TypeDict { get; set; }
-
         #endregion
 
         #region 私有属性
@@ -78,9 +73,6 @@ namespace DesktopLearningAssistant.TimeStatistic
             var builder = new DbContextOptionsBuilder<TimeDataContext>();
             builder.UseSqlite($"Data Source={dbPath}");
             options = builder.Options;
-
-            // 读出配置文件中的TypeDict
-            TypeDict = ConfigService.GetConfigService().TSConfig.TypeDict;
         }
 
         /// <summary>

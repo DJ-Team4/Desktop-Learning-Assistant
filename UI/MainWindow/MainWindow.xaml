@@ -14,7 +14,7 @@
                 pu:TabControlHelper.CanRemove="False"
                 pu:TabControlHelper.SelectedBackground="AliceBlue"
                 TabStripPlacement="Left" 
-                Margin="0,0,-0.4,9.4" HorizontalAlignment="Left" Width="354">
+                Margin="0,0,-0.667,0.333" HorizontalAlignment="Left" Width="354">
             <TabItem Header="时间统计" Name="TimeStatisticTabItem">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -23,26 +23,47 @@
                     </Grid.RowDefinitions>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                                 TabStripPlacement="Bottom" Margin="54,0,34,268.8"  Grid.RowSpan="2">
+                                 TabStripPlacement="Top"  Grid.RowSpan="2" Margin="0,0,0,45">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick" Opacity="0.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*"/>
+                                    <ColumnDefinition Width="155*"/>
+                                </Grid.ColumnDefinitions>
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
+                                    <TextBlock Name="TmpTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="170" Width="258"/>
                                 </lvc:PieChart>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="昨日">
-                            <Grid>
-                                <lvc:PieChart x:Name="yesterday_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_yesterday}">
-                                    <lvc:PieChart.DataTooltip>
-                                        <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
-                                    </lvc:PieChart.DataTooltip>
-                                </lvc:PieChart>
+                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_today}" Margin="0,226,0,0" Grid.ColumnSpan="2">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
                             </Grid>
                         </TabItem>
                         <TabItem Header="一周">
+                            <Grid>
+                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_week}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                    <lvc:PieChart.DataTooltip>
+                                        <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
+                                    </lvc:PieChart.DataTooltip>
+                                </lvc:PieChart>
+                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_week}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                            </Grid>
+                        </TabItem>
+                        <!--TabItem Header="一周">
                             <Grid>
                                 <lvc:CartesianChart Series="{Binding LineSeriesCollection}">
                                     <lvc:CartesianChart.AxisY>
@@ -53,16 +74,11 @@
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
                             </Grid>
-                        </TabItem>
+                        </-->
+
                     </TabControl>
-                    <lvc:CartesianChart Series="{Binding ColunmSeriesCollection}" Margin="0,26.6,0,-0.2" Grid.Row="1" AnimationsSpeed="0">
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                    </lvc:CartesianChart>
+                    <Button Content="时间轴" Click="Button_Click_1"  HorizontalAlignment="Left" Margin="205,276.333,0,0" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.178,0.95" Height="31" pu:ButtonHelper.ButtonStyle="Link" Grid.Row="1">
+                    </Button>
                 </Grid>
             </TabItem>
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">

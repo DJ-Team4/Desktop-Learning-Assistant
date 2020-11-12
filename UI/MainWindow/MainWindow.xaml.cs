@@ -22,6 +22,10 @@ using UI.Process;
 using System.ComponentModel;
 using System.Threading;
 using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.TaskTomato;
+using DesktopLearningAssistant.TaskTomato.Model;
+
+using TTomato = DesktopLearningAssistant.TaskTomato.Model.Tomato;
 
 namespace UI
 {
@@ -31,7 +35,8 @@ namespace UI
     public partial class MainWindow : Window
     {
         public SeriesCollection SeriesCollection { get; set; }
-        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+
+        private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
@@ -49,6 +54,52 @@ namespace UI
             // 当数据发生变化时，更新ViewModel数据
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.DataUpdateEvent += Am_DataUpdateEvent;
+
+            // 测试TaskTomato服务
+            testTmp();
+        }
+
+        private void testTmp()
+        {
+            TaskInfo taskInfo1 = new TaskInfo()
+            {
+                Name = "重写美偲的接口",
+                Notes = "……",
+                TotalTomatoCount = 5,
+                StartTime = DateTime.Today,
+                EndTime = DateTime.Today.AddDays(1),
+            };
+
+            TaskInfo taskInfo2 = new TaskInfo()
+            {
+                Name = "解决频闪问题",
+                Notes = "……",
+                TotalTomatoCount = 5,
+                StartTime = DateTime.Today,
+                EndTime = DateTime.Today.AddDays(1),
+            };
+
+            TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+            tts.AddTask(taskInfo1);
+            tts.AddTask(taskInfo2);
+
+            TaskInfo taskInfo3 = tts.GetTaskWithID(1);
+            TaskInfo taskInfo4 = tts.GetTaskWithName("解决频闪问题");
+
+            List<TaskInfo> taskInfos = tts.GetAllUnfinishedTaskInfos();
+
+            tts.DeleteTask(taskInfo3.TaskID);
+            tts.DeleteTask(taskInfo4.TaskID);
+
+            tts.AddTask(taskInfo1);
+            TTomato tomato = new TTomato()
+            {
+                TaskID = 1,
+                BeginTime = DateTime.Today,
+                EndTime = DateTime.Now
+            };
+            tts.FinishedOneTomato(tomato);
+            taskInfos = tts.GetAllUnfinishedTaskInfos();
         }
 
         private void Am_DataUpdateEvent(object sender, EventArgs e)
@@ -76,6 +127,7 @@ namespace UI
             tomatoTimer = new DispatcherTimer();
             tomatoTimer.Interval = new TimeSpan(10000000); //时间间隔为一秒
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
+
             //转换成秒数
             Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
@@ -183,6 +235,11 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            TimelineWindow timelineWindow = new TimelineWindow();
+            timelineWindow.Show();
+        }
     }
 }
 

@@ -12,9 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DesktopLearningAssistant.TomatoClock.Model;
-using DesktopLearningAssistant.TomatoClock;
-using DesktopLearningAssistant.TomatoClock.SQLite;
+using DesktopLearningAssistant.TaskTomato.Model;
+using DesktopLearningAssistant.TaskTomato;
 
 namespace UI.Tomato
 {
@@ -26,7 +25,7 @@ namespace UI.Tomato
     public partial class AllTasksWindow : Window
     {
         public TaskInfo taskinfo;
-        public TaskService tasksercive;
+        public TaskTomatoService tasksercive;
 
         public AllTasksWindow()
         {
@@ -36,10 +35,10 @@ namespace UI.Tomato
            int taskid = taskinfo.TaskID;
            string name = taskinfo.Name;
            DateTime startTime = taskinfo.StartTime;
-           DateTime deadLine = taskinfo.Deadline;
-           int tomatoNum = taskinfo.TomatoNum;
-           int tomatoCount = taskinfo.TomatoCount;
-           int taskState = taskinfo.TaskState;
+           DateTime deadLine = taskinfo.EndTime;
+           int tomatoNum = taskinfo.TotalTomatoCount;
+           int tomatoCount = taskinfo.FinishedTomatoCount;
+           bool taskState = taskinfo.Finished;
            string notes = taskinfo.Notes;
 
            AllTasksDataGrid.Items.Add(new {taskid, name, startTime, deadLine, tomatoNum, tomatoCount, taskState,notes});
@@ -61,7 +60,7 @@ namespace UI.Tomato
             if (AllTasksDataGrid.SelectedItem != null)
             {
                 taskinfo.TaskID = int.Parse(AllTasksDataGrid.SelectedValue.ToString());
-                tasksercive.DeletTask(taskinfo.TaskID);
+                tasksercive.DeleteTask(taskinfo.TaskID);
                 MessageBox.Show("删除成功", "提示");
             }
         }
