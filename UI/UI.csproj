@@ -130,6 +130,9 @@
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TomatoWindow\MyProgressbar\Progressbar_xy.xaml.cs">
+      <DependentUpon>Progressbar_xy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TomatoWindow\NewTaskWindow.xaml.cs">
       <DependentUpon>NewTaskWindow.xaml</DependentUpon>
     </Compile>
@@ -139,9 +142,6 @@
     </Compile>
     <Compile Include="FileWindow\FileWindow.xaml.cs">
       <DependentUpon>FileWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TomatoWindow\TomatoWindow.xaml.cs">
-      <DependentUpon>TomatoWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +167,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TomatoWindow\MyProgressbar\Progressbar_xy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TomatoWindow\NewTaskWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,10 +180,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FileWindow\FileWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TomatoWindow\TomatoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

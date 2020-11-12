@@ -22,58 +22,62 @@ namespace UI.Tomato
     /// AllTasksWindow.xaml 的交互逻辑
     /// </summary>
     ///
- 
+
     public partial class AllTasksWindow : Window
     {
-        public TaskInfo taskinfo;
-        public TaskService tasksercive;
+
 
         public AllTasksWindow()
         {
-           InitializeComponent(); 
-
-           taskinfo=new TaskInfo();
-           int taskid = taskinfo.TaskID;
-           string name = taskinfo.Name;
-           DateTime startTime = taskinfo.StartTime;
-           DateTime deadLine = taskinfo.Deadline;
-           int tomatoNum = taskinfo.TomatoNum;
-           int tomatoCount = taskinfo.TomatoCount;
-           int taskState = taskinfo.TaskState;
-           string notes = taskinfo.Notes;
-
-           AllTasksDataGrid.Items.Add(new {taskid, name, startTime, deadLine, tomatoNum, tomatoCount, taskState,notes});
-
-        }
-
-
-        private void Modify_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (AllTasksDataGrid.SelectedItem != null)
+            InitializeComponent();
+            List<TaskItem> items = new List<TaskItem>();
+            items.Add(new TaskItem()
             {
-                tasksercive.ModifyTask(taskinfo);
-                MessageBox.Show("修改成功", "提示");
-            }
-        }
-
-        private void Delete_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (AllTasksDataGrid.SelectedItem != null)
+                ID = 1, Name = "做PPT", State = StateType.Done, StartTime = DateTime.Now.ToString(),
+                DeadLine = DateTime.Now.ToString()
+            });
+            items.Add(new TaskItem()
             {
-                taskinfo.TaskID = int.Parse(AllTasksDataGrid.SelectedValue.ToString());
-                tasksercive.DeletTask(taskinfo.TaskID);
-                MessageBox.Show("删除成功", "提示");
-            }
-        }
+                ID = 2, Name = "写.NET大作业", State = StateType.NotDone, StartTime = DateTime.Now.ToString(),
+                DeadLine = DateTime.Now.ToString()
+            });
+            items.Add(new TaskItem()
+            {
+                ID = 3, Name = "背单词", State = StateType.Done, StartTime = DateTime.Now.ToString(),
+                DeadLine = DateTime.Now.ToString()
+            });
+            lvUsers.ItemsSource = items;
 
-        private void Add_OnClick(object sender, RoutedEventArgs e)
-        {
-            tasksercive.AddTask(taskinfo);
-            MessageBox.Show("添加成功", "提示");
-
+            CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(lvUsers.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("State");
+            view.GroupDescriptions.Add(groupDescription);
         }
     }
 
-  
+    public enum StateType
+    {
+        Done,
+        NotDone
+    };
+
+    public class TaskItem
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public String StartTime { get; set; }
+        public String DeadLine { get; set; }
+        public int finishedTomato { get; set; }
+        public int totalTomato { get; set; }
+
+        public List<Image> TomatImages { get; }
+
+        public StateType State { get; set; }
+
+
+    }
+
+
+
 
 }
