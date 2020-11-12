@@ -29,13 +29,15 @@ namespace UI
         /// <summary>
         /// 柱状图集合
         /// </summary>
-        public SeriesCollection ColunmSeriesCollection { get; set; } = new SeriesCollection();
+        public SeriesCollection ColumnSeriesCollction_today { get; set; } = new SeriesCollection();
+        public SeriesCollection ColumnSeriesCollction_week { get; set; } = new SeriesCollection();
+
 
         /// <summary>
         /// 饼图图集合
         /// </summary>
         public SeriesCollection PieSeriesCollection_today { get; set; } = new SeriesCollection();
-        public SeriesCollection PieSeriesCollection_yesterday { get; set; } = new SeriesCollection();
+        public SeriesCollection PieSeriesCollection_week { get; set; } = new SeriesCollection();
 
         /// <summary>
         /// 折线图X坐标
@@ -55,10 +57,11 @@ namespace UI
         /// </summary>
         public void Update()
         {
-            GetLineSeriesData();
-            GetColunmSeriesData();
+            //GetLineSeriesData();
+            GetTodayColunmSeriesData();
+            GetWeekColunmSeriesData();
             GetPieSeriesData_today();
-            GetPieSeriesData_yesterday();
+            GetPieSeriesData_week();
         }
 
         #endregion
@@ -88,25 +91,46 @@ namespace UI
         }
 
         /// <summary>
-        /// 今日每个软件的时间统计柱状图
+        /// 根据给定的时间返回一个饼状图
         /// </summary>
-        private void GetColunmSeriesData()
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        private SeriesCollection GetColumnSeries(DateTime beginTime,DateTime endTime)
         {
+            SeriesCollection seriesCollection = new SeriesCollection();
             ColumnXLabels.Clear();
-            ColunmSeriesCollection.Clear();
+            seriesCollection.Clear();
             ColumnSeries colunmSeries = new ColumnSeries();
 
-            List<double> columnValues = new List<double> ();
-            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
+            List<double> columnValues = new List<double>();
+            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);
             for (int i = 0; i < userActivities.Count && i < 5; i++)
             {
                 ColumnXLabels.Add(userActivities[i].Name);
                 columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
-             }
-            
+            }
+
             colunmSeries.DataLabels = true;
             colunmSeries.Values = new ChartValues<double>(columnValues);
-            ColunmSeriesCollection.Add(colunmSeries);
+            seriesCollection.Add(colunmSeries);
+            return seriesCollection;
+        }
+
+        /// <summary>
+        /// 今日每个软件的时间统计柱状图
+        /// </summary>
+        private void GetTodayColunmSeriesData()
+        {
+            ColumnSeriesCollction_today = GetColumnSeries(DateTime.Today, DateTime.Now);
+        }
+        
+        /// <summary>
+        /// 一周每个软件的时间统计柱状图
+        /// </summary>
+        private void GetWeekColunmSeriesData()
+        {
+            ColumnSeriesCollction_week = GetColumnSeries(DateTime.Today.AddDays(1 - Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"))), DateTime.Now);
         }
 
         /// <summary>
@@ -146,14 +170,14 @@ namespace UI
         }
 
         /// <summary>
-        /// 更新昨日的饼状图
+        /// 更新一周的饼状图
         /// </summary>
-        private void GetPieSeriesData_yesterday()
+        private void GetPieSeriesData_week()
         {
-            PieSeriesCollection_yesterday = GetPieSeries(DateTime.Today.AddDays(-1), DateTime.Today.AddSeconds(-1));
+            PieSeriesCollection_week = GetPieSeries(DateTime.Today.AddDays(1 - Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"))), DateTime.Now);
         }
 
-        private void ThreeColumnData()
+        /*private void ThreeColumnData()
         {
             List<string> titles = new List<string> { "苹果", "香蕉", "梨" };
             //三列示例数据
@@ -172,9 +196,9 @@ namespace UI
                 colunmseries.Title = titles[i];
                 colunmseries.Values = new ChartValues<double>(threeColunmValues[i]);
 
-                ColunmSeriesCollection.Add(colunmseries);
+                seriesCollection.Add(colunmseries);
             }
-        }
+        }*/
 
         /// <summary>
         /// 获取当前月的每天的日期
