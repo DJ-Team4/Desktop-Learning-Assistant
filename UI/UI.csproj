@@ -124,9 +124,6 @@
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
-    <Compile Include="TimelineWindow\TimelineWindow.xaml.cs">
-      <DependentUpon>TimelineWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
     </Compile>
@@ -156,10 +153,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewTagWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TimelineWindow\TimelineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

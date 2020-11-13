@@ -290,12 +290,6 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            TimelineWindow timelineWindow = new TimelineWindow();
-            timelineWindow.Show();
-        }
-
     }
 }
 
