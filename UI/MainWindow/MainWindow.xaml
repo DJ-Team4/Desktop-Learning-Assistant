@@ -98,7 +98,7 @@
                                         HorizontalAlignment="Left" Margin="105,230,0,0" VerticalAlignment="Top" Width="75" Height="19"/>
 
 
-                                <StackPanel  Orientation="Horizontal" Margin="0,0,-0.4,0.6" Grid.RowSpan="2" >
+                                <StackPanel  Orientation="Horizontal" Margin="0,0,-0.4,0.6" Grid.Row="1" >
                                     <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23"/>
                                     <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23" Margin="35.2,103,62.6,108.4" RenderTransformOrigin="1.136,0.513" Grid.Column="1" />
                                     <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="-8,191,0,235.8" />
