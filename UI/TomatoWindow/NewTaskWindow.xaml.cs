@@ -32,5 +32,22 @@ namespace UI
             MessageBoxTimeoutA((IntPtr)0, "创建任务成功", "提示", 0, 0, 1000); // 直接调用 1秒
 
         }
+        public string mLinePath = @"C:\Users\11145\Desktop\LearnAssistant\Tomato\Tomato\tomatounfinished.png";
+
+        public string MLinePath
+        {
+            get { return mLinePath; }
+            set { mLinePath = value; }
+        }
+
+
+        private void AddTomatoNum_OnClick(object sender, RoutedEventArgs e)
+        {
+            Image mLine = new Image() { Source = new BitmapImage(new Uri(MLinePath, UriKind.Absolute)) };
+            mLine.Width = 35;
+            mLine.Height = 35;
+            ListViewTomato.Items.Add(mLine);
+        }
+    
     }
 }

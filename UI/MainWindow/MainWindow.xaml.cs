@@ -34,6 +34,10 @@ namespace UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
+
+        double m_Percent = 0;
+        bool m_IsStart = false;
         public SeriesCollection SeriesCollection { get; set; }
 
         private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
@@ -48,6 +52,11 @@ namespace UI
             InitializeComponent();
             
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
+            //25分钟走完一个番茄钟
+            //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
+            m_Timer1.Interval = new TimeSpan(0, 0, 0, 1, 0);
+
+            m_Timer1.Tick += M_Timer1_Tick;
 
             this.DataContext = mainWindowViewModel;
 
@@ -115,7 +124,59 @@ namespace UI
             var selectedSeries = (PieSeries) chartpoint.SeriesView;
             selectedSeries.PushOut = 8;
         }
+        private void M_Timer1_Tick(object sender, EventArgs e)
+        {
+            m_Percent += 0.01;
+            if (m_Percent > 1)
+            {
+                m_Percent = 1;
+                m_Timer1.Stop();
+                m_IsStart = false;
+                StartChange(m_IsStart);
+            }
 
+            circleProgressBar.CurrentValue1 = m_Percent;
+        }
+        /// <summary>
+        /// UI变化
+        /// </summary>
+        /// <param name="bState"></param>
+        private void StartChange(bool bState)
+        {
+            if (bState)
+                btn.Content = "停止";
+            else
+                btn.Content = "开始";
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (m_IsStart)
+            {
+                m_Timer1.Stop();
+                m_IsStart = false;
+
+            }
+            else
+            {
+                //              m_Percent = 0;
+                m_Timer1.Start();
+                m_IsStart = true;
+                tomatoTimer.Start();
+                Thread thread = new Thread(new ThreadStart(() =>
+                {
+                    for (int i = 1; i <= 2500; i++)
+                    {
+                        //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+                        Thread.Sleep(10000);
+                    }
+                }));
+                thread.Start();
+
+            }
+
+            StartChange(m_IsStart);
+        }
 
         private void TomatoClock_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -199,28 +260,25 @@ namespace UI
           {
               for (int i = 1; i <= 2500; i++)
               {
-                  this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
                   Thread.Sleep(10000);
               }
           }));
           thread.Start();
 
             ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-          this.ButtonImage.Source = pause;
         }
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
-            this.ButtonImage.Source = start;
 
         }
 
         private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
         {
-            TomatoWindow tomatoWindow =new TomatoWindow();
-            tomatoWindow.Show();
+          
         }
 
         /// <summary>
@@ -237,6 +295,7 @@ namespace UI
             TimelineWindow timelineWindow = new TimelineWindow();
             timelineWindow.Show();
         }
+
     }
 }
 

@@ -6,6 +6,9 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI"
+        xmlns:MyProgress="clr-namespace:UI.TomatoWindow.MyProgressbar"
+
+        xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None">
     <Grid>
@@ -78,68 +81,38 @@
             </TabItem>
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
-                    <Label Content="当前任务" Margin="2,2,209.6,447"   HorizontalAlignment="Center" VerticalAlignment="Center" Background="AliceBlue" Height="35" />
-                    <Label Content="六级试卷" Margin="117,10,83.6,442"  />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="234*"/>
+                        <RowDefinition Height="259*"/>
+                    </Grid.RowDefinitions>
+                    <TabControl
+                        pu:TabControlHelper.SelectedForeground="#3F3F3F" 
+                        TabStripPlacement="Bottom" Grid.Row="0">
+                        <TabItem Header="番茄钟" Height="36">
+                            <Grid>
+                                <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" />
+                                <MyProgress:Progressbar_xy x:Name="circleProgressBar"  CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="44,8,53.6,17.4" />
+                                <Button x:Name="btn" Content="开始"
+                                        Click="ButtonStart_Click"
+                                        Foreground="Black"
+                                        MouseRightButtonDown="TimeCountPause_Click" Margin="116,173,111.6,5.4" Height="20" Width="50" 
+                                        Background="#7bffff7f"/>
 
-                    <ProgressBar 
-                                 Name="TomatoProgressBar"
-                                 BorderBrush="Coral"
-                                 BorderThickness="12"
-                                 Background="WhiteSmoke"
-                                 pu:ProgressBarHelper.ProgressBarStyle="Ring"
-                                 pu:ProgressBarHelper.CornerRadius="15"
-                                 pu:ProgressBarHelper.IsPercentVisible="false"
-                                 Margin="50,47,34.6,243"
-                                 
-                                 />
-                    <Label Content="正在使用..." Margin="10,215,187.6,210"  />
-                    <Label Content="专注" Margin="201,216,34.6,209.8"  />
-
-
-                    <Label Content="Chrome" Background="AliceBlue" Margin="10,274,157.6,173" />
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 1 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,261,22.6,159"
-                                 Background="ForestGreen"
-                                 />
-                    </Border>
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 2 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,316,22.6,104"
-                                 Background="ForestGreen"
-                                 />
-                    </Border>
-
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 3 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,366,22.6,54"
-                                  Background="ForestGreen"
-                                 />
-
-                    </Border>
-
-                    <Label Content="Steam" Background="AliceBlue" Margin="10,330,157.6,122" />
-                    <Label Content="网易有道词典" Background="AliceBlue" Margin="10,383,157.6,65" />
-
-
-                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="10,79,232.6,358"/>
-                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Background="Transparent" Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40"  Margin="0,107,58.6,298" Height="55" Width="144" />
-                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="134,119,120.6,310" Width="23"/>
-                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="157,107,58.6,298" Width="62"/>
-
-                    <Button x:Name="btn" 
-                            BorderBrush="Transparent"
-                            Click="TimeCountStart_OnClick"
-                            MouseRightButtonDown="TimeCountPause_Click"
-                            Margin="122,168,100.6,268" Background="Transparent">
-                        <Image x:Name="ButtonImage" Height="39" Width="48" Source="../Icon/Start.jpeg" >
-                        </Image>
-                    </Button>
-                    <Image Source="../Icon/More.png" Margin="238,426,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
+                                <StackPanel  Orientation="Horizontal" Margin="0,0,-0.4,0.4" >
+                                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23"/>
+                                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23" Margin="35.2,103,62.6,108.4" RenderTransformOrigin="1.136,0.513" Grid.Column="1" />
+                                    <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="-8,109,0,54.4" />
+                                    <TextBlock Text=":" x:Name="MinuteSplitSecond"    FontSize="18" Background="Transparent" Width="15" Margin="4,109,9,67.4"/>
+                                    <TextBlock Text="00"  x:Name="SecondArea"   FontSize="18" Background="Transparent" Height="22" Width="26" Margin="-12,109,9,67.4" />
+                                    
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="效率统计">
+                            <Grid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">

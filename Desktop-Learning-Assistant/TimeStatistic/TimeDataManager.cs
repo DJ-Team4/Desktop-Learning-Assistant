@@ -75,7 +75,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public static TimeDataManager GetTimeDataManager()
         {
-            if (uniqueTimeDataManager != null) return uniqueTimeDataManager;
+           if (uniqueTimeDataManager != null) return uniqueTimeDataManager;
 
             lock (locker)
             {

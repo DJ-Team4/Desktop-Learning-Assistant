@@ -7,31 +7,66 @@
         mc:Ignorable="d"
         Title="所有任务" Height="450" Width="780" >
     <Grid>
+        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto">
 
-        <DataGrid Name="AllTasksDataGrid" HorizontalAlignment="Left" Height="352" Margin="10,41,0,0" VerticalAlignment="Top" Width="736">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="50" Binding="{Binding taskID}"/>
-                <DataGridTextColumn  Header="任务名称" Width="90" Binding="{Binding name}"/>
-                <DataGridTextColumn   Header="开始时间" Width="100" Binding="{Binding startTime}"/>
-                <DataGridTextColumn Header="截止时间" Width="100" Binding="{Binding deadLine}"/>
-                <DataGridTextColumn Header="设定番茄数" Width="110" Binding="{Binding tomatoNum}"/>
-                <DataGridTextColumn Header="已完成番茄数" Width="120" Binding="{Binding tomatoCount}"/>
-                <DataGridTextColumn Header="任务状态" Width="95" Binding="{Binding taskState}"/>
-                <DataGridTextColumn Header="备注" Width="80" Binding="{Binding notes}"/>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu Width="100">
-                    <MenuItem Header="添加" Click="Add_OnClick">
-                    </MenuItem>
-                    <MenuItem Header="编辑" Click="Modify_OnClick" Width="100">
-                    </MenuItem>
-                    <MenuItem Header="删除" Click="Delete_OnClick" Width="100">
-                    </MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
-
-
+            <ListView Name="lvUsers"  Width="600">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Width="600">
+                            <StackPanel  Orientation="Vertical">
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding ID }" FontSize="23" Height="28" FontWeight="Bold" />
+                                    <TextBlock Text="   "></TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="23" FontWeight="Bold" Height="28" />
+                                    <TextBlock Text="&#13;&#13;"></TextBlock>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <TextBlock Text=" 开始时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
+                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock  Text="{Binding StartTime}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <TextBlock Text=" 截止时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
+                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock Text="{Binding DeadLine}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <StackPanel Name="TomatoStackPanel" Orientation="Horizontal">
+                                        <Image Name="TomatoImageList"  Height="25">
+                                        </Image>
+                                        <Image Name="Tomato2ImageList" Source="../Icon/tomatofinished.png"  Height="25"></Image>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </StackPanel>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="True">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </StackPanel>
 
     </Grid>
 </Window>
