@@ -54,9 +54,6 @@ namespace UI
             // 当数据发生变化时，更新ViewModel数据
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.DataUpdateEvent += Am_DataUpdateEvent;
-
-            // 测试TaskTomato服务
-            testTmp();
         }
 
         private void testTmp()

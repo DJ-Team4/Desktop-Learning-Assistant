@@ -26,19 +26,14 @@
                                  TabStripPlacement="Top"  Grid.RowSpan="2" Margin="0,0,0,45">
                         <TabItem Header="今日">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="123*"/>
-                                    <ColumnDefinition Width="155*"/>
-                                </Grid.ColumnDefinitions>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
-                                    <TextBlock Name="TmpTextBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="170" Width="258"/>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_today}" Margin="0,226,0,0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Series="{Binding TodayColunmSeriesCollection}" Margin="0,226,0,0" Grid.ColumnSpan="2">
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                        <lvc:Axis Labels="{Binding TodayColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
@@ -48,14 +43,14 @@
                         </TabItem>
                         <TabItem Header="一周">
                             <Grid>
-                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_week}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_week}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Series="{Binding WeekColunmSeriesCollection}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                        <lvc:Axis Labels="{Binding WeekColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>

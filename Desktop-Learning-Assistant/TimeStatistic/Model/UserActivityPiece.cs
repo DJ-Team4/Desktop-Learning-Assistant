@@ -40,6 +40,11 @@ namespace DesktopLearningAssistant.TimeStatistic.Model
         public DateTime CloseTime { get; set; }
 
         /// <summary>
+        /// 该活动片是否已结束
+        /// </summary>
+        public bool Finished { get; set; }
+
+        /// <summary>
         /// 活动片的时间跨度
         /// </summary>
         public TimeSpan SpanTime
