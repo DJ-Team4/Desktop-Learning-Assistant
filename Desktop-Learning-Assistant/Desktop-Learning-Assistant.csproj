@@ -176,6 +176,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\Config\GlobalConfig.cs" />
     <Compile Include="TagFile\Expression\AstNode.cs" />
     <Compile Include="TagFile\Expression\BinaryNode.cs" />
     <Compile Include="TagFile\Expression\QueryFile.cs" />

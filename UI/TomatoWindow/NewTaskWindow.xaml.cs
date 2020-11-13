@@ -27,9 +27,10 @@ namespace UI
             InitializeComponent();
         }
 
-        private void NewTask_Click(object sender, RoutedEventArgs e)
+        private void Affirm_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxTimeoutA((IntPtr)0, "创建任务成功", "提示", 0, 0, 1000); // 直接调用 1秒
+            MessageBoxTimeoutA((IntPtr)0, "保存成功", "提示", 0, 0, 1000); // 直接调用 1秒
+            this.Close();
 
         }
         public string mLinePath = @"C:\Users\11145\Desktop\LearnAssistant\Tomato\Tomato\tomatounfinished.png";
