@@ -21,6 +21,11 @@ using LiveCharts.Wpf;
 using UI.Process;
 using System.ComponentModel;
 using System.Threading;
+using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.TaskTomato;
+using DesktopLearningAssistant.TaskTomato.Model;
+
+using TTomato = DesktopLearningAssistant.TaskTomato.Model.Tomato;
 
 namespace UI
 {
@@ -29,13 +34,17 @@ namespace UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
+
+        double m_Percent = 0;
+        bool m_IsStart = false;
         public SeriesCollection SeriesCollection { get; set; }
-        MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+
+        private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
         // 关于番茄时钟倒计时
         private TimeCount timeCount;
 
-        private Timer updateMainVMTimer;
         private DispatcherTimer tomatoTimer;
 
         public MainWindow()
@@ -43,15 +52,65 @@ namespace UI
             InitializeComponent();
             
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
+            //25分钟走完一个番茄钟
+            //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
+            m_Timer1.Interval = new TimeSpan(0, 0, 0, 1, 0);
+
+            m_Timer1.Tick += M_Timer1_Tick;
 
             this.DataContext = mainWindowViewModel;
 
-            // 定时更新ViewModel数据
-            updateMainVMTimer = new Timer(new TimerCallback(
-                (object state) => 
-                {
-                    this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
-                }), this, 0, 500);
+            // 当数据发生变化时，更新ViewModel数据
+            ActivityMonitor am = ActivityMonitor.GetMonitor();
+            am.DataUpdateEvent += Am_DataUpdateEvent;
+        }
+
+        private void testTmp()
+        {
+            TaskInfo taskInfo1 = new TaskInfo()
+            {
+                Name = "重写美偲的接口",
+                Notes = "……",
+                TotalTomatoCount = 5,
+                StartTime = DateTime.Today,
+                EndTime = DateTime.Today.AddDays(1),
+            };
+
+            TaskInfo taskInfo2 = new TaskInfo()
+            {
+                Name = "解决频闪问题",
+                Notes = "……",
+                TotalTomatoCount = 5,
+                StartTime = DateTime.Today,
+                EndTime = DateTime.Today.AddDays(1),
+            };
+
+            TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+            tts.AddTask(taskInfo1);
+            tts.AddTask(taskInfo2);
+
+            TaskInfo taskInfo3 = tts.GetTaskWithID(1);
+            TaskInfo taskInfo4 = tts.GetTaskWithName("解决频闪问题");
+
+            List<TaskInfo> taskInfos = tts.GetAllUnfinishedTaskInfos();
+
+            tts.DeleteTask(taskInfo3.TaskID);
+            tts.DeleteTask(taskInfo4.TaskID);
+
+            tts.AddTask(taskInfo1);
+            TTomato tomato = new TTomato()
+            {
+                TaskID = 1,
+                BeginTime = DateTime.Today,
+                EndTime = DateTime.Now
+            };
+            tts.FinishedOneTomato(tomato);
+            taskInfos = tts.GetAllUnfinishedTaskInfos();
+        }
+
+        private void Am_DataUpdateEvent(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
         }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
@@ -65,7 +124,59 @@ namespace UI
             var selectedSeries = (PieSeries) chartpoint.SeriesView;
             selectedSeries.PushOut = 8;
         }
+        private void M_Timer1_Tick(object sender, EventArgs e)
+        {
+            m_Percent += 0.01;
+            if (m_Percent > 1)
+            {
+                m_Percent = 1;
+                m_Timer1.Stop();
+                m_IsStart = false;
+                StartChange(m_IsStart);
+            }
 
+            circleProgressBar.CurrentValue1 = m_Percent;
+        }
+        /// <summary>
+        /// UI变化
+        /// </summary>
+        /// <param name="bState"></param>
+        private void StartChange(bool bState)
+        {
+            if (bState)
+                btn.Content = "停止";
+            else
+                btn.Content = "开始";
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (m_IsStart)
+            {
+                m_Timer1.Stop();
+                m_IsStart = false;
+
+            }
+            else
+            {
+                //              m_Percent = 0;
+                m_Timer1.Start();
+                m_IsStart = true;
+                tomatoTimer.Start();
+                Thread thread = new Thread(new ThreadStart(() =>
+                {
+                    for (int i = 1; i <= 2500; i++)
+                    {
+                        //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+                        Thread.Sleep(10000);
+                    }
+                }));
+                thread.Start();
+
+            }
+
+            StartChange(m_IsStart);
+        }
 
         private void TomatoClock_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -74,6 +185,7 @@ namespace UI
             tomatoTimer = new DispatcherTimer();
             tomatoTimer.Interval = new TimeSpan(10000000); //时间间隔为一秒
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
+
             //转换成秒数
             Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
@@ -148,28 +260,25 @@ namespace UI
           {
               for (int i = 1; i <= 2500; i++)
               {
-                  this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
                   Thread.Sleep(10000);
               }
           }));
           thread.Start();
 
             ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-          this.ButtonImage.Source = pause;
         }
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
-            this.ButtonImage.Source = start;
 
         }
 
         private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
         {
-            TomatoWindow tomatoWindow =new TomatoWindow();
-            tomatoWindow.Show();
+          
         }
 
         /// <summary>
@@ -181,11 +290,6 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            TimelineWindow timelineWindow = new TimelineWindow();
-            timelineWindow.Show();
-        }
     }
 }
 

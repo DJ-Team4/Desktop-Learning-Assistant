@@ -6,6 +6,9 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI"
+        xmlns:MyProgress="clr-namespace:UI.TomatoWindow.MyProgressbar"
+
+        xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None">
     <Grid>
@@ -26,18 +29,14 @@
                                  TabStripPlacement="Top"  Grid.RowSpan="2" Margin="0,0,0,45">
                         <TabItem Header="今日">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="123*"/>
-                                    <ColumnDefinition Width="155*"/>
-                                </Grid.ColumnDefinitions>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_today}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_today}" Margin="0,226,0,0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Series="{Binding TodayColunmSeriesCollection}" Margin="0,226,0,0" Grid.ColumnSpan="2">
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                        <lvc:Axis Labels="{Binding TodayColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
@@ -47,14 +46,14 @@
                         </TabItem>
                         <TabItem Header="一周">
                             <Grid>
-                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding PieSeriesCollection_week}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding ColunmSeriesCollection_week}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Series="{Binding WeekColunmSeriesCollection}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding ColumnXLabels}"></lvc:Axis>
+                                        <lvc:Axis Labels="{Binding WeekColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
@@ -76,74 +75,44 @@
                         </-->
 
                     </TabControl>
-                    <Button Content="时间轴" Click="Button_Click_1"  HorizontalAlignment="Left" Margin="205,276.333,0,0" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.178,0.95" Height="31" pu:ButtonHelper.ButtonStyle="Link" Grid.Row="1">
-                    </Button>
                 </Grid>
             </TabItem>
             <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
                 <Grid>
-                    <Label Content="当前任务" Margin="2,2,209.6,447"   HorizontalAlignment="Center" VerticalAlignment="Center" Background="AliceBlue" Height="35" />
-                    <Label Content="六级试卷" Margin="117,10,83.6,442"  />
-
-                    <ProgressBar 
-                                 Name="TomatoProgressBar"
-                                 BorderBrush="Coral"
-                                 BorderThickness="12"
-                                 Background="WhiteSmoke"
-                                 pu:ProgressBarHelper.ProgressBarStyle="Ring"
-                                 pu:ProgressBarHelper.CornerRadius="15"
-                                 pu:ProgressBarHelper.IsPercentVisible="false"
-                                 Margin="50,47,34.6,243"
-                                 
-                                 />
-                    <Label Content="正在使用..." Margin="10,215,187.6,210"  />
-                    <Label Content="专注" Margin="201,216,34.6,209.8"  />
-
-
-                    <Label Content="Chrome" Background="AliceBlue" Margin="10,274,157.6,173" />
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 1 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,261,22.6,159"
-                                 Background="ForestGreen"
-                                 />
-                    </Border>
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 2 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,316,22.6,104"
-                                 Background="ForestGreen"
-                                 />
-                    </Border>
-
-                    <Border>
-                        <RadioButton 
-                                 pu:RadioButtonHelper.Header="Option 3 : "
-                                 pu:RadioButtonHelper.RadioButtonStyle="Switch" Margin="203,366,22.6,54"
-                                  Background="ForestGreen"
-                                 />
-
-                    </Border>
-
-                    <Label Content="Steam" Background="AliceBlue" Margin="10,330,157.6,122" />
-                    <Label Content="网易有道词典" Background="AliceBlue" Margin="10,383,157.6,65" />
+                    <TabControl
+                        pu:TabControlHelper.SelectedForeground="#3F3F3F" 
+                        TabStripPlacement="Top">
+                        <TabItem Header="番茄钟" Height="36">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="259*"/>
+                                    <RowDefinition Height="198*"/>
+                                </Grid.RowDefinitions>
+                                <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" />
+                                <MyProgress:Progressbar_xy x:Name="circleProgressBar"  CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="49,29,48.6,57.2" />
+                                <Button x:Name="btn" Content="开始"
+                                        Click="ButtonStart_Click"
+                                        Foreground="Black"
+                                        MouseRightButtonDown="TimeCountPause_Click"
+                                        Background="#7bffff7f" Grid.Row="0"
+                                        HorizontalAlignment="Left" Margin="105,230,0,0" VerticalAlignment="Top" Width="75" Height="19"/>
 
 
-                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="10,79,232.6,358"/>
-                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="18" Background="Transparent" Height="23" Margin="58,79,188,358.8" RenderTransformOrigin="1.136,0.513" />
-                    <TextBlock Background="Transparent" Text=" 25" Name="MinuteArea" VerticalAlignment="Center"  HorizontalAlignment="Right" FontSize="40"  Margin="0,107,58.6,298" Height="55" Width="144" />
-                    <TextBlock Text=" :" Name="MinuteSplitSecond"   VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="134,119,120.6,310" Width="23"/>
-                    <TextBlock Text=" 00"  Name="SecondArea" VerticalAlignment="Center"  HorizontalAlignment="Center" FontSize="40" Background="Transparent" Height="55" Margin="157,107,58.6,298" Width="62"/>
+                                <StackPanel  Orientation="Horizontal" Margin="0,0,-0.4,0.6" Grid.Row="1" >
+                                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23"/>
+                                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23" Margin="35.2,103,62.6,108.4" RenderTransformOrigin="1.136,0.513" Grid.Column="1" />
+                                    <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="-8,191,0,235.8" />
+                                    <TextBlock Text=":" x:Name="MinuteSplitSecond"    FontSize="18" Background="Transparent" Width="15" Margin="4,191,9,235.8"/>
+                                    <TextBlock Text="00"  x:Name="SecondArea"   FontSize="18" Background="Transparent" Width="26" Margin="-12,191,9,235.8" />
 
-                    <Button x:Name="btn" 
-                            BorderBrush="Transparent"
-                            Click="TimeCountStart_OnClick"
-                            MouseRightButtonDown="TimeCountPause_Click"
-                            Margin="122,168,100.6,268" Background="Transparent">
-                        <Image x:Name="ButtonImage" Height="39" Width="48" Source="../Icon/Start.jpeg" >
-                        </Image>
-                    </Button>
-                    <Image Source="../Icon/More.png" Margin="238,426,9.6,10" MouseLeftButtonDown="OpenTomatoWindow"/>
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="效率统计">
+                            <Grid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">

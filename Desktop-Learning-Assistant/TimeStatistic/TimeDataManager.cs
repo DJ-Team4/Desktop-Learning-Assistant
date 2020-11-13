@@ -43,11 +43,6 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// </summary>
         public List<UserActivityPiece> UserActivityPieces { get; set; }
 
-        /// <summary>
-        /// 软件的类型字典集合
-        /// </summary>
-        public Dictionary<string, string> TypeDict { get; set; }
-
         #endregion
 
         #region 私有属性
@@ -56,12 +51,6 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// Context构造字符串，放在此处以减少重复代码
         /// </summary>
         private DbContextOptions<TimeDataContext> options;
-
-        /// <summary>
-        /// 上一次从数据库中读出的实体数量，写回数据库时只写入新增加的
-        /// </summary>
-        private int lastUAPCount;
-        private int lastKACount;
 
         #endregion
 
@@ -78,9 +67,6 @@ namespace DesktopLearningAssistant.TimeStatistic
             var builder = new DbContextOptionsBuilder<TimeDataContext>();
             builder.UseSqlite($"Data Source={dbPath}");
             options = builder.Options;
-
-            // 读出配置文件中的TypeDict
-            TypeDict = ConfigService.GetConfigService().TSConfig.TypeDict;
         }
 
         /// <summary>
@@ -89,7 +75,7 @@ namespace DesktopLearningAssistant.TimeStatistic
         /// <returns></returns>
         public static TimeDataManager GetTimeDataManager()
         {
-            if (uniqueTimeDataManager != null) return uniqueTimeDataManager;
+           if (uniqueTimeDataManager != null) return uniqueTimeDataManager;
 
             lock (locker)
             {
@@ -98,9 +84,11 @@ namespace DesktopLearningAssistant.TimeStatistic
                 uniqueTimeDataManager.LoadDataFromDb();             // 读入数据
 
                 int SaveToDbTimeSlice = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;    // 定时写入数据库时间
-                System.Timers.Timer timer = new System.Timers.Timer();
-                timer.Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice;
-                timer.Enabled = true;
+                System.Timers.Timer timer = new System.Timers.Timer
+                {
+                    Interval = ConfigService.GetConfigService().TSConfig.SaveToDbTimeSlice,
+                    Enabled = true
+                };
                 timer.Elapsed += TimeWriteToDb;
                 timer.Start();
             }
@@ -134,13 +122,7 @@ namespace DesktopLearningAssistant.TimeStatistic
             using (var context = new TimeDataContext(options))
             {
                 UserActivityPieces = context.UserActivityPieces.ToList();
-                
-                UserActivityPieces.Add(new UserActivityPiece() 
-                {  Name = "Idle", StartTime = DateTime.Now, Detail = "", CloseTime = DateTime.Now });    // 添加一个Idle，以避免ActivityMonitor修改数据库中读出的最后一项数据
-
                 KilledActivities = context.KilledActivities.ToList();
-                lastUAPCount = UserActivityPieces.Count;
-                lastKACount = KilledActivities.Count;
             }
         }
 
@@ -151,13 +133,19 @@ namespace DesktopLearningAssistant.TimeStatistic
         {
             using (var context = new TimeDataContext(options))
             {
-                int newUAPCount = UserActivityPieces.Count - lastUAPCount;
-                int newKACount = KilledActivities.Count - lastKACount;
-                context.UserActivityPieces.AddRange(UserActivityPieces.GetRange(lastUAPCount, newUAPCount));
-                context.KilledActivities.AddRange(KilledActivities.GetRange(lastKACount, newKACount));
+                int savedUAPCount = context.UserActivityPieces.Count();
+                int savedKACount = context.KilledActivities.Count();
+                int newUAPCount = UserActivityPieces.Count - savedUAPCount - 1;  // 数组中最后一个UAP总是未完成的，未完成的UAP不记录入数据库中
+                int newKACount = KilledActivities.Count - savedKACount;
+                if (newUAPCount > 0)
+                {
+                    context.UserActivityPieces.AddRange(UserActivityPieces.GetRange(savedUAPCount, newUAPCount));
+                }
+                if (newKACount > 0)
+                {
+                    context.KilledActivities.AddRange(KilledActivities.GetRange(savedKACount, newKACount));
+                }
                 context.SaveChanges();
-                lastUAPCount = UserActivityPieces.Count;    // 更新一下位置记录，避免重复写入
-                lastKACount = KilledActivities.Count;
             }
         }
 

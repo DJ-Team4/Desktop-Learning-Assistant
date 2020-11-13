@@ -15,6 +15,8 @@ namespace UI
     /// </summary>
     public partial class App : Application
     {
+        private MainWindow mainWindow;
+
         /// <summary>
         /// 程序入口
         /// </summary>
@@ -23,7 +25,7 @@ namespace UI
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 启动主窗口
-            MainWindow mainWindow = new MainWindow();
+            mainWindow = new MainWindow();
             mainWindow.Show();
 
             // 启动屏幕监控

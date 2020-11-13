@@ -124,11 +124,11 @@
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
-    <Compile Include="TimelineWindow\TimelineWindow.xaml.cs">
-      <DependentUpon>TimelineWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TomatoWindow\MyProgressbar\Progressbar_xy.xaml.cs">
+      <DependentUpon>Progressbar_xy.xaml</DependentUpon>
     </Compile>
     <Compile Include="TomatoWindow\NewTaskWindow.xaml.cs">
       <DependentUpon>NewTaskWindow.xaml</DependentUpon>
@@ -139,9 +139,6 @@
     </Compile>
     <Compile Include="FileWindow\FileWindow.xaml.cs">
       <DependentUpon>FileWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TomatoWindow\TomatoWindow.xaml.cs">
-      <DependentUpon>TomatoWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -159,11 +156,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TimelineWindow\TimelineWindow.xaml">
+    <Page Include="TomatoWindow\AllTasksWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TomatoWindow\AllTasksWindow.xaml">
+    <Page Include="TomatoWindow\MyProgressbar\Progressbar_xy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -176,10 +173,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FileWindow\FileWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TomatoWindow\TomatoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,7 +225,7 @@
     <Resource Include="Icon\浏览器.png" />
     <Resource Include="Icon\tomatofinished.png" />
     <Resource Include="Icon\tomatounfinished.png" />
-    <Resource Include="Icon\箭头%281%29.png" />
+    <Resource Include="Icon\箭头.png" />
     <Resource Include="Icon\More.png" />
     <Resource Include="Icon\详情.png" />
   </ItemGroup>

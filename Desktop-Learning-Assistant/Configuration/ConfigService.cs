@@ -22,6 +22,11 @@ namespace DesktopLearningAssistant.Configuration
         /// </summary>
         public TimeStatisticConfig TSConfig { get; set; }
 
+        /// <summary>
+        /// 番茄钟/任务管理模块配置项
+        /// </summary>
+        public TaskTomatoConfig TTConfig { get; set; }
+
         #endregion
 
         /// <summary>
@@ -45,6 +50,7 @@ namespace DesktopLearningAssistant.Configuration
         public ConfigService()
         {
             TSConfig = new TimeStatisticConfig();
+            TTConfig = new TaskTomatoConfig();
         }
 
         /// <summary>
@@ -112,6 +118,7 @@ namespace DesktopLearningAssistant.Configuration
         {
             if (uniqueConfigService == null) return;
             uniqueConfigService.TSConfig.SetDefault();
+            uniqueConfigService.TTConfig.SetDefault();
         }
     }
 }
