@@ -10,7 +10,7 @@
 
         xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None">
+        Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None" WindowStartupLocation="Manual" Left="0" Top="0">
     <Grid>
         <TabControl
                 pu:TabControlHelper.ItemHeight="30"
