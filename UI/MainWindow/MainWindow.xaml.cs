@@ -47,6 +47,8 @@ namespace UI
 
         private DispatcherTimer tomatoTimer;
 
+        System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -58,6 +60,10 @@ namespace UI
 
             m_Timer1.Tick += M_Timer1_Tick;
 
+            _timer.Interval = 300;
+            _timer.Tick += TimerDealy;
+            _timer.Start();
+
             this.DataContext = mainWindowViewModel;
 
             // 当数据发生变化时，更新ViewModel数据
@@ -65,6 +71,31 @@ namespace UI
             // am.DataUpdateEvent += Am_DataUpdateEvent;
             Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
         }
+
+        void TimerDealy(object o, EventArgs e)
+        {
+            if (this.Top > 3)
+            {
+                return;
+            }
+            //获取鼠标在屏幕上的位置
+            double mouse_x = System.Windows.Forms.Form.MousePosition.X;   //需要添加引用System.Drawing
+            double mouse_y = System.Windows.Forms.Form.MousePosition.Y;
+
+            bool is_in_collasped_range = (mouse_y > this.Top + this.Height) || (mouse_x < this.Left || mouse_x > this.Left + this.Width);//缩起的条件
+            bool is_in_visiable_range = (mouse_y < 1 && mouse_x >= this.Left && mouse_x <= this.Left + this.Width); //展开的条件         
+
+            if (this.Top < 3 && this.Top >= 0 && is_in_collasped_range)
+            {
+                System.Threading.Thread.Sleep(300);
+                this.Top = -this.ActualHeight - 3;
+            }
+            else if (this.Top < 0 && is_in_visiable_range)
+            {
+                this.Top = 1;
+            }
+        }
+
 
         private void testTmp()
         {
