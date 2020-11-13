@@ -60,15 +60,16 @@ namespace UI
 
             m_Timer1.Tick += M_Timer1_Tick;
 
-            _timer.Interval = 300;
-            _timer.Tick += TimerDealy;
-            _timer.Start();
+            //_timer.Interval = 300;
+            //_timer.Tick += TimerDealy;
+            //_timer.Start();
 
             this.DataContext = mainWindowViewModel;
 
             // 当数据发生变化时，更新ViewModel数据
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.DataUpdateEvent += Am_DataUpdateEvent;
+            //Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
         }
 
         void TimerDealy(object o, EventArgs e)
@@ -321,6 +322,10 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
 

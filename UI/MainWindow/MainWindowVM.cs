@@ -20,8 +20,8 @@ namespace UI
         /// <summary>
         /// 柱状图集合
         /// </summary>
-        public SeriesCollection TodayColumnSeriesCollction { get; set; }
-        public SeriesCollection WeekColumnSeriesCollction { get; set; }
+        public SeriesCollection TodayColumnSeriesCollection { get; set; }
+        public SeriesCollection WeekColumnSeriesCollection { get; set; }
 
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace UI
 
         public MainWindowViewModel()
         {
-            TodayColumnSeriesCollction = new SeriesCollection();
-            WeekColumnSeriesCollction = new SeriesCollection();
+            TodayColumnSeriesCollection = new SeriesCollection();
+            WeekColumnSeriesCollection = new SeriesCollection();
 
             TodayPieSeriesCollection = new SeriesCollection();
             WeekPieSeriesCollection = new SeriesCollection();
@@ -73,9 +73,23 @@ namespace UI
         /// </summary>
         private void GetTodayColunmSeriesData()
         {
-            GetColumnSeries(DateTime.Today, DateTime.Now, out SeriesCollection seriesCollection, out List<string> columnXLabels);
-            TodayColumnSeriesCollction = seriesCollection;
-            TodayColumnXLabels = columnXLabels;
+            TodayColumnSeriesCollection.Clear();
+            TodayColumnXLabels.Clear();
+
+            List<double> columnValues = new List<double>();
+            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(DateTime.Today, DateTime.Now);
+            for (int i = 0; i < userActivities.Count && i < 5; i++)
+            {
+                TodayColumnXLabels.Add(userActivities[i].Name);
+                columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
+            }
+
+            // colunmSeries.DataLabels = true;
+            TodayColumnSeriesCollection.Add(new ColumnSeries
+            {
+                Title = "Today",
+                Values = new ChartValues<double>(columnValues)
+            });
         }
         
         /// <summary>
@@ -84,9 +98,23 @@ namespace UI
         private void GetWeekColunmSeriesData()
         {
             DateTime beginTime = DateTime.Today.AddDays(1 - Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d")));
-            GetColumnSeries(beginTime, DateTime.Now, out SeriesCollection seriesCollection, out List<string> columnXLabels);
-            WeekColumnSeriesCollction = seriesCollection;
-            WeekColumnXLabels = columnXLabels;
+            WeekColumnSeriesCollection.Clear();
+            WeekColumnXLabels.Clear();
+
+            List<double> columnValues = new List<double>();
+            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, DateTime.Now);
+            for (int i = 0; i < userActivities.Count && i < 5; i++)
+            {
+                WeekColumnXLabels.Add(userActivities[i].Name);
+                columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
+            }
+
+            // colunmSeries.DataLabels = true;
+            WeekColumnSeriesCollection.Add(new ColumnSeries
+            {
+                Title = "Week",
+                Values = new ChartValues<double>(columnValues)
+            });
         }
 
         /// <summary>
@@ -94,8 +122,21 @@ namespace UI
         /// </summary>
         private void GetTodayPieSeriesData()
         {
-            GetPieSeries(DateTime.Today, DateTime.Now, out SeriesCollection seriesCollection);
-            TodayPieSeriesCollection = seriesCollection;
+            TodayPieSeriesCollection.Clear();
+
+            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today, DateTime.Now);
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            {
+                PieSeries series = new PieSeries();
+                ChartValues<double> chartValue = new ChartValues<double>
+                {
+                    Math.Round(ActivityData[i].SpanTime.TotalMinutes, 2)
+                };
+                series.DataLabels = true;
+                series.Title = ActivityData[i].TypeName;
+                series.Values = chartValue;
+                TodayPieSeriesCollection.Add(series);
+            }
         }
 
         /// <summary>
@@ -104,33 +145,21 @@ namespace UI
         private void GetWeekPieSeriesData()
         {
             DateTime beginTime = DateTime.Today.AddDays(1 - Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d")));
-            GetPieSeries(beginTime, DateTime.Now, out SeriesCollection seriesCollection);
-            WeekPieSeriesCollection = seriesCollection;
-        }
+            WeekPieSeriesCollection.Clear();
 
-        /// <summary>
-        /// 根据给定的时间返回一个柱状图
-        /// </summary>
-        /// <param name="beginTime"></param>
-        /// <param name="endTime"></param>
-        /// <returns></returns>
-        private void GetColumnSeries(DateTime beginTime, DateTime endTime, out SeriesCollection seriesCollection, out List<string> ColumnXLabels)
-        {
-            seriesCollection = new SeriesCollection();
-            ColumnXLabels = new List<string>();
-            ColumnSeries colunmSeries = new ColumnSeries();
-
-            List<double> columnValues = new List<double>();
-            List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);
-            for (int i = 0; i < userActivities.Count && i < 5; i++)
+            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(beginTime, DateTime.Now);
+            for (int i = 0; i < ActivityData.Count && i < 4; i++)
             {
-                ColumnXLabels.Add(userActivities[i].Name);
-                columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
+                PieSeries series = new PieSeries();
+                ChartValues<double> chartValue = new ChartValues<double>
+                {
+                    Math.Round(ActivityData[i].SpanTime.TotalMinutes, 2)
+                };
+                series.DataLabels = true;
+                series.Title = ActivityData[i].TypeName;
+                series.Values = chartValue;
+                WeekColumnSeriesCollection.Add(series);
             }
-
-            colunmSeries.DataLabels = true;
-            colunmSeries.Values = new ChartValues<double>(columnValues);
-            seriesCollection.Add(colunmSeries);
         }
 
         /// <summary>
