@@ -61,8 +61,9 @@ namespace UI
             this.DataContext = mainWindowViewModel;
 
             // 当数据发生变化时，更新ViewModel数据
-            ActivityMonitor am = ActivityMonitor.GetMonitor();
-            am.DataUpdateEvent += Am_DataUpdateEvent;
+            // ActivityMonitor am = ActivityMonitor.GetMonitor();
+            // am.DataUpdateEvent += Am_DataUpdateEvent;
+            Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
         }
 
         private void testTmp()

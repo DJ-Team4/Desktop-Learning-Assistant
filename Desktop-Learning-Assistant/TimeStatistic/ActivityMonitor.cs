@@ -214,10 +214,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                             }
                         }
                     }
-                    if (!closeFlag)
-                    {
-                        Task.Run(new Action(() => { uniqueMonitor.DataUpdateEvent?.Invoke(this, new EventArgs()); }));      // 异步调用委托
-                    }
+                    uniqueMonitor.DataUpdateEvent?.Invoke(this, new EventArgs());
                 }
                 catch (Exception)
                 {
