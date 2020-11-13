@@ -290,6 +290,10 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
 

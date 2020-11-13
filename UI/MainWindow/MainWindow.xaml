@@ -21,20 +21,23 @@
             <TabItem Header="时间统计" Name="TimeStatisticTabItem">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="33*"/>
-                        <RowDefinition Height="59*"/>
+                        <RowDefinition Height="129*"/>
                     </Grid.RowDefinitions>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                                 TabStripPlacement="Top"  Grid.RowSpan="2" Margin="0,0,0,45">
+                                 TabStripPlacement="Top" Margin="0,0,-0.4,-0.4">
                         <TabItem Header="今日">
                             <Grid>
-                                <lvc:PieChart Name="today_piechart" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="202*"/>
+                                    <RowDefinition Height="261*"/>
+                                </Grid.RowDefinitions>
+                                <lvc:PieChart Name="today_piechart" Grid.Row="0" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="5">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding TodayColunmSeriesCollection}" Margin="0,226,0,0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Series="{Binding TodayColumnSeriesCollection}" Margin="5" Grid.Row="1">
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding TodayColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
@@ -46,12 +49,16 @@
                         </TabItem>
                         <TabItem Header="一周">
                             <Grid>
-                                <lvc:PieChart x:Name="week_piechart" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="0,0,0,228" Grid.ColumnSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="202*"/>
+                                    <RowDefinition Height="261*"/>
+                                </Grid.RowDefinitions>
+                                <lvc:PieChart x:Name="week_piechart" Grid.Row="0" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="5">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding WeekColunmSeriesCollection}" Margin="0,226,0,0" AnimationsSpeed="0" Grid.ColumnSpan="2">
+                                <lvc:CartesianChart Grid.Row="1" Series="{Binding WeekColumnSeriesCollection}" Margin="5" AnimationsSpeed="0">
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding WeekColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
@@ -61,18 +68,6 @@
                                 </lvc:CartesianChart>
                             </Grid>
                         </TabItem>
-                        <!--TabItem Header="一周">
-                            <Grid>
-                                <lvc:CartesianChart Series="{Binding LineSeriesCollection}">
-                                    <lvc:CartesianChart.AxisY>
-                                        <lvc:Axis></lvc:Axis>
-                                    </lvc:CartesianChart.AxisY>
-                                    <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding LineXLabels}"></lvc:Axis>
-                                    </lvc:CartesianChart.AxisX>
-                                </lvc:CartesianChart>
-                            </Grid>
-                        </-->
 
                     </TabControl>
                 </Grid>
@@ -81,29 +76,32 @@
                 <Grid>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                        TabStripPlacement="Top">
-                        <TabItem Header="番茄钟" Height="36">
+                        TabStripPlacement="Top" SelectionChanged="TabControl_SelectionChanged">
+                        <TabItem Header="番茄钟">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="259*"/>
-                                    <RowDefinition Height="198*"/>
+                                    <RowDefinition Height="246*"/>
+                                    <RowDefinition Height="217*"/>
                                 </Grid.RowDefinitions>
-                                <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" />
-                                <MyProgress:Progressbar_xy x:Name="circleProgressBar"  CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="49,29,48.6,57.2" />
-                                <Button x:Name="btn" Content="开始"
+                                <DockPanel Grid.Row="0" Margin="0,0,-0.4,1.4">
+                                    <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
+                                    <myProgressbar:Progressbar_xy x:Name="circleProgressBar"  CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
+                                    <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,0,0,0">
+                                        <TextBlock Text="00" Visibility="Hidden" Name="HourArea" FontSize="12" Background="Transparent" Height="23"/>
+                                        <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute" FontSize="12" Background="Transparent" Height="23" RenderTransformOrigin="1.136,0.513"/>
+                                        <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="85,0,0,0"/>
+                                        <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
+                                        <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
+                                    </WrapPanel>
+                                    <Button x:Name="btn" Content="开始"
                                         Click="ButtonStart_Click"
                                         Foreground="Black"
                                         MouseRightButtonDown="TimeCountPause_Click"
-                                        Background="#7bffff7f" Grid.Row="0"
-                                        HorizontalAlignment="Left" Margin="105,230,0,0" VerticalAlignment="Top" Width="75" Height="19"/>
+                                        Background="#7bffff7f"
+                                        HorizontalAlignment="Center" Width="75" Height="19" DockPanel.Dock="Bottom" Margin="0,0,0,5" VerticalAlignment="Bottom"/>
+                                </DockPanel>
+                                <StackPanel  Orientation="Horizontal" Margin="0,0.6,-0.4,0.2" Grid.Row="1" >
 
-
-                                <StackPanel  Orientation="Horizontal" Margin="0,0,-0.4,0.6" Grid.Row="1" >
-                                    <TextBlock Text="00" Visibility="Hidden" Name="HourArea"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23"/>
-                                    <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute"   VerticalAlignment="Center" FontSize="12" Background="Transparent" Height="23" Margin="35.2,103,62.6,108.4" RenderTransformOrigin="1.136,0.513" Grid.Column="1" />
-                                    <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="-8,191,0,235.8" />
-                                    <TextBlock Text=":" x:Name="MinuteSplitSecond"    FontSize="18" Background="Transparent" Width="15" Margin="4,191,9,235.8"/>
-                                    <TextBlock Text="00"  x:Name="SecondArea"   FontSize="18" Background="Transparent" Width="26" Margin="-12,191,9,235.8" />
 
                                 </StackPanel>
                             </Grid>

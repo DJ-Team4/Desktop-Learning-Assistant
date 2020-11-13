@@ -20,8 +20,8 @@ namespace UI
         /// <summary>
         /// 柱状图集合
         /// </summary>
-        public SeriesCollection TodayColumnSeriesCollction { get; set; }
-        public SeriesCollection WeekColumnSeriesCollction { get; set; }
+        public SeriesCollection TodayColumnSeriesCollection { get; set; }
+        public SeriesCollection WeekColumnSeriesCollection { get; set; }
 
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace UI
 
         public MainWindowViewModel()
         {
-            TodayColumnSeriesCollction = new SeriesCollection();
-            WeekColumnSeriesCollction = new SeriesCollection();
+            TodayColumnSeriesCollection = new SeriesCollection();
+            WeekColumnSeriesCollection = new SeriesCollection();
 
             TodayPieSeriesCollection = new SeriesCollection();
             WeekPieSeriesCollection = new SeriesCollection();
@@ -74,7 +74,7 @@ namespace UI
         private void GetTodayColunmSeriesData()
         {
             GetColumnSeries(DateTime.Today, DateTime.Now, out SeriesCollection seriesCollection, out List<string> columnXLabels);
-            TodayColumnSeriesCollction = seriesCollection;
+            TodayColumnSeriesCollection = seriesCollection;
             TodayColumnXLabels = columnXLabels;
         }
         
@@ -85,7 +85,7 @@ namespace UI
         {
             DateTime beginTime = DateTime.Today.AddDays(1 - Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d")));
             GetColumnSeries(beginTime, DateTime.Now, out SeriesCollection seriesCollection, out List<string> columnXLabels);
-            WeekColumnSeriesCollction = seriesCollection;
+            WeekColumnSeriesCollection = seriesCollection;
             WeekColumnXLabels = columnXLabels;
         }
 
@@ -118,7 +118,6 @@ namespace UI
         {
             seriesCollection = new SeriesCollection();
             ColumnXLabels = new List<string>();
-            ColumnSeries colunmSeries = new ColumnSeries();
 
             List<double> columnValues = new List<double>();
             List<UserActivity> userActivities = timeStatisticService.GetUserActivitiesWithin(beginTime, endTime);
@@ -128,9 +127,12 @@ namespace UI
                 columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
             }
 
-            colunmSeries.DataLabels = true;
-            colunmSeries.Values = new ChartValues<double>(columnValues);
-            seriesCollection.Add(colunmSeries);
+            // colunmSeries.DataLabels = true;
+            seriesCollection.Add(new ColumnSeries
+            {
+                Title = "Today",
+                Values = new ChartValues<double>(columnValues)
+            });
         }
 
         /// <summary>
