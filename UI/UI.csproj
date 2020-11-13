@@ -81,6 +81,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -96,6 +97,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -124,9 +126,6 @@
       <DependentUpon>NewTagWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
-    <Compile Include="TimelineWindow\TimelineWindow.xaml.cs">
-      <DependentUpon>TimelineWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
     </Compile>
@@ -156,10 +155,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewTagWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TimelineWindow\TimelineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,7 +227,7 @@
     <Resource Include="Icon\浏览器.png" />
     <Resource Include="Icon\tomatofinished.png" />
     <Resource Include="Icon\tomatounfinished.png" />
-    <Resource Include="Icon\箭头%281%29.png" />
+    <Resource Include="Icon\箭头.png" />
     <Resource Include="Icon\More.png" />
     <Resource Include="Icon\详情.png" />
   </ItemGroup>

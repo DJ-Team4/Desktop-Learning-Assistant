@@ -12,9 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DesktopLearningAssistant.TomatoClock.Model;
-using DesktopLearningAssistant.TomatoClock;
-using DesktopLearningAssistant.TomatoClock.SQLite;
+using DesktopLearningAssistant.TaskTomato.Model;
+using DesktopLearningAssistant.TaskTomato;
 
 namespace UI.Tomato
 {
@@ -25,7 +24,6 @@ namespace UI.Tomato
 
     public partial class AllTasksWindow : Window
     {
-
 
         public AllTasksWindow()
         {
@@ -47,7 +45,6 @@ namespace UI.Tomato
                 DeadLine = DateTime.Now.ToString()
             });
             lvUsers.ItemsSource = items;
-
             CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(lvUsers.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("State");
             view.GroupDescriptions.Add(groupDescription);
@@ -71,13 +68,6 @@ namespace UI.Tomato
         public int totalTomato { get; set; }
 
         public List<Image> TomatImages { get; }
-
         public StateType State { get; set; }
-
-
     }
-
-
-
-
 }

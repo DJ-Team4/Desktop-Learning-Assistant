@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.Configuration;
 using DesktopLearningAssistant.Configuration.Config;
+using System.Windows.Documents;
 
 namespace DesktopLearningAssistant.TimeStatistic
 {
@@ -59,7 +60,23 @@ namespace DesktopLearningAssistant.TimeStatistic
 
         #endregion
 
-        #region DLL导入
+        #region 公有变量
+
+        /// <summary>
+        /// 数据更新委托
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public delegate void DataUpdateEventHandler(object sender, EventArgs e);
+
+        /// <summary>
+        /// 数据更新事件
+        /// </summary>
+        public event DataUpdateEventHandler DataUpdateEvent;
+
+        #endregion
+
+        #region DLL
 
         /// <summary>
         /// 获取前台窗口句柄的方法
@@ -165,6 +182,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                         Detail = proc.MainWindowTitle,
                         StartTime = DateTime.Now,
                         CloseTime = DateTime.Now,
+                        Finished = false
                     };
 
                     lock (TDManager)
@@ -178,10 +196,14 @@ namespace DesktopLearningAssistant.TimeStatistic
 
                         UserActivityPiece lastUAP = userActivityPieces[userActivityPieces.Count - 1];    // 上一个用户活动
                         lastUAP.CloseTime = DateTime.Now;        // 更新上一个用户活动的结束时间
-                        if (!lastUAP.Equals(currentUAP))
+
+                        if (!lastUAP.Equals(currentUAP) || lastUAP.Finished)
                         {
+                            // 更新UAP数组
+                            lastUAP.Finished = true;
                             userActivityPieces.Add(currentUAP);
 
+                            // 更新KA数组
                             if ((lastUAP.Name == "explorer" || lastUAP.Name == "Idle") && userActivityPieces.Count >= 3)    // Windows在杀进程前会先转入explorer或Idle，所以出现这种情况时需要再回溯一层UAP
                             {
                                 lastUAP = userActivityPieces[userActivityPieces.Count - 3];
@@ -192,6 +214,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                             }
                         }
                     }
+                    uniqueMonitor.DataUpdateEvent?.Invoke(this, new EventArgs());
                 }
                 catch (Exception)
                 {
