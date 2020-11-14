@@ -24,7 +24,7 @@ using System.Threading;
 using DesktopLearningAssistant.TimeStatistic;
 using DesktopLearningAssistant.TaskTomato;
 using DesktopLearningAssistant.TaskTomato.Model;
-
+using UI.Tomato;
 using TTomato = DesktopLearningAssistant.TaskTomato.Model.Tomato;
 
 namespace UI
@@ -39,6 +39,9 @@ namespace UI
         double m_Percent = 0;
         bool m_IsStart = false;
         public SeriesCollection SeriesCollection { get; set; }
+        public int CurrentTaskId;
+        TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+
 
         private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
@@ -72,29 +75,6 @@ namespace UI
             //Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
         }
 
-        void TimerDealy(object o, EventArgs e)
-        {
-            if (this.Top > 3)
-            {
-                return;
-            }
-            //获取鼠标在屏幕上的位置
-            double mouse_x = System.Windows.Forms.Form.MousePosition.X;   //需要添加引用System.Drawing
-            double mouse_y = System.Windows.Forms.Form.MousePosition.Y;
-
-            bool is_in_collasped_range = (mouse_y > this.Top + this.Height) || (mouse_x < this.Left || mouse_x > this.Left + this.Width);//缩起的条件
-            bool is_in_visiable_range = (mouse_y < 1 && mouse_x >= this.Left && mouse_x <= this.Left + this.Width); //展开的条件         
-
-            if (this.Top < 3 && this.Top >= 0 && is_in_collasped_range)
-            {
-                System.Threading.Thread.Sleep(300);
-                this.Top = -this.ActualHeight - 3;
-            }
-            else if (this.Top < 0 && is_in_visiable_range)
-            {
-                this.Top = 1;
-            }
-        }
 
 
         private void testTmp()
@@ -118,6 +98,8 @@ namespace UI
             };
 
             TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+
+
             tts.AddTask(taskInfo1);
             tts.AddTask(taskInfo2);
 
@@ -137,8 +119,15 @@ namespace UI
                 EndTime = DateTime.Now
             };
             tts.FinishedOneTomato(tomato);
+
             taskInfos = tts.GetAllUnfinishedTaskInfos();
+            tts.GetTaskEfficiencies(DateTime.Now, 5);
+
         }
+
+
+
+
 
         private void Am_DataUpdateEvent(object sender, EventArgs e)
         {
@@ -156,6 +145,9 @@ namespace UI
             var selectedSeries = (PieSeries) chartpoint.SeriesView;
             selectedSeries.PushOut = 8;
         }
+
+
+        //进度条处理
         private void M_Timer1_Tick(object sender, EventArgs e)
         {
             m_Percent += 0.01;
@@ -169,10 +161,7 @@ namespace UI
 
             circleProgressBar.CurrentValue1 = m_Percent;
         }
-        /// <summary>
-        /// UI变化
-        /// </summary>
-        /// <param name="bState"></param>
+   
         private void StartChange(bool bState)
         {
             if (bState)
@@ -183,30 +172,41 @@ namespace UI
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            //倒计时
+
+            tomatoTimer.Start();
+
+            //进度条
             if (m_IsStart)
             {
                 m_Timer1.Stop();
                 m_IsStart = false;
-
             }
             else
             {
-                //              m_Percent = 0;
+                // m_Percent = 0;
                 m_Timer1.Start();
                 m_IsStart = true;
-                tomatoTimer.Start();
-                Thread thread = new Thread(new ThreadStart(() =>
+                Thread thread2 = new Thread(new ThreadStart(() =>
                 {
                     for (int i = 1; i <= 2500; i++)
                     {
-                        //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
                         Thread.Sleep(10000);
                     }
                 }));
-                thread.Start();
+                thread2.Start();
 
+                //增加番茄
+                TTomato tomato = new TTomato()
+                {
+                    TaskID = CurrentTaskId,
+                    BeginTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddMinutes(25)
+                };
+
+                if(m_Percent==100)
+                tts.FinishedOneTomato(tomato);//25分钟后结束番茄
             }
-
             StartChange(m_IsStart);
         }
 
@@ -285,33 +285,12 @@ namespace UI
 
         }
 
-        private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
-        {
-          tomatoTimer.Start();
-          Thread thread = new Thread(new ThreadStart(() =>
-          {
-              for (int i = 1; i <= 2500; i++)
-              {
-            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
-                  Thread.Sleep(10000);
-              }
-          }));
-          thread.Start();
-
-            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-        }
-
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
-
         }
 
-        private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
-        {
-          
-        }
 
         /// <summary>
         /// 点击“文件管理”按钮
@@ -325,6 +304,12 @@ namespace UI
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
+        {
+            AllTasksWindow allTasksWindow = new AllTasksWindow();
+            allTasksWindow.Show();
         }
     }
 }
