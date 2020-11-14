@@ -24,38 +24,94 @@ namespace UI.Tomato
 
     public partial class AllTasksWindow : Window
     {
+        TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+        TaskInfo taskInfo = new TaskInfo();
+        
+        
 
+        private Image Unfinishedimg;
+        private Image Finishedimg;
+    
         public AllTasksWindow()
         {
             InitializeComponent();
             List<TaskItem> items = new List<TaskItem>();
+
+            Unfinishedimg.Source = new BitmapImage(new Uri(@"../Icon/tomatounfinished.png", UriKind.Relative));
+            Finishedimg.Source = new BitmapImage(new Uri(@"../Icon/tomatoufinished.png", UriKind.Relative));
+
+
+
             items.Add(new TaskItem()
             {
-                ID = 1, Name = "做PPT", State = StateType.Done, StartTime = DateTime.Now.ToString(),
-                DeadLine = DateTime.Now.ToString()
+                ID =taskInfo.TaskID, Name = taskInfo.Name,
+                State = taskInfo.Finished,
+                StartTime = taskInfo.StartTime.ToString(),
+                DeadLine = taskInfo.EndTime.ToString(),
+
+                finishedTomato = taskInfo.FinishedTomatoCount,
+                totalTomato = taskInfo.TotalTomatoCount,
+                TomatImages = {Unfinishedimg,Finishedimg}
+                //问题 怎么根据已完成和未完成番茄数给list<image>赋值
+
             });
-            items.Add(new TaskItem()
-            {
-                ID = 2, Name = "写.NET大作业", State = StateType.NotDone, StartTime = DateTime.Now.ToString(),
-                DeadLine = DateTime.Now.ToString()
-            });
-            items.Add(new TaskItem()
-            {
-                ID = 3, Name = "背单词", State = StateType.Done, StartTime = DateTime.Now.ToString(),
-                DeadLine = DateTime.Now.ToString()
-            });
-            lvUsers.ItemsSource = items;
-            CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(lvUsers.ItemsSource);
+
+            AllTasksListView.ItemsSource = items;
+            CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(AllTasksListView.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("State");
             view.GroupDescriptions.Add(groupDescription);
         }
+        /// <summary>
+        /// 重写List构造函数
+        /// </summary>
+        /// <returns></returns>
+        public List<Image> TomatoImages()
+        {
+            int unfinished = taskInfo.TotalTomatoCount - taskInfo.FinishedTomatoCount;
+
+
+        }
+
+        private void AddNewTask_OnClick(object sender, RoutedEventArgs e)
+        {
+            NewTaskWindow newTaskWindow = new NewTaskWindow();
+            newTaskWindow.Show();
+
+            taskInfo.TaskID = AllTasksListView.Items.Count + 1;
+            taskInfo.Name = newTaskWindow.TxtBoxTaskName.Text;
+            taskInfo.StartTime = DateTime.Parse(newTaskWindow.StartTimeSelect.Value.ToString());
+            taskInfo.EndTime = DateTime.Parse(newTaskWindow.EndTimeSelect.Value.ToString());
+            taskInfo.TotalTomatoCount = newTaskWindow.ListViewTomato.Items.Count;
+            taskInfo.Notes = newTaskWindow.TextBoxNotes.Text;
+
+        }
+
+        private void DeleteTask(object sender, RoutedEventArgs e)
+        {
+            taskInfo.TaskID = AllTasksListView.SelectedIndex;
+            MessageBox.Show("确认删除任务:"+ AllTasksListView.SelectedIndex.ToString()+taskInfo.Name, "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            tts.DeleteTask(taskInfo.TaskID);
+        }
+
+        private void ModifyTasks(object sender, RoutedEventArgs e)
+        {
+            NewTaskWindow newTaskWindow = new NewTaskWindow();
+            newTaskWindow.Show();
+
+            taskInfo.TaskID = AllTasksListView.SelectedIndex;
+            taskInfo.Name = newTaskWindow.TxtBoxTaskName.Text;
+            taskInfo.StartTime=DateTime.Parse(newTaskWindow.StartTimeSelect.Value.ToString());
+            taskInfo.EndTime = DateTime.Parse(newTaskWindow.EndTimeSelect.Value.ToString());
+            taskInfo.TotalTomatoCount = newTaskWindow.ListViewTomato.Items.Count;
+            taskInfo.Notes = newTaskWindow.TextBoxNotes.Text;
+
+            tts.ModifyTask(taskInfo);
+        }
+
+      
     }
 
-    public enum StateType
-    {
-        Done,
-        NotDone
-    };
+ 
 
     public class TaskItem
     {
@@ -66,8 +122,10 @@ namespace UI.Tomato
         public String DeadLine { get; set; }
         public int finishedTomato { get; set; }
         public int totalTomato { get; set; }
+        public bool State { get; set; }
 
-        public List<Image> TomatImages { get; }
-        public StateType State { get; set; }
+        public List<Image> TomatImages { get; set; }
     }
+
+   
 }
