@@ -7,7 +7,9 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.TimeStatistic;
+using System.Windows;
 using System.Threading;
+using DesktopLearningAssistant.Configuration;
 
 namespace UI
 {
@@ -35,6 +37,11 @@ namespace UI
         /// </summary>
         public List<string> TodayColumnXLabels { get; set; }
         public List<string> WeekColumnXLabels { get; set; }
+
+        /// <summary>
+        /// 窗口起始位置
+        /// </summary>
+        public double left = SystemParameters.WorkArea.Width;
         #endregion
 
         #region 公有方法
