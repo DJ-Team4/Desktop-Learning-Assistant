@@ -5,21 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Tomato"
         mc:Ignorable="d"
-        Title="所有任务" Height="450" Width="750" >
+        Title="所有任务" Height="450" Width="780" >
     <Grid>
-        <ListView  Name="AllTasksListView" HorizontalAlignment="Left" Height="336" Margin="31,40,0,0" VerticalAlignment="Top" Width="664">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="任务ID" Width="50" DisplayMemberBinding="{Binding TaskID}" />
-                    <GridViewColumn Header="任务名称" Width="100" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="开始时间" Width="90" DisplayMemberBinding="{Binding StartTime}"/>
-                    <GridViewColumn Header="截止时间" Width="90" DisplayMemberBinding="{Binding EndTime}"/>
-                    <GridViewColumn Header="设定番茄数" Width="80" DisplayMemberBinding="{Binding TomatoList}"/>
-                    <GridViewColumn Header="已完成番茄数" Width="90" DisplayMemberBinding="{Binding present_tomato}"/>
-                    <GridViewColumn Header="任务状态" Width="60" DisplayMemberBinding="{Binding TaskState}"/>
-                    <GridViewColumn Header="备注" Width="100" DisplayMemberBinding="{Binding Notes}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto">
+
+            <ListView Name="AllTasksListView"  Width="600">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Width="600">
+                            <StackPanel  Orientation="Vertical">
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding ID }" FontSize="23" Height="28" FontWeight="Bold" />
+                                    <TextBlock Text="   "></TextBlock>
+                                    <TextBlock Text="{Binding Name}" FontSize="23" FontWeight="Bold" Height="28" />
+                                    <TextBlock Text="&#13;&#13;"></TextBlock>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <TextBlock Text=" 开始时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
+                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock  Text="{Binding StartTime}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <TextBlock Text=" 截止时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
+                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock Text="{Binding DeadLine}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <StackPanel Name="TomatoStackPanel" Orientation="Horizontal">
+                                        <Image Name="TomatoImageList"  Height="25">
+                                        </Image>
+                                        <Image Name="Tomato2ImageList" Source="../Icon/tomatofinished.png"  Height="25"></Image>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </StackPanel>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="True">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+            <Button Content="增加任务" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="60,300,0,88" />
+            <Button Content="修改任务" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="-70,241,0,144" />
+            <Button Content="删除任务" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="-70,184,60,202" />
+
+
+        </StackPanel>
+
     </Grid>
 </Window>

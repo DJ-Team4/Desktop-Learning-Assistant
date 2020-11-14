@@ -18,9 +18,19 @@ namespace DesktopLearningAssistant.Configuration
         #region 托管配置
 
         /// <summary>
+        /// 全局托管配置项
+        /// </summary>
+        public GlobalConfig GConfig { get; set; }
+
+        /// <summary>
         /// 屏幕使用时间统计模块的配置项
         /// </summary>
         public TimeStatisticConfig TSConfig { get; set; }
+
+        /// <summary>
+        /// 番茄钟/任务管理模块配置项
+        /// </summary>
+        public TaskTomatoConfig TTConfig { get; set; }
 
         #endregion
 
@@ -44,7 +54,9 @@ namespace DesktopLearningAssistant.Configuration
         /// </summary>
         public ConfigService()
         {
+            GConfig = new GlobalConfig();
             TSConfig = new TimeStatisticConfig();
+            TTConfig = new TaskTomatoConfig();
         }
 
         /// <summary>
@@ -111,7 +123,9 @@ namespace DesktopLearningAssistant.Configuration
         private static void SetDefault()
         {
             if (uniqueConfigService == null) return;
+            uniqueConfigService.GConfig.SetDefault();
             uniqueConfigService.TSConfig.SetDefault();
+            uniqueConfigService.TTConfig.SetDefault();
         }
     }
 }
