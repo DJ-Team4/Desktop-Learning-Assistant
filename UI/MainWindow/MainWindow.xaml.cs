@@ -65,7 +65,7 @@ namespace UI
             //_timer.Start();
 
             this.DataContext = mainWindowViewModel;
-
+            
             // 当数据发生变化时，更新ViewModel数据
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.DataUpdateEvent += Am_DataUpdateEvent;
@@ -94,6 +94,7 @@ namespace UI
             {
                 this.Top = 1;
             }
+            
         }
 
 
@@ -325,6 +326,44 @@ namespace UI
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton==MouseButtonState.Pressed)
+            {
+                this.DragMove();
+               
+            }
+            if (this.Left < 10)
+                this.Left = 0;
+            else if (this.Left > SystemParameters.WorkArea.Width)
+                this.Left = SystemParameters.WorkArea.Width;
+            if (this.Top < 10)
+                this.Top = 0;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
+        {
+            _timer.Interval = 300;
+            _timer.Tick += TimerDealy;
+            _timer.Start();
         }
     }
 }
