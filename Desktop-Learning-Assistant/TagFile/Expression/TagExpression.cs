@@ -34,11 +34,11 @@ namespace DesktopLearningAssistant.TagFile.Expression
             var dict = new Dictionary<int, HashSet<string>>();
             foreach (var relation in relations)
             {
-                int id = relation.FileItemId;
-                string tag = relation.TagName;
-                if (!dict.ContainsKey(id))
-                    dict[id] = new HashSet<string>();
-                dict[id].Add(tag);
+                int fileId = relation.FileItemId;
+                string tagName = relation.Tag.TagName;
+                if (!dict.ContainsKey(fileId))
+                    dict[fileId] = new HashSet<string>();
+                dict[fileId].Add(tagName);
             }
             var files = new List<QueryFile>();
             foreach (var kv in dict)

@@ -298,7 +298,7 @@ namespace UI
         {
             tomatoTimer.Stop();
             m_Timer1.Stop();
-            ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
+            ImageSource start = new BitmapImage(new Uri("Image/Start.jpeg", UriKind.Relative));
         }
 
 
