@@ -84,7 +84,7 @@
                           HorizontalContentAlignment="Stretch"
                           BorderThickness="0">
                     <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:NavItem}">
+                        <DataTemplate DataType="{x:Type local:INavItem}">
                             <TextBlock Text="{Binding Header}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -109,13 +109,15 @@
                           HorizontalContentAlignment="Stretch"
                           BorderThickness="0">
                     <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:NavItem}">
+                        <DataTemplate DataType="{x:Type local:INavItem}">
                             <TextBlock Text="{Binding Header}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
                     <ListView.Resources>
                         <ContextMenu x:Key="TagContextMenu">
+                            <MenuItem Header="重命名"
+                                      Click="RenameTagMenuItem_Click" />
                             <MenuItem Header="删除标签"
                                       Click="RemoveTagMenuItem_Click" />
                         </ContextMenu>

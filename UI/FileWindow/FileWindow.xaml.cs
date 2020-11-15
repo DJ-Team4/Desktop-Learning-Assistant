@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DesktopLearningAssistant.TagFile;
-using DesktopLearningAssistant.TagFile.Model;
 
 namespace UI.FileWindow
 {
@@ -24,20 +23,30 @@ namespace UI.FileWindow
         public FileWindow()
         {
             InitializeComponent();
+            TagFileService.EnsureDbAndFolderCreated();//TODO move it
             winVM = new FileWinVM();
             DataContext = winVM;
         }
 
-        private FileWinVM winVM;
+        private readonly FileWinVM winVM;
 
-        private void AddTagBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddTagBtn_Click(object sender, RoutedEventArgs e)
         {
-            //TODO add tag click
+            string tagName = "lalala";
+            //TODO
+            await winVM.AddTagAsync(tagName);
         }
 
-        private void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            winVM.RemoveSelectedTag();
+            await winVM.RemoveSelectedTagAsync();
+        }
+
+        private async void RenameTagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string newTagName = "lalala";
+            //TODO
+            await winVM.RenameSelectedTagAsync(newTagName);
         }
     }
 }
