@@ -32,11 +32,13 @@ namespace UI.FileWindow
 
         private async void AddTagBtn_Click(object sender, RoutedEventArgs e)
         {
-            var addTagDialog = new AddTagDialog();
-            addTagDialog.ShowDialog();
-            string tagName = "lalala";
-            //TODO
-            await winVM.AddTagAsync(tagName);
+            var dialog = new AddTagDialog();
+            bool result = dialog.ShowDialog().GetValueOrDefault(false);
+            if (result)
+            {
+                string tagName = dialog.TagName;
+                await winVM.AddTagAsync(tagName);
+            }
         }
 
         private async void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)

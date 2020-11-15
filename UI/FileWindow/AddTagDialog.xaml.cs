@@ -24,14 +24,27 @@ namespace UI.FileWindow
             InitializeComponent();
         }
 
+        public string TagName { get; private set; }
+
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            string tagName = tagNameTxtbox.Text;
+            if (tagName == null || tagName.Trim().Length == 0)
+            {
+                DialogResult = false;
+            }
+            else
+            {
+                DialogResult = true;
+                TagName = tagName.Trim();
+            }
+            Close();
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = false;
+            Close();
         }
     }
 }
