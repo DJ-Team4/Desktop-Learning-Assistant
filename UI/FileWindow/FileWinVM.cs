@@ -243,8 +243,17 @@ namespace UI.FileWindow
         {
             get
             {
-                var fileItems = FilesFromNavAsync().Result;//TODO async
-                return FileItemsToFileVMs(fileItems);
+                try
+                {
+                    var fileItems = FilesFromNavAsync().Result;//TODO async
+                    return FileItemsToFileVMs(fileItems);
+                }
+                catch (Exception e)
+                {
+                    //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
+                    Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
+                    return FileItemsToFileVMs(new List<FileItem>());
+                }
             }
         }
 

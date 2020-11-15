@@ -187,16 +187,7 @@ namespace UI.FileWindow
 
         private void GoToSearchResult()
         {
-            try
-            {
-                winVM.GoToSearchResult();
-            }
-            catch (Exception ex)
-            {
-                string caption = ex is InvalidExpressionException
-                                    ? "查询表达式非法" : "其他错误";
-                MessageBox.Show(ex.Message, caption);
-            }
+            winVM.GoToSearchResult();
         }
     }
 }
