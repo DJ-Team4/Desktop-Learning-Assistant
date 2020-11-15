@@ -135,6 +135,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileWindow\AddFileDialog.xaml.cs">
+      <DependentUpon>AddFileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileWindow\AddOrRenameTagDialog.xaml.cs">
       <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
     <Compile Include="FileWindow\FileWindow.xaml.cs">
       <DependentUpon>FileWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="FileWindow\AddFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileWindow\AddOrRenameTagDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

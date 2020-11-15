@@ -23,9 +23,9 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>
@@ -33,7 +33,7 @@
             </Grid.Resources>
 
             <!-- Refresh Button -->
-            <Button Grid.Column="1"
+            <Button Grid.Column="0"
                     Name="refreshButtn"
                     BorderThickness="0"
                     Margin="{StaticResource ToolbarItemMargin}"
@@ -42,8 +42,7 @@
             </Button>
 
             <!-- Tag Search Box -->
-
-            <TextBox Grid.Column="2"
+            <TextBox Grid.Column="1"
                      x:Name="tagSearchBox"
                      Margin="{StaticResource ToolbarItemMargin}"
                      Padding="2"
@@ -53,7 +52,7 @@
                         <Style.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius"
-                                        Value="6" />
+                                        Value="4" />
                             </Style>
                         </Style.Resources>
                     </Style>
@@ -61,9 +60,15 @@
             </TextBox>
 
             <!-- Filename Search Box -->
-            <TextBox Grid.Column="3"
+            <TextBox Grid.Column="2"
                      Name="filenameSearchBox"
                      Margin="{StaticResource ToolbarItemMargin}" />
+
+            <Button Grid.Column="3"
+                    Name="addFileBtn"
+                    Content="Add File"
+                    Click="AddFileBtn_Click" />
+
         </Grid>
 
         <!-- Main Part -->

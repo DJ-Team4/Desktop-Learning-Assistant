@@ -59,5 +59,17 @@ namespace UI.FileWindow
                 await winVM.RenameSelectedTagAsync(newTagName);
             }
         }
+
+        private void AddFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddFileDialog();
+            if (dialog.ShowDialog().GetValueOrDefault(false))
+            {
+                string filepath = dialog.Filepath;
+                bool asShortcut = dialog.AsShortcut;
+                MessageBox.Show(filepath + " " + asShortcut);
+                //TODO try catch
+            }
+        }
     }
 }
