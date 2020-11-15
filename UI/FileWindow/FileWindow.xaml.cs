@@ -24,12 +24,20 @@ namespace UI.FileWindow
         public FileWindow()
         {
             InitializeComponent();
-            DataContext = new FileWinVM();
+            winVM = new FileWinVM();
+            DataContext = winVM;
         }
 
-        private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+        private FileWinVM winVM;
+
+        private void AddTagBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("select");
+            //TODO add tag click
+        }
+
+        private void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            winVM.RemoveSelectedTag();
         }
     }
 }
