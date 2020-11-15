@@ -32,7 +32,7 @@ namespace UI.FileWindow
 
         private async void AddTagBtn_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new AddTagDialog();
+            var dialog = AddOrRenameTagDialog.MakeAddTagDialog();
             bool result = dialog.ShowDialog().GetValueOrDefault(false);
             if (result)
             {
@@ -48,9 +48,16 @@ namespace UI.FileWindow
 
         private async void RenameTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string newTagName = "lalala";
-            //TODO
-            await winVM.RenameSelectedTagAsync(newTagName);
+            string currentName = winVM.CurrentTagName;
+            if (currentName == null)
+                return;
+            var dialog = AddOrRenameTagDialog.MakeRenameTagDialog(currentName);
+            bool result = dialog.ShowDialog().GetValueOrDefault(false);
+            if (result)
+            {
+                string newTagName = dialog.TagName;
+                await winVM.RenameSelectedTagAsync(newTagName);
+            }
         }
     }
 }

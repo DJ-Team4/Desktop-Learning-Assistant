@@ -110,6 +110,18 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 当前选中的标签的名字。若选中的不是标签则返回 null。
+        /// </summary>
+        public string CurrentTagName
+        {
+            get
+            {
+                var tagNav = SelectedNavItem as TagNavItem;
+                return tagNav?.Tag.TagName;
+            }
+        }
+
         private ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
         {
             tags.Sort((t1, t2) => t1.TagName.CompareTo(t2.TagName));
