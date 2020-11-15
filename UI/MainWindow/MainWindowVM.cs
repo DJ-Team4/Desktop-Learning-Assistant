@@ -7,15 +7,25 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using DesktopLearningAssistant.TimeStatistic.Model;
 using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.TaskTomato;
+using DesktopLearningAssistant.TaskTomato.Model;
+using System.Windows;
 using System.Threading;
+using DesktopLearningAssistant.Configuration;
 
 namespace UI
 {
     class MainWindowViewModel
     {
         ITimeStatisticService timeStatisticService = new TimeStatisticService();
+        TaskTomatoService taskTomatoService = new TaskTomatoService();
 
         #region 属性
+
+        /// <summary>
+        /// 折线图集合
+        /// </summary>
+        public SeriesCollection LineSeriesCollection { get; set; }
 
         /// <summary>
         /// 柱状图集合
@@ -31,10 +41,20 @@ namespace UI
         public SeriesCollection WeekPieSeriesCollection { get; set; }
 
         /// <summary>
+        /// 折线图X坐标
+        /// </summary>
+        public List<string> LineXLabels { get; set; }
+
+        /// <summary>
         /// 柱状图X坐标
         /// </summary>
         public List<string> TodayColumnXLabels { get; set; }
         public List<string> WeekColumnXLabels { get; set; }
+
+        /// <summary>
+        /// 窗口起始位置
+        /// </summary>
+        public double left = SystemParameters.WorkArea.Width;
         #endregion
 
         #region 公有方法
@@ -62,11 +82,34 @@ namespace UI
             GetWeekColunmSeriesData();
             GetTodayPieSeriesData();
             GetWeekPieSeriesData();
+            GetLineSeriesData();
         }
 
         #endregion
 
         #region 私有方法
+
+        /// <summary>
+        /// 最近k个任务效率折线图
+        /// </summary>
+        private void GetLineSeriesData()
+        {
+            //LineSeriesCollection.Clear();
+            //LineXLabels.Clear();
+            List<double> values = new List<double>();
+            List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
+            for (int i=0;i<taskEfficiencies.Count&&i<5;i++)
+            {
+                LineXLabels.Add(taskEfficiencies[i].Name);
+                values.Add(taskEfficiencies[i].Efficiency);
+            }
+            LineSeriesCollection.Add(new LineSeries
+            {
+                Title = "Today",
+                Values = new ChartValues<double>(values)
+            });
+            
+        }
 
         /// <summary>
         /// 今日每个软件的时间统计柱状图

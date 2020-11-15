@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -35,13 +36,10 @@ namespace UI
     public partial class MainWindow : Window
     {
         private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
-
+        private NotifyIcon notifyIcon = null;
         double m_Percent = 0;
         bool m_IsStart = false;
         public SeriesCollection SeriesCollection { get; set; }
-        public int CurrentTaskId;
-        TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
-
 
         private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
 
@@ -59,7 +57,7 @@ namespace UI
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
             //25分钟走完一个番茄钟
             //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
-            m_Timer1.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
 
             m_Timer1.Tick += M_Timer1_Tick;
 
@@ -68,7 +66,7 @@ namespace UI
             //_timer.Start();
 
             this.DataContext = mainWindowViewModel;
-
+            
             // 当数据发生变化时，更新ViewModel数据
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.DataUpdateEvent += Am_DataUpdateEvent;
@@ -98,8 +96,6 @@ namespace UI
             };
 
             TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
-
-
             tts.AddTask(taskInfo1);
             tts.AddTask(taskInfo2);
 
@@ -119,15 +115,8 @@ namespace UI
                 EndTime = DateTime.Now
             };
             tts.FinishedOneTomato(tomato);
-
             taskInfos = tts.GetAllUnfinishedTaskInfos();
-            tts.GetTaskEfficiencies(DateTime.Now, 5);
-
         }
-
-
-
-
 
         private void Am_DataUpdateEvent(object sender, EventArgs e)
         {
@@ -145,9 +134,6 @@ namespace UI
             var selectedSeries = (PieSeries) chartpoint.SeriesView;
             selectedSeries.PushOut = 8;
         }
-
-
-        //进度条处理
         private void M_Timer1_Tick(object sender, EventArgs e)
         {
             m_Percent += 0.01;
@@ -161,7 +147,10 @@ namespace UI
 
             circleProgressBar.CurrentValue1 = m_Percent;
         }
-   
+        /// <summary>
+        /// UI变化
+        /// </summary>
+        /// <param name="bState"></param>
         private void StartChange(bool bState)
         {
             if (bState)
@@ -172,41 +161,30 @@ namespace UI
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            //倒计时
-
-            tomatoTimer.Start();
-
-            //进度条
             if (m_IsStart)
             {
                 m_Timer1.Stop();
                 m_IsStart = false;
+
             }
             else
             {
-                // m_Percent = 0;
+                //              m_Percent = 0;
                 m_Timer1.Start();
                 m_IsStart = true;
-                Thread thread2 = new Thread(new ThreadStart(() =>
+                tomatoTimer.Start();
+                Thread thread = new Thread(new ThreadStart(() =>
                 {
                     for (int i = 1; i <= 2500; i++)
                     {
+                        //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
                         Thread.Sleep(10000);
                     }
                 }));
-                thread2.Start();
+                thread.Start();
 
-                //增加番茄
-                TTomato tomato = new TTomato()
-                {
-                    TaskID = CurrentTaskId,
-                    BeginTime = DateTime.Now,
-                    EndTime = DateTime.Now.AddMinutes(25)
-                };
-
-                if(m_Percent==100)
-                tts.FinishedOneTomato(tomato);//25分钟后结束番茄
             }
+
             StartChange(m_IsStart);
         }
 
@@ -260,19 +238,19 @@ namespace UI
                 tomatoTimer.Stop();
         }
 
-        private void File_DragEnter(object sender, DragEventArgs e)
+        private void File_DragEnter(object sender, System.Windows.DragEventArgs e)
         {
             //MessageBox.Show("File Drop Enter");
             Debug.WriteLine("drag in");
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Link;
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+                e.Effects = System.Windows.DragDropEffects.Link;
             else
-                e.Effects = DragDropEffects.None;
+                e.Effects = System.Windows.DragDropEffects.None;
         }
 
-        private void File_Drop(object sender, DragEventArgs e)
+        private void File_Drop(object sender, System.Windows.DragEventArgs e)
         {
-            MessageBox.Show("File Drop");
+            System.Windows.MessageBox.Show("File Drop");
             Debug.WriteLine("drop");
             var tagWindow = new FileWindow.FileWindow();
             tagWindow.Show();
@@ -285,9 +263,26 @@ namespace UI
 
         }
 
+   /*     private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
+        {
+          tomatoTimer.Start();
+          Thread thread = new Thread(new ThreadStart(() =>
+          {
+              for (int i = 1; i <= 2500; i++)
+              {
+            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
+                  Thread.Sleep(10000);
+              }
+          }));
+          thread.Start();
+
+            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
+        }*/
+
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
+            m_Timer1.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
         }
 
@@ -306,10 +301,77 @@ namespace UI
 
         }
 
-        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            AllTasksWindow allTasksWindow = new AllTasksWindow();
+            if(e.LeftButton==MouseButtonState.Pressed)
+            {
+                this.DragMove();
+               
+            }
+            if (this.Left < 10)
+                this.Left = 0;
+            else if (this.Left > SystemParameters.WorkArea.Width)
+                this.Left = SystemParameters.WorkArea.Width;
+            if (this.Top < 10)
+                this.Top = 0;
+        }
+
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+
+        private void OpenAllTasks_OnClick(object sender, RoutedEventArgs e)
+        {
+            AllTasksWindow allTasksWindow=new AllTasksWindow();
             allTasksWindow.Show();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            notify();
+        }
+        private void notify()
+        {
+            //隐藏主窗体
+            this.Visibility = Visibility.Hidden;
+
+            //设置托盘的各个属性
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Text = "桌面学习助手";
+            notifyIcon.Icon = new System.Drawing.Icon("../../Icon/spring.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
+        }
+
+        /// <summary>
+        /// 鼠标单击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //如果鼠标左键单击
+            if (e.Button == MouseButtons.Left)
+            {
+                if (this.Visibility == Visibility.Visible)
+                {
+                    this.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this.Visibility = Visibility.Visible;
+                    this.Activate();
+                }
+            }
         }
     }
 }
