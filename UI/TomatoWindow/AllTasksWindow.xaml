@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto">
 
-            <ListView Name="lvUsers"  Width="600">
+            <ListView Name="AllTasksListView"  Width="600">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel Width="600">
@@ -66,6 +66,11 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
             </ListView>
+            <Button Content="增加任务" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="60,300,0,88" />
+            <Button Content="修改任务" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="-70,241,0,144" />
+            <Button Content="删除任务" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="-70,184,60,202" />
+
+
         </StackPanel>
 
     </Grid>
