@@ -32,9 +32,9 @@
                                 </WrapPanel>
                                 <WrapPanel>
                                     <StackPanel Name="TomatoStackPanel" Orientation="Horizontal">
-                                        <Image Name="TomatoImageList"  Height="25">
+                                        <Image x:Name="TomatoFinishedImage"   Source="../Icon/tomatofinished.png" Height="25">
                                         </Image>
-                                        <Image Name="Tomato2ImageList" Source="../Icon/tomatofinished.png"  Height="25"></Image>
+                                        <Image x:Name="TomatoUnfinishedImage" Source="../Icon/tomatounfinished.png"  Height="25"></Image>
                                     </StackPanel>
                                 </WrapPanel>
                             </StackPanel>

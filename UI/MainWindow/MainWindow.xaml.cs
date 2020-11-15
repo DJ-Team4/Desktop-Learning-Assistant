@@ -24,7 +24,7 @@ using System.Threading;
 using DesktopLearningAssistant.TimeStatistic;
 using DesktopLearningAssistant.TaskTomato;
 using DesktopLearningAssistant.TaskTomato.Model;
-
+using UI.Tomato;
 using TTomato = DesktopLearningAssistant.TaskTomato.Model.Tomato;
 
 namespace UI
@@ -56,7 +56,7 @@ namespace UI
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
             //25分钟走完一个番茄钟
             //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
-            m_Timer1.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
 
             m_Timer1.Tick += M_Timer1_Tick;
 
@@ -286,7 +286,7 @@ namespace UI
 
         }
 
-        private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
+   /*     private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
         {
           tomatoTimer.Start();
           Thread thread = new Thread(new ThreadStart(() =>
@@ -300,19 +300,15 @@ namespace UI
           thread.Start();
 
             ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-        }
+        }*/
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
+            m_Timer1.Stop();
             ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
-
         }
 
-        private void OpenTomatoWindow(object sender, MouseButtonEventArgs e)
-        {
-          
-        }
 
         /// <summary>
         /// 点击“文件管理”按钮
@@ -364,6 +360,12 @@ namespace UI
             _timer.Interval = 300;
             _timer.Tick += TimerDealy;
             _timer.Start();
+        }
+
+        private void OpenAllTasks_OnClick(object sender, RoutedEventArgs e)
+        {
+            AllTasksWindow allTasksWindow=new AllTasksWindow();
+            allTasksWindow.Show();
         }
     }
 }
