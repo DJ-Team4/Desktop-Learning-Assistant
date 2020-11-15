@@ -67,6 +67,7 @@ namespace UI
         public MainWindowViewModel()
         {
             LineSeriesCollection = new SeriesCollection();
+            LineXLabels = new List<string>();
 
             TodayColumnSeriesCollection = new SeriesCollection();
             WeekColumnSeriesCollection = new SeriesCollection();
@@ -105,21 +106,22 @@ namespace UI
         /// </summary>
         private void GetLineSeriesData()
         {
-            //LineSeriesCollection.Clear();
-            //LineXLabels.Clear();
+            LineSeriesCollection.Clear();
+            LineXLabels.Clear();
             List<double> values = new List<double>();
             List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
-            for (int i=0;i<taskEfficiencies.Count&&i<5;i++)
+            for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
             {
                 LineXLabels.Add(taskEfficiencies[i].Name);
                 values.Add(taskEfficiencies[i].Efficiency);
             }
+            
             LineSeriesCollection.Add(new LineSeries
             {
                 Title = "Today",
+                DataLabels = false,
                 Values = new ChartValues<double>(values)
             });
-            
         }
 
         /// <summary>
@@ -219,7 +221,7 @@ namespace UI
         private void GetRecentFiles()
         {
             RelativeFileItems.Clear();
-            TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
             TaskInfo taskInfo = tts.GetTaskWithID(CurrentTaskId);
 
             if (taskInfo == null) return;

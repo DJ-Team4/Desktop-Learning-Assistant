@@ -50,7 +50,7 @@ namespace DesktopLearningAssistant.TaskTomato
         /// 获取单例对象的方法
         /// </summary>
         /// <returns></returns>
-        public static TaskTomatoService GetTimeStatisticService()
+        public static TaskTomatoService GetTaskTomatoService()
         {
             if (uniqueTaskTomatoService != null) return uniqueTaskTomatoService;
 

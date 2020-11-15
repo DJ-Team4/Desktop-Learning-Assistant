@@ -203,48 +203,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon\Acrobat-File.png" />
-    <Resource Include="Icon\chrome.png" />
-    <Resource Include="Icon\file.jpeg" />
-    <Resource Include="Icon\PDF.png" />
-    <Resource Include="Icon\plus.png" />
-    <Resource Include="Icon\qq.png" />
-    <Resource Include="Icon\Visual Studio.png" />
-    <Resource Include="Icon\word %281%29.png" />
-    <Resource Include="Icon\word.png" />
-    <Resource Include="Icon\书.png" />
-    <Resource Include="Icon\右箭头.png" />
-    <Resource Include="Icon\微信.png" />
-    <Resource Include="Icon\Search.png" />
-    <Resource Include="Icon\文件夹.png" />
-    <Resource Include="Icon\时钟.png" />
-    <Resource Include="Icon\浏览器.png" />
-    <Resource Include="Icon\tomatofinished.png" />
-    <Resource Include="Icon\tomatounfinished.png" />
-    <Resource Include="Icon\箭头.png" />
-    <Resource Include="Icon\More.png" />
-    <Resource Include="Icon\详情.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\refresh.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\home.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\tag.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Pause.jpg" />
-    <Resource Include="Icon\Start.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Change.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Set.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Desktop-Learning-Assistant\Desktop-Learning-Assistant.csproj">
       <Project>{3bdcedcd-9866-44ad-b45e-347b30b7460e}</Project>
       <Name>Desktop-Learning-Assistant</Name>
@@ -254,7 +212,7 @@
     <Resource Include="MainWindow\Set.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon\spring.ico" />
+    <Resource Include="MainWindow\More.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

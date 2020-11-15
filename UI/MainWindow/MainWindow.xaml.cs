@@ -51,7 +51,7 @@ namespace UI
 
         #region 任务/番茄钟模块
 
-        private TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+        private TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
 
         private TimeCount timeCount;
         private double m_Percent = 0;
@@ -135,7 +135,7 @@ namespace UI
                 EndTime = DateTime.Today.AddDays(1),
             };
 
-            TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
             tts.AddTask(taskInfo1);
             tts.AddTask(taskInfo2);
 
@@ -362,7 +362,7 @@ namespace UI
             //设置托盘的各个属性
             notifyIcon = new NotifyIcon();
             notifyIcon.Text = "桌面学习助手";
-            notifyIcon.Icon = new System.Drawing.Icon("../../Icon/spring.ico");
+            notifyIcon.Icon = new System.Drawing.Icon("./Image/spring.ico");
             notifyIcon.Visible = true;
             notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
         }

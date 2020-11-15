@@ -12,38 +12,43 @@
             <RowDefinition Height="318*"/>
             <RowDefinition Height="42*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,-0.4,0.2">
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
             <DockPanel Height="32" Margin="0,0,0.2,0">
                 <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"/>
                 <Button x:Name="SearchBtn" Content="搜索" Margin="0"/>
             </DockPanel>
         </StackPanel>
         <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
-            <ListView x:Name="AllTasksListView"  Width="520" Margin="0,0,0,0">
+            <ListView x:Name="AllTasksListView" Width="505" Margin="5">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel Width="600">
+                        <WrapPanel Width="300">
                             <StackPanel  Orientation="Vertical">
                                 <WrapPanel>
-                                    <TextBlock Text="{Binding ID}" FontSize="23" Height="28" FontWeight="Bold" />
-                                    <TextBlock Text="   "/>
-                                    <TextBlock Text="{Binding Name}" FontSize="23" FontWeight="Bold" Height="28" />
+                                    <TextBlock Text="{Binding ID}" FontSize="18" Height="28" />
+                                    <TextBlock Text="    "/>
+                                    <TextBlock Text="{Binding Name}" FontSize="18" Height="28" />
                                     <TextBlock Text="&#xA;&#xA;"/>
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text=" 开始时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" />
+                                    <TextBlock Text=" 开始时间 " FontSize="12" Height="25" />
                                     <TextBlock Text="  "/>
-                                    <TextBlock  Text="{Binding StartTime}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                    <TextBlock  Text="{Binding StartTime}" FontSize="12" Height="25"  />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text=" 截止时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" />
+                                    <TextBlock Text=" 截止时间 " FontSize="12" Height="25" />
                                     <TextBlock Text="  "/>
-                                    <TextBlock Text="{Binding DeadLine}" FontSize="18" FontWeight="Bold" Height="25"  />
+                                    <TextBlock Text="{Binding DeadLine}" FontSize="12" Height="25"  />
                                 </WrapPanel>
                                 <WrapPanel>
                                     <StackPanel x:Name="TomatoStackPanel" Orientation="Horizontal">
-                                        <Image x:Name="TomatoFinishedImage"   Source="../Icon/tomatofinished.png" Height="25"/>
-                                        <Image x:Name="TomatoUnfinishedImage" Source="../Icon/tomatounfinished.png"  Height="25"/>
+                                        <ItemsControl ItemsSource="{Binding TomatoImageList}">
+                                            <ItemsControl.Template>
+                                                <ControlTemplate>
+                                                    <Image Width="25" Height="25"/>
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </WrapPanel>
                             </StackPanel>
