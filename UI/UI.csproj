@@ -253,6 +253,9 @@
   <ItemGroup>
     <Resource Include="MainWindow\Set.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\spring.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
