@@ -92,6 +92,8 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         Task<List<TagFileRelation>> RelationListAsync();
 
+        Task UpdateFileRelationAsync(FileItem fileItem, IEnumerable<Tag> newTags);
+
         #endregion
 
         #region FileItem 有关操作

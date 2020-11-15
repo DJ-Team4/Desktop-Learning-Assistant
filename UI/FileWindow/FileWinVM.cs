@@ -96,13 +96,94 @@ namespace UI.FileWindow
             RefreshFiles();
         }
 
+        /// <summary>
+        /// 所有标签的名称列表
+        /// </summary>
         public async Task<List<string>> AllTagNamesAsync()
         {
             var tags = await service.TagListAsync();
             var tagNames = new List<string>();
             foreach (Tag tag in tags)
                 tagNames.Add(tag.TagName);
+            tagNames.Sort();
             return tagNames;
+        }
+
+        /// <summary>
+        /// 打开选中的文件
+        /// </summary>
+        public void OpenSelectedFile()
+        {
+            SelectedFile?.FileItem.Open();
+        }
+
+        /// <summary>
+        /// 在资源管理器中展示选中的文件
+        /// </summary>
+        public void ShowSelectedFileInExplorer()
+        {
+            SelectedFile?.FileItem.ShowInExplorer();
+            Debug.WriteLine(SelectedFile.FileItem.RealPath());
+        }
+
+        /// <summary>
+        /// 将选中文件移动到回收站
+        /// </summary>
+        public async Task DeleteSelectedFileToRecycleBin()
+        {
+            await SelectedFile?.FileItem.DeleteToRecycleBinAsync();
+            Files.Remove(SelectedFile);
+            OnFilesChanged();
+        }
+
+        /// <summary>
+        /// 将选中文件彻底删除
+        /// </summary>
+        public async Task DeleteSelectedFile()
+        {
+            await SelectedFile?.FileItem.DeleteAsync();
+            Files.Remove(SelectedFile);
+            OnFilesChanged();
+        }
+
+        /// <summary>
+        /// 获取选中文件的信息
+        /// </summary>
+        /// <returns>若未选中则返回 null</returns>
+        public FileInfoForEdit GetSelectedFileInfo()
+        {
+            if (SelectedFile == null)
+                return null;
+            var fileInfo = new FileInfoForEdit
+            {
+                Filename = SelectedFile.FileItem.RealName,
+                CreateAt = SelectedFile.CreateAt,
+                AccessAt = SelectedFile.LastAccessAt
+            };
+            foreach (string tagName in SelectedFile.TagNames)
+                fileInfo.TagNames.Add(tagName);
+            return fileInfo;
+        }
+
+        /// <summary>
+        /// 更新文件信息：文件名、标签
+        /// </summary>
+        public async Task UpdateSelectedFile(FileInfoForEdit fileInfo)
+        {
+            if (SelectedFile == null)
+                return;
+            //update tag
+            var tags = new List<Tag>();
+            foreach (string tagName in fileInfo.TagNames)
+            {
+                Tag tag = await service.GetTagByNameAsync(tagName);
+                if (tag != null)
+                    tags.Add(tag);
+            }
+            await service.UpdateFileRelationAsync(SelectedFile.FileItem, tags);
+            //update filename
+            await service.RenameFileItemAsync(SelectedFile.FileItem, fileInfo.Filename);
+            RefreshFiles();
         }
 
         /// <summary>
@@ -130,6 +211,11 @@ namespace UI.FileWindow
                 OnSelectedNavItemChanged();
             }
         }
+
+        /// <summary>
+        /// 文件区选中的文件
+        /// </summary>
+        public FileVM SelectedFile { get; set; }
 
         /// <summary>
         /// 要显示的文件
@@ -284,10 +370,39 @@ namespace UI.FileWindow
     /// </summary>
     public class FileVM
     {
-        public FileVM(FileItem fileItem) => this.fileItem = fileItem;
+        public FileVM(FileItem fileItem)
+        {
+            FileItem = fileItem;
+            realPath = fileItem.RealPath();
+            foreach (var relation in fileItem.Relations)
+                TagNames.Add(relation.Tag.TagName);
+        }
 
-        public string Name { get => fileItem.DisplayName; }
+        //TODO display name remove .lnk
+        public string DisplayName { get => FileItem.DisplayName; }
 
-        private readonly FileItem fileItem;
+        public string CreateAt
+        {
+            get
+            {
+                DateTime createAt = System.IO.File.GetCreationTime(realPath);
+                return createAt.ToString();
+            }
+        }
+
+        public string LastAccessAt
+        {
+            get
+            {
+                DateTime lastAccessAt = System.IO.File.GetLastAccessTime(realPath);
+                return lastAccessAt.ToString();
+            }
+        }
+
+        public ObservableCollection<string> TagNames { get; }
+            = new ObservableCollection<string>();
+
+        public FileItem FileItem { get; private set; }
+        private readonly string realPath;
     }
 }

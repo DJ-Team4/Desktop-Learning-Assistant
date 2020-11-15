@@ -141,6 +141,10 @@
     <Compile Include="FileWindow\AddOrRenameTagDialog.xaml.cs">
       <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileWindow\EditFileDialog.xaml.cs">
+      <DependentUpon>EditFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileWindow\FileInfoForEdit.cs" />
     <Compile Include="FileWindow\FileWinVM.cs" />
     <Compile Include="FileWindow\SelectableFileTag.cs" />
     <Compile Include="MainWindow\MainWindowVM.cs" />
@@ -166,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileWindow\AddOrRenameTagDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileWindow\EditFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

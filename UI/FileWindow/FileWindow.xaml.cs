@@ -91,5 +91,40 @@ namespace UI.FileWindow
                 }
             }
         }
+
+        private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            winVM.OpenSelectedFile();
+        }
+
+        private void ShowFileInExplorerMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            winVM.ShowSelectedFileInExplorer();
+        }
+
+        private async void EditFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var fileInfo = winVM.GetSelectedFileInfo();
+            if (fileInfo == null)
+                return;
+            var dialog = new EditFileDialog(fileInfo, await winVM.AllTagNamesAsync());
+            if (dialog.ShowDialog().GetValueOrDefault(false))
+            {
+                var newInfo = dialog.FileInfo;//same ref here
+                await winVM.UpdateSelectedFile(newInfo);
+            }
+        }
+
+        private async void DeleteFileToRecycleBinMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO delete dialog
+            await winVM.DeleteSelectedFileToRecycleBin();
+        }
+
+        private async void DeleteFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO delete dialog
+            await winVM.DeleteSelectedFile();
+        }
     }
 }

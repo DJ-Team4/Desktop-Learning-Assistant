@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Text Box with hint and round corner -->
         <Grid Grid.Row="0"
               VerticalAlignment="Center">
             <Grid.Resources>

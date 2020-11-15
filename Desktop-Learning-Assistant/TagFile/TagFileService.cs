@@ -252,6 +252,18 @@ namespace DesktopLearningAssistant.TagFile
 #endif
         }
 
+        public async Task UpdateFileRelationAsync(FileItem fileItem, IEnumerable<Tag> newTags)
+        {
+            var oldRelations = await context.Relations.Where(
+                relation => relation.FileItemId == fileItem.FileItemId).ToListAsync();
+            foreach (var oldRelation in oldRelations)
+                context.Relations.Remove(oldRelation);
+            foreach (Tag tag in newTags)
+                await AddRelationAsync(tag, fileItem);
+            await context.SaveChangesAsync();
+        }
+
+
         #endregion
 
         #region FileItem 有关操作

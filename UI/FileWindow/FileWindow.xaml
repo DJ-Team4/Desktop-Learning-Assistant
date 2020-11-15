@@ -137,16 +137,44 @@
                 </ListView>
             </StackPanel>
 
-            <!-- Right Part: File Area-->
-            <Grid Grid.Column="1"
-                  Background="LightYellow">
-                <ListView ItemsSource="{Binding Files}"
-                          SelectionMode="Single">
+            <!-- Right Part: File Area -->
+            <Grid Grid.Column="1">
+                <ListView x:Name="fileList"
+                          ItemsSource="{Binding Files}"
+                          SelectedValue="{Binding SelectedFile}"
+                          SelectionMode="Single"
+                          BorderThickness="0">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:FileVM}">
-                            <TextBlock Text="{Binding Name}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DisplayName}" />
+                                <TextBlock Text="{Binding CreateAt}" />
+                                <TextBlock Text="{Binding LastAccessAt}" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+
+                    <ListView.Resources>
+                        <ContextMenu x:Key="FileContextMenu">
+                            <MenuItem Header="打开"
+                                      Click="OpenFileMenuItem_Click" />
+                            <MenuItem Header="打开文件位置"
+                                      Click="ShowFileInExplorerMenuItem_Click" />
+                            <MenuItem Header="修改"
+                                      Click="EditFileMenuItem_Click" />
+                            <MenuItem Header="移入回收站"
+                                      Click="DeleteFileToRecycleBinMenuItem_Click" />
+                            <MenuItem Header="彻底删除"
+                                      Click="DeleteFileMenuItem_Click" />
+                        </ContextMenu>
+                    </ListView.Resources>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="ContextMenu"
+                                    Value="{StaticResource FileContextMenu}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </Grid>
 
