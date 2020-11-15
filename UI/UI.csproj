@@ -229,6 +229,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Image\Thumbs.db" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -261,6 +262,50 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Add-Halt.png" />
+    <Resource Include="Image\Add-Highlight.png" />
+    <Resource Include="Image\Add.png" />
+    <Resource Include="Image\Arrow-Right.png" />
+    <Resource Include="Image\Arrow.png" />
+    <Resource Include="Image\Change.jpg" />
+    <Resource Include="Image\Clock.png" />
+    <Resource Include="Image\Close-Halt.png" />
+    <Resource Include="Image\Close-HighLight.png" />
+    <Resource Include="Image\Close.png" />
+    <Resource Include="Image\Delete-Halt.png" />
+    <Resource Include="Image\Delete-Highlight.png" />
+    <Resource Include="Image\Delete.png" />
+    <Resource Include="Image\Detail.png" />
+    <Resource Include="Image\Directory.png" />
+    <Resource Include="Image\Edit-Halt.png" />
+    <Resource Include="Image\Edit-Highlight.png" />
+    <Resource Include="Image\Edit.png" />
+    <Resource Include="Image\File.jpeg" />
+    <Resource Include="Image\Home.jpg" />
+    <Resource Include="Image\More.png" />
+    <Resource Include="Image\Pause-Halt.png" />
+    <Resource Include="Image\Pause-Highlight.png" />
+    <Resource Include="Image\Pause.jpg" />
+    <Resource Include="Image\Pause.png" />
+    <Resource Include="Image\plus.png" />
+    <Resource Include="Image\refresh.jpg" />
+    <Resource Include="Image\Search-Halt.png" />
+    <Resource Include="Image\Search-Highlight.png" />
+    <Resource Include="Image\Search.png" />
+    <Resource Include="Image\Set.png" />
+    <Resource Include="Image\spring.ico" />
+    <Resource Include="Image\Start-Halt.png" />
+    <Resource Include="Image\Start-Highlight.png" />
+    <Resource Include="Image\Start.jpeg" />
+    <Resource Include="Image\Start.png" />
+    <Resource Include="Image\tag.jpg" />
+    <Resource Include="Image\TaskList-Halt.png" />
+    <Resource Include="Image\TaskList-Highlight.png" />
+    <Resource Include="Image\TaskList.png" />
+    <Resource Include="Image\Tomato-Finished.png" />
+    <Resource Include="Image\Tomato-Unfinished.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
