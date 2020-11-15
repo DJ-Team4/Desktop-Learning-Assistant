@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -28,7 +27,7 @@ namespace DesktopLearningAssistant.TagFile.Model
         /// 可通过该属性获取所有含该标签的文件。
         /// </summary>
         public virtual ICollection<TagFileRelation> Relations { get; private set; }
-            = new ObservableCollection<TagFileRelation>();
+            = new List<TagFileRelation>();
 
         // override object.ToString
         public override string ToString()
