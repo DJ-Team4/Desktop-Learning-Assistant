@@ -142,6 +142,7 @@
       <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileWindow\FileWinVM.cs" />
+    <Compile Include="FileWindow\SelectableFileTag.cs" />
     <Compile Include="MainWindow\MainWindowVM.cs" />
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">

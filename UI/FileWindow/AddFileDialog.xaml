@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:UI.FileWindow"
         mc:Ignorable="d"
         Title="添加文件"
-        Height="200"
-        Width="400"
+        Height="250"
+        Width="450"
         ResizeMode="NoResize">
 
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -26,7 +27,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Textbox with hint -->
-                <Grid Grid.Column="0">
+                <Grid Grid.Column="0" VerticalAlignment="Center">
                     <Grid.Resources>
                         <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
                     </Grid.Resources>
@@ -63,6 +64,44 @@
                         Margin="10,0,0,0"
                         Click="SelectFileBtn_Click" />
 
+            </Grid>
+
+            <Grid Height="30"
+                  Margin="0,10,0,0">
+                <ComboBox Grid.Row="1"
+                          x:Name="tagComboBox"
+                          VerticalAlignment="Stretch"
+                          DropDownClosed="TagComboBox_DropDownClosed"
+                          ItemsSource="{Binding TagListForComboBox}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:SelectableFileTag}">
+                            <CheckBox Content="{Binding TagName}"
+                                      IsChecked="{Binding IsSelected}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Grid Background="White"
+                      VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               Text="标签：" />
+                    <TextBlock Grid.Column="1"
+                               x:Name="tagTxt"
+                               FontSize="14"
+                               VerticalAlignment="Center" />
+                    <Button Grid.Column="2"
+                            Name="editTagBtn"
+                            Content="编辑标签"
+                            Click="EditTagBtn_Click" />
+                </Grid>
             </Grid>
 
             <StackPanel Orientation="Horizontal"

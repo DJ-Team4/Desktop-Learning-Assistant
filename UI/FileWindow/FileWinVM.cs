@@ -73,6 +73,39 @@ namespace UI.FileWindow
         }
 
         /// <summary>
+        /// 添加文件
+        /// </summary>
+        /// <param name="filepath">文件路径</param>
+        /// <param name="asShortcut">是否添加快捷方式</param>
+        /// <param name="tagNames">要添加的标签</param>
+        public async Task AddFileAsync(string filepath,
+                                       bool asShortcut,
+                                       IEnumerable<string> tagNames)
+        {
+            FileItem fileItem;
+            if (asShortcut)
+                fileItem = await service.AddShortcutToRepoAsync(filepath);
+            else
+                fileItem = await service.MoveFileToRepoAsync(filepath);
+            foreach (string tagName in tagNames)
+            {
+                Tag tag = await service.GetTagByNameAsync(tagName);
+                if (tag != null)
+                    await service.AddRelationAsync(tag, fileItem);
+            }
+            RefreshFiles();
+        }
+
+        public async Task<List<string>> AllTagNamesAsync()
+        {
+            var tags = await service.TagListAsync();
+            var tagNames = new List<string>();
+            foreach (Tag tag in tags)
+                tagNames.Add(tag.TagName);
+            return tagNames;
+        }
+
+        /// <summary>
         /// 导航栏上半部分
         /// </summary>
         public ObservableCollection<INavItem> UpNavItems { get; private set; }

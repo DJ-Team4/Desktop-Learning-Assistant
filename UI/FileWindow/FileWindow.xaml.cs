@@ -30,6 +30,9 @@ namespace UI.FileWindow
 
         private readonly FileWinVM winVM;
 
+        /// <summary>
+        /// 添加标签
+        /// </summary>
         private async void AddTagBtn_Click(object sender, RoutedEventArgs e)
         {
             var dialog = AddOrRenameTagDialog.MakeAddTagDialog();
@@ -41,11 +44,17 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 删除标签
+        /// </summary>
         private async void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
             await winVM.RemoveSelectedTagAsync();
         }
 
+        /// <summary>
+        /// 重命名标签
+        /// </summary>
         private async void RenameTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
             string currentName = winVM.CurrentTagName;
@@ -60,15 +69,26 @@ namespace UI.FileWindow
             }
         }
 
-        private void AddFileBtn_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 添加文件
+        /// </summary>
+        private async void AddFileBtn_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new AddFileDialog();
+            var allTagNames = await winVM.AllTagNamesAsync();
+            var dialog = new AddFileDialog(allTagNames);
             if (dialog.ShowDialog().GetValueOrDefault(false))
             {
                 string filepath = dialog.Filepath;
                 bool asShortcut = dialog.AsShortcut;
-                MessageBox.Show(filepath + " " + asShortcut);
-                //TODO try catch
+                ICollection<string> tagNames = dialog.TagNames;
+                try
+                {
+                    await winVM.AddFileAsync(filepath, asShortcut, tagNames);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "添加文件时出错");
+                }
             }
         }
     }
