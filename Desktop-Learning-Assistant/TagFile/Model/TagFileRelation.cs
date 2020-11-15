@@ -16,7 +16,7 @@ namespace DesktopLearningAssistant.TagFile.Model
         /// <summary>
         /// 对应标签的名字，外键
         /// </summary>
-        public string TagName { get; set; }
+        public int TagId { get; set; }
 
         /// <summary>
         /// 对应的 Tag 对象
@@ -45,7 +45,7 @@ namespace DesktopLearningAssistant.TagFile.Model
 
         public override string ToString()
         {
-            return $"Tag Name: {TagName}, File Item Id: {FileItemId}, Local Create Time: {LocalCreateTime}";
+            return $"Tag Name: {Tag.TagName}, File Item Id: {FileItemId}, Local Create Time: {LocalCreateTime}";
         }
 
         // override object.Equals
@@ -56,13 +56,10 @@ namespace DesktopLearningAssistant.TagFile.Model
                 return false;
             }
             var other = (TagFileRelation)obj;
-            return TagName == other.TagName && FileItemId == other.FileItemId;
+            return TagId == other.TagId && FileItemId == other.FileItemId;
         }
 
         // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            return TagName.GetHashCode() ^ FileItemId;
-        }
+        public override int GetHashCode() => TagId ^ FileItemId;
     }
 }

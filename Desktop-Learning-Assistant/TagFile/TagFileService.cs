@@ -14,15 +14,24 @@ namespace DesktopLearningAssistant.TagFile
     {
         #region Tag 相关操作
 
+        public async Task<Tag> GetTagByIdAsync(int tagId)
+        {
+            using (var context = Context)
+            {
+                return await context.Tags.FindAsync(tagId);
+            }
+        }
+
         /// <summary>
         /// 按 TagName 获取 Tag
         /// </summary>
         /// <returns>不存在则返回 null</returns>
-        public async Task<Tag> GetTagAsync(string tagName)
+        public async Task<Tag> GetTagByNameAsync(string tagName)
         {
             using (var context = Context)
             {
-                return await context.Tags.FindAsync(tagName);
+                return await context.Tags.Where(tag => tag.TagName == tagName)
+                                         .FirstOrDefaultAsync();
             }
         }
 
@@ -34,7 +43,7 @@ namespace DesktopLearningAssistant.TagFile
         {
             using (var context = Context)
             {
-                Tag tag = await GetTagAsync(tagName);
+                Tag tag = await GetTagByNameAsync(tagName);
                 if (tag == null)
                 {
                     tag = new Tag { TagName = tagName };
@@ -87,7 +96,7 @@ namespace DesktopLearningAssistant.TagFile
         {
             using (var context = Context)
             {
-                return await GetTagAsync(tagName) != null;
+                return (await GetTagByNameAsync(tagName)) != null;
             }
         }
 
@@ -114,7 +123,7 @@ namespace DesktopLearningAssistant.TagFile
         {
             using (var context = Context)
             {
-                return await context.Relations.FindAsync(tag.TagName, fileItem.FileItemId);
+                return await context.Relations.FindAsync(tag.TagId, fileItem.FileItemId);
             }
         }
 
@@ -132,7 +141,7 @@ namespace DesktopLearningAssistant.TagFile
                 {
                     relation = new TagFileRelation
                     {
-                        TagName = tag.TagName,
+                        TagId = tag.TagId,
                         FileItemId = fileItem.FileItemId,
                         UtcCreateTime = DateTime.UtcNow
                     };
@@ -425,14 +434,7 @@ namespace DesktopLearningAssistant.TagFile
 
         #endregion
 
-        protected TagFileService()
-        {
-            /*
-            var builder = new DbContextOptionsBuilder<TagFileContext>();
-            builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
-            context = new TagFileContext(builder.Options);
-            */
-        }
+        protected TagFileService() { }
 
         /// <summary>
         /// 文件仓库的路径
@@ -444,7 +446,6 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         private string TempRecyclePath { get => TagFileConfig.TempRecyclePath; }
 
-        //private readonly TagFileContext context;
         /// <summary>
         /// 用于操作数据库的 DbContext
         /// </summary>

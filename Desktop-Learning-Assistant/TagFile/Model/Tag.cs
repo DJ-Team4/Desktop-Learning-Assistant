@@ -14,7 +14,12 @@ namespace DesktopLearningAssistant.TagFile.Model
     public class Tag
     {
         /// <summary>
-        /// 标签名字，主键
+        /// 标签 Id，主键
+        /// </summary>
+        public int TagId { get; set; }
+
+        /// <summary>
+        /// 标签名字，必须唯一
         /// </summary>
         public string TagName { get; set; }
 
@@ -49,13 +54,10 @@ namespace DesktopLearningAssistant.TagFile.Model
                 return false;
             }
             Tag other = (Tag)obj;
-            return TagName == other.TagName;
+            return TagId == other.TagId;
         }
 
         // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            return TagName.GetHashCode();
-        }
+        public override int GetHashCode() => TagId;
     }
 }

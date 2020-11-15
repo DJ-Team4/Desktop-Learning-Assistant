@@ -15,10 +15,15 @@ namespace DesktopLearningAssistant.TagFile
         #region Tag 相关操作
 
         /// <summary>
+        /// 按 TagId 获取 Tag
+        /// </summary>
+        Task<Tag> GetTagByIdAsync(int tagId);
+
+        /// <summary>
         /// 按 TagName 获取 Tag
         /// </summary>
         /// <returns>不存在则返回 null</returns>
-        Task<Tag> GetTagAsync(string tagName);
+        Task<Tag> GetTagByNameAsync(string tagName);
 
         /// <summary>
         /// 将新 Tag 加入系统中，并返回添加的 Tag 对象。
