@@ -26,19 +26,21 @@ namespace UI.Tomato
     {
         TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
         TaskInfo taskInfo = new TaskInfo();
-        
-        
+        TaskItem taskItem = new TaskItem();
 
-        private Image Unfinishedimg;
-        private Image Finishedimg;
-    
+
+        public Image TomatoFinishedImage;
+
+
         public AllTasksWindow()
         {
             InitializeComponent();
             List<TaskItem> items = new List<TaskItem>();
-
-            Unfinishedimg.Source = new BitmapImage(new Uri(@"../Icon/tomatounfinished.png", UriKind.Relative));
-            Finishedimg.Source = new BitmapImage(new Uri(@"../Icon/tomatoufinished.png", UriKind.Relative));
+            /*            AllTasksListView.Items.Add(new TaskItem()
+                        {
+                            ID = 1, Name = "软件架构实习三", State = true, StartTime = "2020/10/9 12:13:00",
+                            DeadLine = "2020/10/15 22:00:00"
+                        });*/
 
 
 
@@ -48,12 +50,10 @@ namespace UI.Tomato
                 State = taskInfo.Finished,
                 StartTime = taskInfo.StartTime.ToString(),
                 DeadLine = taskInfo.EndTime.ToString(),
-
                 finishedTomato = taskInfo.FinishedTomatoCount,
                 totalTomato = taskInfo.TotalTomatoCount,
-                TomatImages = {Unfinishedimg,Finishedimg}
-                //问题 怎么根据已完成和未完成番茄数给list<image>赋值
-
+           //     TomatoFinishedImagesList=taskItem.TomatoFinishedImagesList.Add(Func<int,List<Image>> fun1(tomato) =>{}),
+                TomatoUnfinishedImagesList = {}
             });
 
             AllTasksListView.ItemsSource = items;
@@ -61,16 +61,29 @@ namespace UI.Tomato
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("State");
             view.GroupDescriptions.Add(groupDescription);
         }
-        /// <summary>
-        /// 重写List构造函数
-        /// </summary>
-        /// <returns></returns>
-        public List<Image> TomatoImages()
+
+        public  List<Image> TomatoFinishedImages(int tomatofinished)
         {
-            int unfinished = taskInfo.TotalTomatoCount - taskInfo.FinishedTomatoCount;
+            TaskItem taskItem = new TaskItem();
 
+            for (int i = tomatofinished; i >= 0; i--)
+            {
+                taskItem.TomatoFinishedImagesList.Add(TomatoFinishedImage);
+            }
 
+            return taskItem.TomatoFinishedImagesList;
         }
+        public List<Image> TomatoUnFinishedImages(int tomatounfinished)
+        {
+            TaskItem taskItem = new TaskItem();
+            for (int i = tomatounfinished; i >= 0; i--)
+            {
+                taskItem.TomatoUnfinishedImagesList.Add(TomatoFinishedImage);
+            }
+
+            return taskItem.TomatoUnfinishedImagesList;
+        }
+
 
         private void AddNewTask_OnClick(object sender, RoutedEventArgs e)
         {
@@ -123,8 +136,8 @@ namespace UI.Tomato
         public int finishedTomato { get; set; }
         public int totalTomato { get; set; }
         public bool State { get; set; }
-
-        public List<Image> TomatImages { get; set; }
+        public List<Image> TomatoFinishedImagesList { get; set; }
+        public List<Image> TomatoUnfinishedImagesList { get; set; }
     }
 
    

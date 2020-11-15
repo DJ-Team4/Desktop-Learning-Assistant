@@ -104,9 +104,8 @@
                                 </DockPanel>
                                 <StackPanel  Orientation="Horizontal" Margin="0,0.6,-0.4,0.2" Grid.Row="1" >
 
-                                    <Button Content="详情" HorizontalAlignment="Right" Margin="203,0,0,34" VerticalAlignment="Bottom" Width="56" Height="25"
-                                         Click="OpenAllTasksWindow"   
-                                            />
+                                    <Button Content="详情" HorizontalAlignment="Right" Margin="203,0,0,34" VerticalAlignment="Bottom" Width="56" Height="25" Click="OpenAllTasks_OnClick"
+                                         />
 
                                 </StackPanel>
                             </Grid>

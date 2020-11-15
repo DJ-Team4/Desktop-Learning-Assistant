@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DesktopLearningAssistant.TaskTomato.Model;
 
 namespace UI
 {
@@ -25,6 +26,10 @@ namespace UI
         public NewTaskWindow()
         {
             InitializeComponent();
+
+            TaskInfo taskInfo=new TaskInfo();
+
+            
         }
 
         private void Affirm_Click(object sender, RoutedEventArgs e)
