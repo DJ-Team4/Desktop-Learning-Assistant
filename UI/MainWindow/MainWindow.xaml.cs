@@ -388,6 +388,12 @@ namespace UI
                 }
             }
         }
+
+        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
+        {
+            AllTasksWindow allTasksWindow = new AllTasksWindow();
+            allTasksWindow.Show();
+        }
     }
 }
 

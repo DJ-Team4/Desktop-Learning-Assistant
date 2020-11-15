@@ -66,6 +66,8 @@ namespace UI
 
         public MainWindowViewModel()
         {
+            LineSeriesCollection = new SeriesCollection();
+
             TodayColumnSeriesCollection = new SeriesCollection();
             WeekColumnSeriesCollection = new SeriesCollection();
 

@@ -46,7 +46,6 @@ namespace UI
             set { mLinePath = value; }
         }
 
-
         private void AddTomatoNum_OnClick(object sender, RoutedEventArgs e)
         {
             Image mLine = new Image() { Source = new BitmapImage(new Uri(MLinePath, UriKind.Absolute)) };

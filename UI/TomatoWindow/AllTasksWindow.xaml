@@ -5,36 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Tomato"
         mc:Ignorable="d"
-        Title="所有任务" Height="450" Width="780" >
+        Title="所有任务" Height="450" Width="520" >
     <Grid>
-        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto">
-
-            <ListView Name="AllTasksListView"  Width="600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="318*"/>
+            <RowDefinition Height="42*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,-0.4,0.2">
+            <DockPanel Height="32" Margin="0,0,0.2,0">
+                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"/>
+                <Button x:Name="SearchBtn" Content="搜索" Margin="0"/>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
+            <ListView x:Name="AllTasksListView"  Width="520" Margin="0,0,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel Width="600">
                             <StackPanel  Orientation="Vertical">
                                 <WrapPanel>
-                                    <TextBlock Text="{Binding ID }" FontSize="23" Height="28" FontWeight="Bold" />
-                                    <TextBlock Text="   "></TextBlock>
+                                    <TextBlock Text="{Binding ID}" FontSize="23" Height="28" FontWeight="Bold" />
+                                    <TextBlock Text="   "/>
                                     <TextBlock Text="{Binding Name}" FontSize="23" FontWeight="Bold" Height="28" />
-                                    <TextBlock Text="&#13;&#13;"></TextBlock>
+                                    <TextBlock Text="&#xA;&#xA;"/>
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text=" 开始时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
-                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock Text=" 开始时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" />
+                                    <TextBlock Text="  "/>
                                     <TextBlock  Text="{Binding StartTime}" FontSize="18" FontWeight="Bold" Height="25"  />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text=" 截止时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" ></TextBlock>
-                                    <TextBlock Text="  "></TextBlock>
+                                    <TextBlock Text=" 截止时间 " Background="AliceBlue" FontSize="18" FontWeight="Bold" Height="25" />
+                                    <TextBlock Text="  "/>
                                     <TextBlock Text="{Binding DeadLine}" FontSize="18" FontWeight="Bold" Height="25"  />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <StackPanel Name="TomatoStackPanel" Orientation="Horizontal">
-                                        <Image x:Name="TomatoFinishedImage"   Source="../Icon/tomatofinished.png" Height="25">
-                                        </Image>
-                                        <Image x:Name="TomatoUnfinishedImage" Source="../Icon/tomatounfinished.png"  Height="25"></Image>
+                                    <StackPanel x:Name="TomatoStackPanel" Orientation="Horizontal">
+                                        <Image x:Name="TomatoFinishedImage"   Source="../Icon/tomatofinished.png" Height="25"/>
+                                        <Image x:Name="TomatoUnfinishedImage" Source="../Icon/tomatounfinished.png"  Height="25"/>
                                     </StackPanel>
                                 </WrapPanel>
                             </StackPanel>
@@ -66,12 +75,17 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
             </ListView>
-            <Button Content="增加任务" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="60,300,0,88" />
-            <Button Content="修改任务" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="-70,241,0,144" />
-            <Button Content="删除任务" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="-70,184,60,202" />
-
-
         </StackPanel>
-
+        <Grid Grid.Row="2" Grid.RowSpan="1" Margin="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230*"/>
+                <ColumnDefinition Width="77*"/>
+                <ColumnDefinition Width="99*"/>
+                <ColumnDefinition Width="107*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="修改任务" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="1" />
+            <Button Content="删除任务" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="2" />
+            <Button Content="增加任务" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="3" />
+        </Grid>
     </Grid>
 </Window>
