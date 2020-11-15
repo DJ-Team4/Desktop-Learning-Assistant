@@ -167,10 +167,9 @@
                 <Image Source="Set.png" Height="32" Width="30"/>
             </WrapPanel>
         </Button>
-        <Button Content="Button" Width="75" Margin="0,384,278.333,78.333" Click="Button_Click_1"/>
         <Menu pu:MenuHelper.MenuStyle="Modern" Margin="10,315,278.333,149.333" Width="Auto">
             <MenuItem Header="关闭" Click="MenuItem_Click">
-                <MenuItem Header="隐藏" IsCheckable="True" Checked="MenuItem_Checked"/>
+                <MenuItem Header="隐藏" Click="MenuItem_Click_1"/>
                 <MenuItem Header="退出" Click="MenuItem_Click_2"/>
             </MenuItem>
         </Menu>
