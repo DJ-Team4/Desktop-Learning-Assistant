@@ -103,11 +103,11 @@ namespace UI
                 LineXLabels.Add(taskEfficiencies[i].Name);
                 values.Add(taskEfficiencies[i].Efficiency);
             }
-            LineSeriesCollection.Add(new LineSeries
-            {
-                Title = "Today",
-                Values = new ChartValues<double>(values)
-            });
+            //LineSeriesCollection.Add(new LineSeries
+            //{
+            //    Title = "Today",
+            //    Values = new ChartValues<double>(values)
+            //});
             
         }
 

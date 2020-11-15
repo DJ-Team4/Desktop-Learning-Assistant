@@ -1,0 +1,76 @@
+﻿<Window x:Class="UI.FileWindow.AddOrRenameTagDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.FileWindow"
+        mc:Ignorable="d"
+        Title="添加标签"
+        Height="200"
+        Width="300"
+        ResizeMode="NoResize">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Text Box with hint and round corner -->
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center">
+            <Grid.Resources>
+                <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
+            </Grid.Resources>
+            <TextBlock Text="输入标签名"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Padding="10,6,10,6"
+                       Foreground="LightSteelBlue"
+                       Visibility="{Binding ElementName=tagNameTxtbox, 
+                                            Path=Text.IsEmpty, 
+                                            Converter={StaticResource MyBoolToVisibilityConverter}}"
+                       IsHitTestVisible="False" />
+            <TextBox Grid.Row="0"
+                     x:Name="tagNameTxtbox"
+                     HorizontalAlignment="Stretch"
+                     Padding="6"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"
+                     Background="Transparent">
+                <TextBox.Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Style.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius"
+                                        Value="4" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Name="confirmBtn"
+                    Content="确定"
+                    Click="ConfirmBtn_Click"
+                    Padding="10,5,10,5"
+                    Margin="0,0,10,0" />
+
+            <Button Grid.Column="2"
+                    Name="CancelBtn"
+                    Content="取消"
+                    Click="CancelBtn_Click"
+                    Padding="10,5,10,5" />
+        </Grid>
+    </Grid>
+
+</Window>

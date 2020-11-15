@@ -24,18 +24,6 @@ namespace DesktopLearningAssistant.TagFile
         }
 
         /// <summary>
-        /// 为 FileItem 增加一个标签。
-        /// 若 FileItem 已包含该标签，则什么都不做。
-        /// 若系统中不含该名字的标签，会自动生成新标签并插入。
-        /// </summary>
-        private static async Task AddTagAsync(this FileItem fileItem, string tagName)
-        {
-            var service = TagFileService.GetService();
-            Tag tag = await service.AddTagAsync(tagName);
-            await service.AddRelationAsync(tag, fileItem);
-        }
-
-        /// <summary>
         /// 移除 FileItem 的某个标签。
         /// 若 FileItem 不含该标签，则什么都不做。
         /// </summary>
