@@ -121,7 +121,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileWindow\FileWinVM.cs" />
-    <Compile Include="MainWindow\MainWindowVM.cs" />
+    <Compile Include="MainWindow\Model\MainWindowVM.cs" />
+    <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>

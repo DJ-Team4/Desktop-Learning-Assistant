@@ -34,21 +34,59 @@ namespace UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
-
-        double m_Percent = 0;
-        bool m_IsStart = false;
-        public SeriesCollection SeriesCollection { get; set; }
-        public int CurrentTaskId;
-        TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
-
+        #region 屏幕时间统计模块
 
         private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+        private int updateSlice = 5;       // 更新屏幕时间统计数据的时间间隔（秒）
+        private DispatcherTimer timeDataUpdateTimer = new DispatcherTimer();
 
-        // 关于番茄时钟倒计时
+        private void TimeDataUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
+        }
+
+        #endregion
+
+        #region 任务/番茄钟模块
+
+        private TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+
         private TimeCount timeCount;
+        private double m_Percent = 0;
+        private bool m_IsStart = false;
 
         private DispatcherTimer tomatoTimer;
+
+        private void UpdateRecentFilesListView()
+        {
+            
+        }
+
+        #endregion
+
+        #region 文件管理模块
+
+        private void File_DragEnter(object sender, DragEventArgs e)
+        {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Link;
+            else
+                e.Effects = DragDropEffects.None;
+        }
+
+        private void File_Drop(object sender, DragEventArgs e)
+        {
+            MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            var tagWindow = new FileWindow.FileWindow();
+            tagWindow.Show();
+        }
+
+        #endregion
+
+        private DispatcherTimer m_Timer1 = new DispatcherTimer();
 
         System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
 
@@ -69,13 +107,11 @@ namespace UI
 
             this.DataContext = mainWindowViewModel;
 
-            // 当数据发生变化时，更新ViewModel数据
-            ActivityMonitor am = ActivityMonitor.GetMonitor();
-            am.DataUpdateEvent += Am_DataUpdateEvent;
-            //Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
+            // 定时更新ViewModel数据
+            timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
+            timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
+            timeDataUpdateTimer.Start();
         }
-
-
 
         private void testTmp()
         {
@@ -123,15 +159,6 @@ namespace UI
             taskInfos = tts.GetAllUnfinishedTaskInfos();
             tts.GetTaskEfficiencies(DateTime.Now, 5);
 
-        }
-
-
-
-
-
-        private void Am_DataUpdateEvent(object sender, EventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
         }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
@@ -199,7 +226,7 @@ namespace UI
                 //增加番茄
                 TTomato tomato = new TTomato()
                 {
-                    TaskID = CurrentTaskId,
+                    TaskID = mainWindowViewModel.CurrentTaskId,
                     BeginTime = DateTime.Now,
                     EndTime = DateTime.Now.AddMinutes(25)
                 };
@@ -213,7 +240,6 @@ namespace UI
         private void TomatoClock_OnLoaded(object sender, RoutedEventArgs e)
         {
             //设置定时器
-
             tomatoTimer = new DispatcherTimer();
             tomatoTimer.Interval = new TimeSpan(10000000); //时间间隔为一秒
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
@@ -260,23 +286,7 @@ namespace UI
                 tomatoTimer.Stop();
         }
 
-        private void File_DragEnter(object sender, DragEventArgs e)
-        {
-            //MessageBox.Show("File Drop Enter");
-            Debug.WriteLine("drag in");
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Link;
-            else
-                e.Effects = DragDropEffects.None;
-        }
-
-        private void File_Drop(object sender, DragEventArgs e)
-        {
-            MessageBox.Show("File Drop");
-            Debug.WriteLine("drop");
-            var tagWindow = new FileWindow.FileWindow();
-            tagWindow.Show();
-        }
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

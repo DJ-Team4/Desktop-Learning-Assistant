@@ -26,8 +26,6 @@ namespace UI.Tomato
     {
         TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
         TaskInfo taskInfo = new TaskInfo();
-        
-        
 
         private Image Unfinishedimg;
         private Image Finishedimg;
@@ -61,6 +59,7 @@ namespace UI.Tomato
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("State");
             view.GroupDescriptions.Add(groupDescription);
         }
+
         /// <summary>
         /// 重写List构造函数
         /// </summary>
@@ -69,7 +68,7 @@ namespace UI.Tomato
         {
             int unfinished = taskInfo.TotalTomatoCount - taskInfo.FinishedTomatoCount;
 
-
+            return null;
         }
 
         private void AddNewTask_OnClick(object sender, RoutedEventArgs e)

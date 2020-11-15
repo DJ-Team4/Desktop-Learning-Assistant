@@ -10,7 +10,7 @@
 
         xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None" WindowStartupLocation="Manual" Left="0" Top="0">
+        Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None" WindowStartupLocation="Manual" Top="0">
     <Grid>
         <TabControl
                 pu:TabControlHelper.ItemHeight="30"
@@ -76,39 +76,45 @@
                 <Grid>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                        TabStripPlacement="Top" SelectionChanged="TabControl_SelectionChanged">
+                        TabStripPlacement="Top" SelectionChanged="TabControl_SelectionChanged" Margin="0,0,-0.4,-0.4">
                         <TabItem Header="番茄钟">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="246*"/>
-                                    <RowDefinition Height="217*"/>
+                                    <RowDefinition Height="128*"/>
+                                    <RowDefinition Height="81*"/>
+                                    <RowDefinition Height="23*"/>
                                 </Grid.RowDefinitions>
-                                <DockPanel Grid.Row="0" Margin="0,0,0,0">
+                                <DockPanel Grid.Row="0" Margin="0,0,-0.4,0">
                                     <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
                                     <Label Name="LabelCurrentTask" Content=""    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
 
-                                    <myProgressbar:Progressbar_xy x:Name="circleProgressBar"  CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
-                                    <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,0,0,0">
+                                    <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
+                                    <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,5,0,0">
                                         <TextBlock Text="00" Visibility="Hidden" Name="HourArea" FontSize="12" Background="Transparent" Height="23"/>
                                         <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute" FontSize="12" Background="Transparent" Height="23" RenderTransformOrigin="1.136,0.513"/>
                                         <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="85,0,0,0"/>
                                         <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
                                         <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
                                     </WrapPanel>
-                                    <Button x:Name="btn" Content="开始"
+                                    <Button Name="btn" Content="开始"
                                         Click="ButtonStart_Click"
                                         Foreground="Black"
                                         MouseRightButtonDown="TimeCountPause_Click"
                                         Background="#7bffff7f"
-                                        HorizontalAlignment="Center" Width="75" Height="19" DockPanel.Dock="Bottom" Margin="0,0,0,5" VerticalAlignment="Bottom"/>
+                                        HorizontalAlignment="Center" Width="75" Height="19" DockPanel.Dock="Bottom" Margin="102,5,100.6,0" VerticalAlignment="Bottom"/>
                                 </DockPanel>
-                                <StackPanel  Orientation="Horizontal" Margin="0,0.6,-0.4,0.2" Grid.Row="1" >
-
-                                    <Button Content="详情" HorizontalAlignment="Right" Margin="203,0,0,34" VerticalAlignment="Bottom" Width="56" Height="25"
-                                         Click="OpenAllTasksWindow"   
-                                            />
-
-                                </StackPanel>
+                                <ListView Name="RecentFilesListView" ItemsSource="{Binding RecentFileItems}" Grid.Row="1" Margin="5,5,5,43.2" Grid.RowSpan="2">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel>
+                                                <Image Name="IconImage"/>
+                                                <TextBlock Name="FileNameTextBlock"/>
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <Button Grid.Row="2" Content="详情" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="56" Height="25"
+                                        Click="OpenAllTasksWindow" Margin="0,0,9.6,8.2"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="效率统计">
