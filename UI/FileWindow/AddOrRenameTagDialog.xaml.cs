@@ -33,6 +33,7 @@ namespace UI.FileWindow
             {
                 Title = "添加标签"
             };
+            dialog.tagNameTxtbox.Focus();
             return dialog;
         }
 

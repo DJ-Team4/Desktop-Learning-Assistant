@@ -49,6 +49,7 @@ namespace UI.FileWindow
         /// </summary>
         private async void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            //TODO delete dialog
             await winVM.RemoveSelectedTagAsync();
         }
 
@@ -92,16 +93,25 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 打开文件
+        /// </summary>
         private void OpenFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
             winVM.OpenSelectedFile();
         }
 
+        /// <summary>
+        /// 打开文件位置
+        /// </summary>
         private void ShowFileInExplorerMenuItem_Click(object sender, RoutedEventArgs e)
         {
             winVM.ShowSelectedFileInExplorer();
         }
 
+        /// <summary>
+        /// 编辑文件信息
+        /// </summary>
         private async void EditFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var fileInfo = winVM.GetSelectedFileInfo();
@@ -115,16 +125,78 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 删除文件到回收站
+        /// </summary>
         private async void DeleteFileToRecycleBinMenuItem_Click(object sender, RoutedEventArgs e)
         {
             //TODO delete dialog
             await winVM.DeleteSelectedFileToRecycleBin();
         }
 
+        /// <summary>
+        /// 彻底删除文件
+        /// </summary>
         private async void DeleteFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
             //TODO delete dialog
             await winVM.DeleteSelectedFile();
+        }
+
+        /// <summary>
+        /// 刷新文件集合页面
+        /// </summary>
+        private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        {
+            winVM.RefreshFiles();
+        }
+
+        /// <summary>
+        /// 双击打开文件
+        /// </summary>
+        private void FileList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            winVM.OpenSelectedFile();
+        }
+
+        /// <summary>
+        /// 标签搜索框回车
+        /// </summary>
+        private void TagSearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                winVM.TagSearchText = tagSearchBox.Text;
+                winVM.FilenameSearchText = filenameSearchBox.Text;
+                GoToSearchResult();
+            }
+        }
+
+        /// <summary>
+        /// 文件搜索框回车
+        /// </summary>
+        private void FilenameSearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                winVM.TagSearchText = tagSearchBox.Text;
+                winVM.FilenameSearchText = filenameSearchBox.Text;
+                GoToSearchResult();
+            }
+        }
+
+        private void GoToSearchResult()
+        {
+            try
+            {
+                winVM.GoToSearchResult();
+            }
+            catch (Exception ex)
+            {
+                string caption = ex is InvalidExpressionException
+                                    ? "查询表达式非法" : "其他错误";
+                MessageBox.Show(ex.Message, caption);
+            }
         }
     }
 }

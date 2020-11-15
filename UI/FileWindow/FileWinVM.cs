@@ -9,6 +9,9 @@ using System.Runtime.CompilerServices;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile;
 using System.Diagnostics;
+using System.Windows.Media;
+using System.Windows.Interop;
+using System.Drawing;
 
 namespace UI.FileWindow
 {
@@ -158,7 +161,7 @@ namespace UI.FileWindow
             {
                 Filename = SelectedFile.FileItem.RealName,
                 CreateAt = SelectedFile.CreateAt,
-                AccessAt = SelectedFile.LastAccessAt
+                AccessAt = SelectedFile.AccessAt
             };
             foreach (string tagName in SelectedFile.TagNames)
                 fileInfo.TagNames.Add(tagName);
@@ -184,6 +187,22 @@ namespace UI.FileWindow
             //update filename
             await service.RenameFileItemAsync(SelectedFile.FileItem, fileInfo.Filename);
             RefreshFiles();
+        }
+
+        /// <summary>
+        /// 刷新文件区的文件集合
+        /// </summary>
+        public void RefreshFiles()
+        {
+            OnFilesChanged();
+        }
+
+        /// <summary>
+        /// 转到搜索结果页面
+        /// </summary>
+        public void GoToSearchResult()
+        {
+            SelectedNavItem = UpNavItems[2];
         }
 
         /// <summary>
@@ -241,6 +260,34 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 标签查询表达式
+        /// </summary>
+        private string tagSearchText = "";
+        public string TagSearchText
+        {
+            get => tagSearchText;
+            set
+            {
+                tagSearchText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 文件名搜索
+        /// </summary>
+        private string filenameSearchText = "";
+        public string FilenameSearchText
+        {
+            get => filenameSearchText;
+            set
+            {
+                filenameSearchText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
         {
             tags.Sort((t1, t2) => t1.TagName.CompareTo(t2.TagName));
@@ -248,14 +295,6 @@ namespace UI.FileWindow
             foreach (Tag tag in tags)
                 tagNavs.Add(new TagNavItem(tag));
             return tagNavs;
-        }
-
-        /// <summary>
-        /// 刷新文件区的文件集合
-        /// </summary>
-        private void RefreshFiles()
-        {
-            OnFilesChanged();
         }
 
         private ObservableCollection<FileVM> FileItemsToFileVMs(
@@ -282,7 +321,22 @@ namespace UI.FileWindow
             else if (SelectedNavItem is NoTagNavItem)
                 return await service.FilesWithoutTagAsync();
             else if (SelectedNavItem is SearchResultNavItem)
-                return new List<FileItem>();//TODO return search result
+            {
+                List<FileItem> fileItems =
+                    (TagSearchText == null || TagSearchText.Trim().Length == 0)
+                        ? await service.FileItemListAsync()
+                        : await service.QueryAsync(TagSearchText);
+                var result = new List<FileItem>();
+                if (FilenameSearchText == null || FilenameSearchText.Length == 0)
+                    fileItems.ForEach(fileItem => result.Add(fileItem));
+                else
+                {
+                    foreach (var fileItem in fileItems)
+                        if (fileItem.DisplayName.Contains(FilenameSearchText))
+                            result.Add(fileItem);
+                }
+                return result;
+            }
             else
             {
                 Debug.Assert(SelectedNavItem is TagNavItem);
@@ -301,12 +355,31 @@ namespace UI.FileWindow
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         /// <summary>
-        /// 导航栏被选中条目改变
+        /// 导航栏被选中条目改变。
+        /// 1. 通知 SelectedNavItem 属性改变。
+        /// 2. 通知 Files 属性改变。
+        /// 3. 若选中了标签，则设置表达式栏。
         /// </summary>
         private void OnSelectedNavItemChanged()
         {
             OnPropertyChanged("SelectedNavItem");
             OnFilesChanged();
+            if (SelectedNavItem is TagNavItem)
+            {
+                var sb = new StringBuilder();
+                sb.Append('"');
+                foreach (char ch in CurrentTagName)
+                {
+                    if (ch == '"')
+                        sb.Append('\\');
+                    sb.Append(ch);
+                }
+                sb.Append('"');
+                TagSearchText = sb.ToString();
+            }
+            else if (SelectedNavItem is AllFilesNavItem
+                  || SelectedNavItem is NoTagNavItem)
+                TagSearchText = "";
         }
 
         /// <summary>
@@ -390,17 +463,29 @@ namespace UI.FileWindow
             }
         }
 
-        public string LastAccessAt
+        public string AccessAt
         {
             get
             {
-                DateTime lastAccessAt = System.IO.File.GetLastAccessTime(realPath);
-                return lastAccessAt.ToString();
+                DateTime accessAt = System.IO.File.GetLastAccessTime(realPath);
+                return accessAt.ToString();
             }
         }
 
         public ObservableCollection<string> TagNames { get; }
             = new ObservableCollection<string>();
+
+        public ImageSource IconSrc
+        {
+            get
+            {
+                Icon ico = Icon.ExtractAssociatedIcon(realPath);
+                return Imaging.CreateBitmapSourceFromHIcon(
+                    ico.Handle,
+                    System.Windows.Int32Rect.Empty,
+                    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            }
+        }
 
         public FileItem FileItem { get; private set; }
         private readonly string realPath;

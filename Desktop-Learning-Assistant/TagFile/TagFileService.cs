@@ -517,15 +517,17 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public static async Task EnsureDbAndFolderCreatedAsync()
         {
+            //ensure folders created
+            Directory.CreateDirectory(TagFileConfig.TagFileRootPath);
+            Directory.CreateDirectory(TagFileConfig.RepoPath);
+            Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
+            //ensure db created
             var builder = new DbContextOptionsBuilder<TagFileContext>();
             builder.UseSqlite($"Data Source={TagFileConfig.DbPath}");
             using (var context = new TagFileContext(builder.Options))
             {
                 await context.Database.EnsureCreatedAsync();
             }
-            //ensure folders created
-            Directory.CreateDirectory(TagFileConfig.RepoPath);
-            Directory.CreateDirectory(TagFileConfig.TempRecyclePath);
         }
 
         #endregion
@@ -581,8 +583,13 @@ namespace DesktopLearningAssistant.TagFile
     //TODO modify this to a config class
     class TagFileConfig
     {
-        public static string RepoPath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/repo";
-        public static string DbPath { get; } = "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";
-        public static string TempRecyclePath { get; } = "C:/Users/zhb/Desktop/temp/tag-file/temp-recycle";
+        public static string TagFileRootPath { get; }
+            = Path.GetFullPath("./tag-file/");
+        public static string RepoPath { get; } /*= "C:/Users/zhb/Desktop/temp/tag-file/repo";*/
+            = Path.GetFullPath("./tag-file/repo/");
+        public static string DbPath { get; } /*= "C:/Users/zhb/Documents/sqlitedb/TagFileDB.db";*/
+            = Path.GetFullPath("./tag-file/TagFileDB.db");
+        public static string TempRecyclePath { get; } /*= "C:/Users/zhb/Desktop/temp/tag-file/temp-recycle";*/
+            = Path.GetFullPath("./tag-file/temp-recycle/");
     }
 }
