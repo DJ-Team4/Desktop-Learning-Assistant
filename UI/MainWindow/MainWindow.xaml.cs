@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -35,7 +36,7 @@ namespace UI
     public partial class MainWindow : Window
     {
         private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
-
+        private NotifyIcon notifyIcon = null;
         double m_Percent = 0;
         bool m_IsStart = false;
         public SeriesCollection SeriesCollection { get; set; }
@@ -72,30 +73,6 @@ namespace UI
             //Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
         }
 
-        void TimerDealy(object o, EventArgs e)
-        {
-            if (this.Top > 3)
-            {
-                return;
-            }
-            //获取鼠标在屏幕上的位置
-            double mouse_x = System.Windows.Forms.Form.MousePosition.X;   //需要添加引用System.Drawing
-            double mouse_y = System.Windows.Forms.Form.MousePosition.Y;
-
-            bool is_in_collasped_range = (mouse_y > this.Top + this.Height) || (mouse_x < this.Left || mouse_x > this.Left + this.Width);//缩起的条件
-            bool is_in_visiable_range = (mouse_y < 1 && mouse_x >= this.Left && mouse_x <= this.Left + this.Width); //展开的条件         
-
-            if (this.Top < 3 && this.Top >= 0 && is_in_collasped_range)
-            {
-                System.Threading.Thread.Sleep(300);
-                this.Top = -this.ActualHeight - 3;
-            }
-            else if (this.Top < 0 && is_in_visiable_range)
-            {
-                this.Top = 1;
-            }
-            
-        }
 
 
         private void testTmp()
@@ -261,19 +238,19 @@ namespace UI
                 tomatoTimer.Stop();
         }
 
-        private void File_DragEnter(object sender, DragEventArgs e)
+        private void File_DragEnter(object sender, System.Windows.DragEventArgs e)
         {
             //MessageBox.Show("File Drop Enter");
             Debug.WriteLine("drag in");
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Link;
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+                e.Effects = System.Windows.DragDropEffects.Link;
             else
-                e.Effects = DragDropEffects.None;
+                e.Effects = System.Windows.DragDropEffects.None;
         }
 
-        private void File_Drop(object sender, DragEventArgs e)
+        private void File_Drop(object sender, System.Windows.DragEventArgs e)
         {
-            MessageBox.Show("File Drop");
+            System.Windows.MessageBox.Show("File Drop");
             Debug.WriteLine("drop");
             var tagWindow = new FileWindow.FileWindow();
             tagWindow.Show();
@@ -324,7 +301,7 @@ namespace UI
 
         }
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if(e.LeftButton==MouseButtonState.Pressed)
             {
@@ -339,10 +316,6 @@ namespace UI
                 this.Top = 0;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -355,17 +328,50 @@ namespace UI
             Environment.Exit(0);
         }
 
-        private void MenuItem_Checked(object sender, RoutedEventArgs e)
-        {
-            _timer.Interval = 300;
-            _timer.Tick += TimerDealy;
-            _timer.Start();
-        }
 
         private void OpenAllTasks_OnClick(object sender, RoutedEventArgs e)
         {
             AllTasksWindow allTasksWindow=new AllTasksWindow();
             allTasksWindow.Show();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            notify();
+        }
+        private void notify()
+        {
+            //隐藏主窗体
+            this.Visibility = Visibility.Hidden;
+
+            //设置托盘的各个属性
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Text = "桌面学习助手";
+            notifyIcon.Icon = new System.Drawing.Icon("../../Icon/spring.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
+        }
+
+        /// <summary>
+        /// 鼠标单击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //如果鼠标左键单击
+            if (e.Button == MouseButtons.Left)
+            {
+                if (this.Visibility == Visibility.Visible)
+                {
+                    this.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this.Visibility = Visibility.Visible;
+                    this.Activate();
+                }
+            }
         }
     }
 }
