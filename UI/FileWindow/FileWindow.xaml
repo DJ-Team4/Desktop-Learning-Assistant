@@ -189,7 +189,8 @@
             </StackPanel>
 
             <!-- Right Part: File Area -->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1"
+                  Name="fileAreaGrid">
                 <ListView x:Name="fileList"
                           ItemsSource="{Binding Files}"
                           SelectedValue="{Binding SelectedFile}"
@@ -200,9 +201,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:FileVM}">
                             <Grid Height="50"
-                                  HorizontalAlignment="Stretch">
+                                  MaxWidth="{Binding ElementName=fileAreaGrid, Path=ActualWidth}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -210,13 +210,31 @@
                                 <Image Grid.Column="0"
                                        Source="{Binding IconSrc}"
                                        Margin="8" />
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding DisplayName}"
-                                           VerticalAlignment="Top"
-                                           FontSize="16"
-                                           Margin="10,4,20,4" />
-                                <TextBlock Grid.Column="2" />
-                                <UniformGrid Grid.Column="3"
+                                <Grid Grid.Column="1"
+                                      Margin="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               Text="{Binding DisplayName}"
+                                               FontSize="16"
+                                               TextWrapping="NoWrap" />
+                                    <StackPanel Grid.Row="1"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                Visibility="{Binding FileSizeVisibility}">
+                                        <TextBlock Text="大小："
+                                                   Foreground="Gray" />
+                                        <TextBlock Text="{Binding FileSize}" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="1"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding ShortcutVisibility}"
+                                               Foreground="Gray"
+                                               Text="快捷方式" />
+                                </Grid>
+                                <UniformGrid Grid.Column="2"
                                              Rows="2"
                                              Margin="0,0,20,0">
                                     <StackPanel Orientation="Horizontal"

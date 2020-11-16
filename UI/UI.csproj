@@ -141,11 +141,17 @@
     <Compile Include="FileWindow\AddOrRenameTagDialog.xaml.cs">
       <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileWindow\AllFilesNavItem.cs" />
     <Compile Include="FileWindow\EditFileDialog.xaml.cs">
       <DependentUpon>EditFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileWindow\FileInfoForEdit.cs" />
+    <Compile Include="FileWindow\FileVM.cs" />
     <Compile Include="FileWindow\FileWinVM.cs" />
+    <Compile Include="FileWindow\INavItem.cs" />
+    <Compile Include="FileWindow\NoTagNavItem.cs" />
+    <Compile Include="FileWindow\SearchResultNavItem.cs" />
+    <Compile Include="FileWindow\TagNavItem.cs" />
     <Compile Include="MainWindow\Model\MainWindowVM.cs" />
     <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
     <Compile Include="FileWindow\SelectableFileTag.cs" />
