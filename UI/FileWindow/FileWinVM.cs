@@ -385,10 +385,14 @@ namespace UI.FileWindow
                 }
                 sb.Append('"');
                 TagSearchText = sb.ToString();
+                FilenameSearchText = "";
             }
             else if (SelectedNavItem is AllFilesNavItem
                   || SelectedNavItem is NoTagNavItem)
+            {
                 TagSearchText = "";
+                FilenameSearchText = "";
+            }
         }
 
         /// <summary>
