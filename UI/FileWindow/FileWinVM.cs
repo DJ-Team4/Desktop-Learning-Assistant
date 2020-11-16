@@ -60,7 +60,10 @@ namespace UI.FileWindow
                 return;
             bool needRefresh = await service.RenameTagAsync(tagNav.Tag, newTagName);
             if (needRefresh)
+            {
+                tagNav.NotifyHeaderChanged();
                 RefreshFiles();
+            }
         }
 
         /// <summary>
@@ -442,13 +445,20 @@ namespace UI.FileWindow
     /// <summary>
     /// 标签条目
     /// </summary>
-    public class TagNavItem : INavItem
+    public class TagNavItem : INavItem, INotifyPropertyChanged
     {
         public TagNavItem(Tag tag) => Tag = tag;
 
         public string Header { get => Tag.TagName; }
 
         public Tag Tag { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyHeaderChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Header"));
+        }
     }
 
     /// <summary>

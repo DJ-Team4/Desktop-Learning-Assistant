@@ -62,8 +62,7 @@ namespace UI.FileWindow
             if (currentName == null)
                 return;
             var dialog = AddOrRenameTagDialog.MakeRenameTagDialog(currentName);
-            bool result = dialog.ShowDialog().GetValueOrDefault(false);
-            if (result)
+            if (dialog.ShowDialog().GetValueOrDefault(false))
             {
                 string newTagName = dialog.TagName;
                 await winVM.RenameSelectedTagAsync(newTagName);
