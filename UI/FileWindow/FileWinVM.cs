@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Interop;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace UI.FileWindow
 {
@@ -474,8 +475,17 @@ namespace UI.FileWindow
                 TagNames.Add(relation.Tag.TagName);
         }
 
-        //TODO display name remove .lnk
-        public string DisplayName { get => FileItem.DisplayName; }
+        public string DisplayName
+        {
+            get
+            {
+                string ext = System.IO.Path.GetExtension(FileItem.DisplayName);
+                if (ext == ".lnk")
+                    return System.IO.Path.GetFileNameWithoutExtension(FileItem.DisplayName);
+                else
+                    return FileItem.DisplayName;
+            }
+        }
 
         public string CreateAt
         {
