@@ -108,7 +108,7 @@
                       HorizontalContentAlignment="Stretch">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:SelectableFileTag}">
-                        <CheckBox IsChecked="{Binding IsSelected}"
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                   Content="{Binding TagName}"
                                   FontSize="14"
                                   Padding="5" />

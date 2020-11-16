@@ -375,6 +375,8 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public async Task RenameFileItemAsync(FileItem fileItem, string newName)
         {
+            if (newName == fileItem.DisplayName)
+                return;
 #if DISPOSE_CONTEXT_IMMEDIATELY
             using (var context = Context)
             {
