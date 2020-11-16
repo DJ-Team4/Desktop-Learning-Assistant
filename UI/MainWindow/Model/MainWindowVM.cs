@@ -12,10 +12,11 @@ using DesktopLearningAssistant.TaskTomato.Model;
 using System.Windows;
 using System.Threading;
 using DesktopLearningAssistant.Configuration;
+using System.Drawing;
 
 namespace UI
 {
-    class MainWindowViewModel
+    public class MainWindowViewModel
     {
         ITimeStatisticService timeStatisticService = new TimeStatisticService();
         TaskTomatoService taskTomatoService = new TaskTomatoService();
@@ -51,16 +52,23 @@ namespace UI
         public List<string> TodayColumnXLabels { get; set; }
         public List<string> WeekColumnXLabels { get; set; }
 
+        public int CurrentTaskId { get; set; }
+        public List<RelativeFileItem> RelativeFileItems { get; set; }
+
         /// <summary>
         /// 窗口起始位置
         /// </summary>
         public double left = SystemParameters.WorkArea.Width;
+
         #endregion
 
         #region 公有方法
 
         public MainWindowViewModel()
         {
+            LineSeriesCollection = new SeriesCollection();
+            LineXLabels = new List<string>();
+
             TodayColumnSeriesCollection = new SeriesCollection();
             WeekColumnSeriesCollection = new SeriesCollection();
 
@@ -69,6 +77,9 @@ namespace UI
 
             TodayColumnXLabels = new List<string>();
             WeekColumnXLabels = new List<string>();
+
+            CurrentTaskId = 1;
+            RelativeFileItems = new List<RelativeFileItem>();
 
             Update();
         }
@@ -82,6 +93,7 @@ namespace UI
             GetWeekColunmSeriesData();
             GetTodayPieSeriesData();
             GetWeekPieSeriesData();
+            GetRecentFiles();
             GetLineSeriesData();
         }
 
@@ -94,21 +106,22 @@ namespace UI
         /// </summary>
         private void GetLineSeriesData()
         {
-            //LineSeriesCollection.Clear();
-            //LineXLabels.Clear();
-            List<double> values = new List<double>();
-            List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
-            for (int i=0;i<taskEfficiencies.Count&&i<5;i++)
-            {
-                LineXLabels.Add(taskEfficiencies[i].Name);
-                values.Add(taskEfficiencies[i].Efficiency);
-            }
+            LineSeriesCollection.Clear();
+            LineXLabels.Clear();
+            List<double> values = new List<double>() { 0.7, 0.8, 0.65, 0.89, 0.73, 0.3, 0.56, 0.74};
+            //List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
+            //for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
+            //{
+                //LineXLabels.Add(taskEfficiencies[i].Name);
+                //values.Add(taskEfficiencies[i].Efficiency);
+            //}
+            
             LineSeriesCollection.Add(new LineSeries
             {
-                Title = "Today",
+                //Title = "Today",
+                DataLabels = false,
                 Values = new ChartValues<double>(values)
             });
-            
         }
 
         /// <summary>
@@ -127,11 +140,11 @@ namespace UI
                 columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
             }
 
-            // colunmSeries.DataLabels = true;
             TodayColumnSeriesCollection.Add(new ColumnSeries
             {
                 Title = "Today",
-                Values = new ChartValues<double>(columnValues)
+                Values = new ChartValues<double>(columnValues),
+                DataLabels = true
             });
         }
         
@@ -152,11 +165,11 @@ namespace UI
                 columnValues.Add(Math.Round(userActivities[i].SpanTime.TotalMinutes, 2));
             }
 
-            // colunmSeries.DataLabels = true;
             WeekColumnSeriesCollection.Add(new ColumnSeries
             {
                 Title = "Week",
-                Values = new ChartValues<double>(columnValues)
+                Values = new ChartValues<double>(columnValues),
+                DataLabels = true
             });
         }
 
@@ -168,7 +181,7 @@ namespace UI
             TodayPieSeriesCollection.Clear();
 
             List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(DateTime.Today, DateTime.Now);
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            for (int i = 0; i < ActivityData.Count; i++)
             {
                 PieSeries series = new PieSeries();
                 ChartValues<double> chartValue = new ChartValues<double>
@@ -191,7 +204,7 @@ namespace UI
             WeekPieSeriesCollection.Clear();
 
             List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(beginTime, DateTime.Now);
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            for (int i = 0; i < ActivityData.Count; i++)
             {
                 PieSeries series = new PieSeries();
                 ChartValues<double> chartValue = new ChartValues<double>
@@ -201,57 +214,27 @@ namespace UI
                 series.DataLabels = true;
                 series.Title = ActivityData[i].TypeName;
                 series.Values = chartValue;
-                WeekColumnSeriesCollection.Add(series);
+                WeekPieSeriesCollection.Add(series);
             }
         }
 
-        /// <summary>
-        /// 根据给定的时间返回一个饼状图
-        /// </summary>
-        /// <param name="beginTime"></param>
-        /// <param name="endTime"></param>
-        /// <returns></returns>
-        private void GetPieSeries(DateTime beginTime, DateTime endTime, out SeriesCollection seriesCollection)
+        private void GetRecentFiles()
         {
-            seriesCollection = new SeriesCollection();
+            RelativeFileItems.Clear();
+            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
+            TaskInfo taskInfo = tts.GetTaskWithID(CurrentTaskId);
 
-            // 数据迁移
-            List<TypeActivity> ActivityData = timeStatisticService.GetTypeActivitiesWithin(beginTime, endTime);
-            for (int i = 0; i < ActivityData.Count && i < 4; i++)
+            if (taskInfo == null) return;
+
+            var relativeFiles = taskInfo.RelativeFiles;
+            foreach (var file in relativeFiles)
             {
-                PieSeries series = new PieSeries();
-                ChartValues<double> chartValue = new ChartValues<double>
+                RelativeFileItems.Add(new RelativeFileItem()
                 {
-                    Math.Round(ActivityData[i].SpanTime.TotalMinutes, 2)
-                };
-                series.DataLabels = true;
-                series.Title = ActivityData[i].TypeName;
-                series.Values = chartValue;
-                seriesCollection.Add(series);
+                    //IconImage = Image.FromFile(".. / Icon / word.png"),
+                    FileName = file.FilePath
+                });
             }
-        }
-
-        /// <summary>
-        /// 获取当前月的每天的日期
-        /// </summary>
-        /// <returns>日期集合</returns>
-        private List<string> GetCurrentMonthDates()
-        {
-            List<string> dates = new List<string>();
-            DateTime dt = DateTime.Now;
-            int year = dt.Year;
-            int mouth = dt.Month;
-            int days = DateTime.DaysInMonth(year, mouth);
-            //本月第一天时间      
-            DateTime dt_First = dt.AddDays(1 - (dt.Day));
-            dates.Add(String.Format("{0:d}", dt_First.Date));
-
-            for (int i = 1; i < days; i++)
-            {
-                DateTime temp = dt_First.AddDays(i);
-                dates.Add(String.Format("{0:d}", temp.Date));
-            }
-            return dates;
         }
 
         #endregion

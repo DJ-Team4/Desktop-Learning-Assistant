@@ -82,7 +82,7 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         public static string FileInFolder(string folderpath, string filename)
         {
-            return FolderEndWithSlash(folderpath) + Path.GetFileName(filename);
+            return Path.GetFullPath(FolderEndWithSlash(folderpath) + Path.GetFileName(filename));
         }
 
         /// <summary>

@@ -25,15 +25,16 @@ namespace DesktopLearningAssistant.TagFile
         //Entity mappings
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Tag>().HasKey(tag => tag.TagName);
+            modelBuilder.Entity<Tag>().HasIndex(tag => tag.TagName)
+                                      .IsUnique();
 
             modelBuilder.Entity<TagFileRelation>()
-                        .HasKey(tf => new { tf.TagName, tf.FileItemId });
+                        .HasKey(tf => new { tf.TagId, tf.FileItemId });
 
             modelBuilder.Entity<TagFileRelation>()
                         .HasOne(tf => tf.Tag)
                         .WithMany(tag => tag.Relations)
-                        .HasForeignKey(tf => tf.TagName);
+                        .HasForeignKey(tf => tf.TagId);
 
             modelBuilder.Entity<TagFileRelation>()
                         .HasOne(tf => tf.FileItem)

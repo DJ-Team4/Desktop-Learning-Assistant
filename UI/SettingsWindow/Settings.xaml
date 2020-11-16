@@ -6,57 +6,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="600">
+        Title="Settings" Height="400" Width="512.8">
     <Grid>
         <TabControl 
             HorizontalAlignment="Left" 
             Height="371" 
             VerticalAlignment="Top" 
-            Width="593"
+            Width="506"
             pu:TabControlHelper.ItemHeight="30"
             pu:TabControlHelper.CanRemove="False"
             pu:TabControlHelper.SelectedBackground="AliceBlue"
             TabStripPlacement="Left" 
-            Margin="0,0,0,-0.333">
+            Margin="0,0,0,-0.6">
             <TabItem Header="白名单">
-                <Grid>
-                    <Label Content="选择默认设置的白名单以统计任务效率" HorizontalAlignment="Left" Margin="137,34,0,0" VerticalAlignment="Top" Height="33" Width="251"/>
-                    <Button Content="确定" HorizontalAlignment="Left" Margin="375,322,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.884,6.097"/>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,81,0,0" Height="225" Width="438">
-                        <TabControl Margin="0,0,0,0">
-                            <TabItem Header="写代码">
-                                <StackPanel HorizontalAlignment="Left" Height="100" Margin="59,78,0,0" VerticalAlignment="Top" Width="100">
-                                    <Grid Background="#FFE5E5E5" Margin="0, 0, 0, 0">
-                                        <CheckBox Content="CheckBox" Margin="313,10,25.8,134.8"/>
-
-                                    </Grid>
-                                </StackPanel>
-                            </TabItem>
-                            <TabItem Header="剪视频">
-                                <Grid Background="#FFE5E5E5" Margin="0, 0, 0, 0">
-
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
-                    </Border>
-
+                <Grid Margin="0,0,51.6,0.2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="263*"/>
+                        <ColumnDefinition Width="87*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32*"/>
+                        <RowDefinition Height="339*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="设置白名单以统计任务效率" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="27" Width="251"/>
+                    <ComboBox Name="WhiteListComboBox" Margin="10,4,178.2,312.2" Grid.Row="1" SelectedIndex="0">
+                        <ComboBoxItem Content="Coding"></ComboBoxItem>
+                    </ComboBox>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,41,7.2,10.2">
+                        <Grid>
+                            <CheckBox Content="QQ" IsChecked="False"></CheckBox>
+                        </Grid>
+                        <WrapPanel>
+                            <CheckBox Content="YoudaoDict" IsChecked="True"></CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox Content="chrome" IsChecked="True"></CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox Content="vs" IsChecked="True"></CheckBox>
+                        </WrapPanel>
+                    </StackPanel>
+                    <Button Content="增加" Margin="9.8,34,10.4,0" VerticalAlignment="Top" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19"/>
+                    <Button Content="删除" HorizontalAlignment="Left" Margin="9.8,72,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19"/>
                 </Grid>
-            </TabItem>
-            <TabItem Header="番茄钟">
-                <Grid />
             </TabItem>
             <TabItem Header="软件类型设置">
                 <Grid>
-                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="284" Margin="10,39,0,0" VerticalAlignment="Top" Width="454">
+                    <Border BorderBrush="White" BorderThickness="1" Height="284" Margin="10,39,-0.4,0" VerticalAlignment="Top">
                         <Grid>
-                            <Label Content="软件" Width="50" Height="25" Margin="54,10,348.8,247.4"/>
-                            <Label Content="类型" Width="50" Margin="214,10,188.8,243.4"/>
-                            <ComboBox Name="SoftWareComboBox" Margin="41,40,338.8,210.4" ItemsSource="{Binding Path=SoftWareList}" SelectionChanged="SoftWareSelectionChanged"/>
-                            <ComboBox Name="TypeComboBox" Margin="200,44,179.8,206.4" ItemsSource="{Binding Path=TypeList}" SelectionChanged="TypeSelectionChange"/>
+                            <Label Content="软件:" Width="50" Margin="10,19,330.4,234.4"/>
+                            <Label Content="类型:" Width="50" Margin="214,19,126.4,234.4"/>
+                            <ComboBox Name="SoftWareComboBox" Height="32" Margin="60,16,237.4,234.4" ItemsSource="{Binding Path=SoftWareList}" SelectionChanged="SoftWareSelectionChanged"/>
+                            <ComboBox Name="TypeComboBox" Height="32" Margin="264,16,46.4,234.4" ItemsSource="{Binding Path=TypeList}" SelectionChanged="TypeSelectionChange"/>
                         </Grid>
                     </Border>
-                    <Button Content="确定" HorizontalAlignment="Left" Margin="389,328,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Label Content="设置各软件的软件类型" Margin="168,10,169.333,332.667"/>
+                    <Label Content="设置各软件的软件类型" Margin="10,10,237.6,332.2"/>
                 </Grid>
             </TabItem>
             <Border BorderBrush="Black" BorderThickness="1" Height="178" Width="254">
