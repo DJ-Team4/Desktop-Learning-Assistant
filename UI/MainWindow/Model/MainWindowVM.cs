@@ -78,7 +78,7 @@ namespace UI
             TodayColumnXLabels = new List<string>();
             WeekColumnXLabels = new List<string>();
 
-            CurrentTaskId = 0;
+            CurrentTaskId = 1;
             RelativeFileItems = new List<RelativeFileItem>();
 
             Update();
@@ -108,17 +108,17 @@ namespace UI
         {
             LineSeriesCollection.Clear();
             LineXLabels.Clear();
-            List<double> values = new List<double>();
-            List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
-            for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
-            {
-                LineXLabels.Add(taskEfficiencies[i].Name);
-                values.Add(taskEfficiencies[i].Efficiency);
-            }
+            List<double> values = new List<double>() { 0.7, 0.8, 0.65, 0.89, 0.73, 0.3, 0.56, 0.74};
+            //List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
+            //for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
+            //{
+                //LineXLabels.Add(taskEfficiencies[i].Name);
+                //values.Add(taskEfficiencies[i].Efficiency);
+            //}
             
             LineSeriesCollection.Add(new LineSeries
             {
-                Title = "Today",
+                //Title = "Today",
                 DataLabels = false,
                 Values = new ChartValues<double>(values)
             });
@@ -231,7 +231,7 @@ namespace UI
             {
                 RelativeFileItems.Add(new RelativeFileItem()
                 {
-                    IconImage = Image.FromFile(".. / Icon / word.png"),
+                    //IconImage = Image.FromFile(".. / Icon / word.png"),
                     FileName = file.FilePath
                 });
             }

@@ -218,7 +218,7 @@ namespace UI
                 }));
                 thread.Start();
             }
-
+            circleProgressBar.CurrentValue1 = 0;
             StartChange(m_IsStart);
         }
 
@@ -330,7 +330,6 @@ namespace UI
             if (this.Top < 10)
                 this.Top = 0;
         }
-
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {

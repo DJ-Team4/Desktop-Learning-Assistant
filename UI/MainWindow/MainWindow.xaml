@@ -93,8 +93,8 @@
                                     <RowDefinition Height="23*"/>
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0" Margin="0,0,-0.4,0">
-                                    <Label Content="当前任务"    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="68" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
-                                    <Label Name="LabelCurrentTask" Content=""    HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
+                                    <Label Content="当前任务："    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="75" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
+                                    <Label Name="LabelCurrentTask" Content="完成选题报告"    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
 
                                     <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
                                     <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,5,0,0">
@@ -108,15 +108,17 @@
                                         Click="ButtonStart_Click"
                                         Foreground="Black"
                                         MouseRightButtonDown="TimeCountPause_Click"
-                                        Background="#7bffff7f"
-                                        HorizontalAlignment="Center" Width="75" Height="19" DockPanel.Dock="Bottom" Margin="102,5,100.6,0" VerticalAlignment="Bottom"/>
+                                        Background="aliceblue"
+                                        pu:ButtonHelper.ButtonStyle="Outline"
+                                        pu:ButtonHelper.CornerRadius="5"
+                                        HorizontalAlignment="Center" Width="75" Height="22" DockPanel.Dock="Bottom" Margin="102,5,100.6,0" VerticalAlignment="Bottom"/>
                                 </DockPanel>
-                                <ListView Name="RecentFilesListView" ItemsSource="{Binding RecentFileItems}" Grid.Row="1" Margin="5,5,5,43.2" Grid.RowSpan="2">
+                                <ListView Name="RecentFilesListView" ItemsSource="{Binding RecentFileItems}" Grid.Row="1" Margin="5,5,5,5" Grid.RowSpan="1">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <WrapPanel>
-                                                <Image Name="IconImage"/>
-                                                <TextBlock Name="FileNameTextBlock"/>
+                                                <!--Image Name="IconImage"/-->
+                                                <TextBlock Name="FileNameTextBlock" Text="{Binding FileName}"/>
                                             </WrapPanel>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -132,13 +134,13 @@
                                     <RowDefinition Height="334*"/>
                                     <RowDefinition Height="76*"/>
                                 </Grid.RowDefinitions>
-                                <lvc:CartesianChart Series="{Binding LineSeriesCollection}" LegendLocation="Right" Margin="5" Grid.Row="1" Grid.RowSpan="1">
+                                <lvc:CartesianChart Series="{Binding LineSeriesCollection}"  Margin="5" Grid.Row="1" Grid.RowSpan="1">
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
                                     </lvc:CartesianChart.AxisY>
-                                    <lvc:CartesianChart.AxisX>
+                                    <!--lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding LineXLabels}"></lvc:Axis>
-                                    </lvc:CartesianChart.AxisX>
+                                    </-->
                                 </lvc:CartesianChart>
                             </Grid>
                         </TabItem>
@@ -154,7 +156,7 @@
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
                         pu:TextBoxHelper.CornerRadius="3"
-                        Margin="25,26,42,266"
+                        Margin="36,44,30.6,247.8"
                         AllowDrop="True"
                         DragEnter="File_DragEnter"
                         Drop="File_Drop">
@@ -162,20 +164,14 @@
                               HorizontalAlignment="Stretch"
                               Background="Red"/>-->
                     </Border>
-
-
-                    <Label Name="Label" Content="最近打开..." HorizontalAlignment="Left" Margin="56,229,0,0" VerticalAlignment="Top"/>
-
-                    <Label Content="需求分析报告.docx" Margin="57,261,78,166.8" />
-                    <Label Content="选题报告.pdf" Height="31" Width="225" Margin="56,295,-13,134.8" />
                     <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" 
                            VerticalAlignment="Top" Width="24"/>
 
                     <Button Content="文件管理"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
-                            pu:ButtonHelper.CornerRadius="15"
-                            Margin="80,385,102,35.8"
+                            pu:ButtonHelper.CornerRadius="7"
+                            Margin="89,275,83.6,168.8"
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
