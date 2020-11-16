@@ -21,7 +21,7 @@
 
         <!-- Tool Bar -->
         <Grid Grid.Row="0"
-              Background="#f2f2f2">
+              Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -36,14 +36,12 @@
             <!-- Refresh Button -->
             <Button Grid.Column="0"
                     Name="refreshBtn"
-                    BorderThickness="0"
                     Margin="{StaticResource ToolbarItemMargin}"
-                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                     Click="RefreshBtn_Click"
                     Background="Transparent"
                     pu:ButtonHelper.HoverBrush="LightGray"
                     pu:ButtonHelper.CornerRadius="4">
-                <Image Source="../Image/refresh.jpg" />
+                <Image Source="../Image/refresh.png" />
             </Button>
 
             <!-- Add File Button -->
@@ -116,6 +114,17 @@
                                        FontSize="14" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="FontWeight"
+                                            Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -167,6 +176,13 @@
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="ContextMenu"
                                     Value="{StaticResource TagContextMenu}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="FontWeight"
+                                            Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
