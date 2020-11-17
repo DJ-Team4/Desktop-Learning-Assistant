@@ -18,8 +18,12 @@ namespace UI.FileWindow
         {
             FileItem = fileItem;
             RealPath = fileItem.RealPath();
+            var tagLst = new List<string>();
             foreach (var relation in fileItem.Relations)
-                TagNames.Add(relation.Tag.TagName);
+                tagLst.Add(relation.Tag.TagName);
+            tagLst.Sort();
+            foreach (string tagName in tagLst)
+                TagNames.Add(tagName);
         }
 
         /// <summary>
@@ -105,7 +109,7 @@ namespace UI.FileWindow
                     double kb = byteSize / (double)(1 << 10);
                     return $"{kb:N2} KB";
                 }
-                else if(byteSize < (1 << 30))
+                else if (byteSize < (1 << 30))
                 {
                     double mb = byteSize / (double)(1 << 20);
                     return $"{mb:N2} MB";
@@ -125,6 +129,31 @@ namespace UI.FileWindow
         public System.Windows.Visibility ShortcutVisibility
             => IsShortcut ? System.Windows.Visibility.Visible
                           : System.Windows.Visibility.Collapsed;
+
+        /// <summary>
+        /// 表示含有标签的字符串
+        /// </summary>
+        public string TagStr
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                bool isfirst = true;
+                foreach(string tagName in TagNames)
+                {
+                    if (isfirst)
+                        isfirst = false;
+                    else
+                        sb.Append(", ");
+                    sb.Append(tagName);
+                }
+                return sb.ToString();
+            }
+        }
+
+        public System.Windows.Visibility TagStrVisibility
+            => TagNames.Count > 0 ? System.Windows.Visibility.Visible 
+                                  : System.Windows.Visibility.Collapsed;
 
         /// <summary>
         /// 对应的 FileItem 实体类

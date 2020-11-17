@@ -24,6 +24,7 @@ namespace UI.FileWindow
             InitializeComponent();
             Title = caption;
             msgTxt.Text = message;
+            confirmBtn.Focus();
         }
 
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)

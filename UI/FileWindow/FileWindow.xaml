@@ -243,19 +243,30 @@
                                                Text="{Binding DisplayName}"
                                                FontSize="16"
                                                TextWrapping="NoWrap" />
+                                    <!-- area under file name -->
                                     <StackPanel Grid.Row="1"
                                                 Orientation="Horizontal"
-                                                VerticalAlignment="Center"
-                                                Visibility="{Binding FileSizeVisibility}">
-                                        <TextBlock Text="大小："
-                                                   Foreground="Gray" />
-                                        <TextBlock Text="{Binding FileSize}" />
+                                                VerticalAlignment="Center">
+                                        <!-- file size -->
+                                        <StackPanel Orientation="Horizontal"
+                                                    Visibility="{Binding FileSizeVisibility}">
+                                            <TextBlock Text="大小："
+                                                       Foreground="Gray" />
+                                            <TextBlock Text="{Binding FileSize}" />
+                                        </StackPanel>
+                                        <!-- shortcut -->
+                                        <TextBlock Visibility="{Binding ShortcutVisibility}"
+                                                   Foreground="Gray"
+                                                   Text="快捷方式" />
+                                        <!-- tag str -->
+                                        <StackPanel Margin="20,0,0,0"
+                                            Orientation="Horizontal"
+                                                    Visibility="{Binding TagStrVisibility}">
+                                            <TextBlock Text="标签："
+                                                       Foreground="Gray" />
+                                            <TextBlock Text="{Binding TagStr}" />
+                                        </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Grid.Row="1"
-                                               VerticalAlignment="Center"
-                                               Visibility="{Binding ShortcutVisibility}"
-                                               Foreground="Gray"
-                                               Text="快捷方式" />
                                 </Grid>
                                 <UniformGrid Grid.Column="2"
                                              Rows="2"
