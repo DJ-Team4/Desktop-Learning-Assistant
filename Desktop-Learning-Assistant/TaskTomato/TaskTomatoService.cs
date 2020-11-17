@@ -157,6 +157,15 @@ namespace DesktopLearningAssistant.TaskTomato
             }
         }
 
+        public TaskInfo GetCurrentTaskInfo()
+        {
+            using(var context = Context)
+            {
+                var query = context.TaskModels.Include(tm => tm.Tomatoes).Include(tm => tm.RelativeFiles).Where(tm => !tm.Finished).OrderBy(tm => tm.TaskID).FirstOrDefault();
+                return query;
+            }
+        }
+
         /// <summary>
         /// 获取所有已完成任务
         /// </summary>
