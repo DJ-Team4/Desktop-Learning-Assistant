@@ -98,7 +98,6 @@ namespace UI
         {
             InitializeComponent();
 
-            LabelCurrentTask.Content=tts
 
 
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
