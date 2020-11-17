@@ -29,6 +29,7 @@
 
                 <TextBox Grid.Column="0"
                          x:Name="filepathTxtbox"
+                         Text="{Binding Filepath}"
                          HorizontalAlignment="Stretch"
                          Padding="6"
                          FontSize="14"

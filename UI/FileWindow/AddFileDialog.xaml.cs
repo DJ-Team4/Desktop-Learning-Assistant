@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DesktopLearningAssistant.TagFile;
+using DesktopLearningAssistant.TagFile.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -34,20 +36,13 @@ namespace UI.FileWindow
             }
         }
 
-        /// <summary>
-        /// 结果：文件路径
-        /// </summary>
-        public string Filepath { get; private set; }
-
-        /// <summary>
-        /// 结果：是否使用快捷方式
-        /// </summary>
-        public bool AsShortcut { get; private set; }
-
-        /// <summary>
-        /// 结果：要添加的标签
-        /// </summary>
-        public ICollection<string> TagNames { get; private set; }
+        public AddFileDialog(string filepath)
+        {
+            InitializeComponent();
+            DataContext = this;
+            filepathTxtbox.Text = filepath;
+            //TODO get recommend
+        }
 
         /// <summary>
         /// 给下拉框绑定数据用的列表
@@ -56,9 +51,50 @@ namespace UI.FileWindow
             = new ObservableCollection<SelectableFileTag>();
 
         /// <summary>
+        /// 执行添加文件
+        /// </summary>
+        public async Task AddFileAsync()
+        {
+            //Get the result
+            string filepath = System.IO.Path.GetFullPath(filepathTxtbox.Text);
+            bool asShortcut = asShortcutRadio.IsChecked.GetValueOrDefault(true);
+            var tagNames = new List<string>();
+            foreach (var stag in TagListForComboBox)
+                if (stag.IsSelected)
+                    tagNames.Add(stag.TagName);
+
+            FileItem fileItem = asShortcut ? await service.AddShortcutToRepoAsync(filepath)
+                                           : await service.MoveFileToRepoAsync(filepath);
+            foreach (string tagName in tagNames)
+            {
+                Tag tag = await service.GetTagByNameAsync(tagName);
+                if (tag != null)
+                    await service.AddRelationAsync(tag, fileItem);
+            }
+        }
+
+        private void UpdateTagTxt()
+        {
+            var sb = new StringBuilder();
+            bool isfirst = true;
+            foreach (var stag in TagListForComboBox)
+            {
+                if (stag.IsSelected)
+                {
+                    if (isfirst)
+                        isfirst = false;
+                    else
+                        sb.Append(", ");
+                    sb.Append(stag.TagName);
+                }
+            }
+            tagTxt.Text = sb.ToString();
+        }
+
+        /// <summary>
         /// 确定
         /// </summary>
-        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
+        private async void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             string filepath = filepathTxtbox.Text;
             if (filepath == null || filepath.Trim().Length == 0)
@@ -67,14 +103,16 @@ namespace UI.FileWindow
             }
             else
             {
+                try
+                {
+                    await AddFileAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "添加文件时出错");
+                    return;
+                }
                 DialogResult = true;
-                //Set the result.
-                Filepath = System.IO.Path.GetFullPath(filepath);
-                AsShortcut = asShortcutRadio.IsChecked.GetValueOrDefault(true);
-                TagNames = new List<string>();
-                foreach (var stag in TagListForComboBox)
-                    if (stag.IsSelected)
-                        TagNames.Add(stag.TagName);
             }
             Close();
         }
@@ -102,27 +140,14 @@ namespace UI.FileWindow
                     string filepath = dialog.FileName;
                     filepathTxtbox.Text = filepath;
                 }
+                //TODO update recommend
             }
         }
 
         private void TagComboBox_DropDownClosed(object sender, EventArgs e)
         {
             editTagBtn.Content = "编辑标签";
-
-            var sb = new StringBuilder();
-            bool isfirst = true;
-            foreach (var stag in TagListForComboBox)
-            {
-                if (stag.IsSelected)
-                {
-                    if (isfirst)
-                        isfirst = false;
-                    else
-                        sb.Append(", ");
-                    sb.Append(stag.TagName);
-                }
-            }
-            tagTxt.Text = sb.ToString();
+            UpdateTagTxt();
         }
 
         private void EditTagBtn_Click(object sender, RoutedEventArgs e)
@@ -134,5 +159,7 @@ namespace UI.FileWindow
         {
             editTagBtn.Content = "收起";
         }
+
+        private readonly ITagFileService service = TagFileService.GetService();
     }
 }

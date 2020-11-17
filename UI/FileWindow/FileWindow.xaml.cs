@@ -97,19 +97,7 @@ namespace UI.FileWindow
             var allTagNames = await winVM.AllTagNamesAsync();
             var dialog = new AddFileDialog(allTagNames);
             if (dialog.ShowDialog().GetValueOrDefault(false))
-            {
-                string filepath = dialog.Filepath;
-                bool asShortcut = dialog.AsShortcut;
-                ICollection<string> tagNames = dialog.TagNames;
-                try
-                {
-                    await winVM.AddFileAsync(filepath, asShortcut, tagNames);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "添加文件时出错");
-                }
-            }
+                winVM.RefreshFiles();
         }
 
         /// <summary>
@@ -319,6 +307,9 @@ namespace UI.FileWindow
             previewTextInputHappend = false;
         }
 
+        /// <summary>
+        /// 提示列表按键事件
+        /// </summary>
         private void IntelliLst_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -335,6 +326,9 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 提示列表双击
+        /// </summary>
         private void IntelliLst_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (IsPopupUsable())

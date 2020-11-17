@@ -76,30 +76,6 @@ namespace UI.FileWindow
         }
 
         /// <summary>
-        /// 添加文件
-        /// </summary>
-        /// <param name="filepath">文件路径</param>
-        /// <param name="asShortcut">是否添加快捷方式</param>
-        /// <param name="tagNames">要添加的标签</param>
-        public async Task AddFileAsync(string filepath,
-                                       bool asShortcut,
-                                       IEnumerable<string> tagNames)
-        {
-            FileItem fileItem;
-            if (asShortcut)
-                fileItem = await service.AddShortcutToRepoAsync(filepath);
-            else
-                fileItem = await service.MoveFileToRepoAsync(filepath);
-            foreach (string tagName in tagNames)
-            {
-                Tag tag = await service.GetTagByNameAsync(tagName);
-                if (tag != null)
-                    await service.AddRelationAsync(tag, fileItem);
-            }
-            RefreshFiles();
-        }
-
-        /// <summary>
         /// 所有标签的名称列表
         /// </summary>
         public async Task<List<string>> AllTagNamesAsync()
