@@ -149,6 +149,8 @@
     <Compile Include="FileWindow\FileVM.cs" />
     <Compile Include="FileWindow\FileWinVM.cs" />
     <Compile Include="FileWindow\INavItem.cs" />
+    <Compile Include="FileWindow\IntelliItem.cs" />
+    <Compile Include="FileWindow\IntelliUtils.cs" />
     <Compile Include="FileWindow\NoTagNavItem.cs" />
     <Compile Include="FileWindow\SearchResultNavItem.cs" />
     <Compile Include="FileWindow\TagNavItem.cs" />

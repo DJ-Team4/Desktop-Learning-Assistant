@@ -107,6 +107,8 @@ namespace UI.FileWindow
 
         private void TagComboBox_DropDownClosed(object sender, EventArgs e)
         {
+            editTagBtn.Content = "编辑标签";
+
             var sb = new StringBuilder();
             bool isfirst = true;
             foreach (var stag in TagListForComboBox)
@@ -126,6 +128,11 @@ namespace UI.FileWindow
         private void EditTagBtn_Click(object sender, RoutedEventArgs e)
         {
             tagComboBox.IsDropDownOpen = !tagComboBox.IsDropDownOpen;
+        }
+
+        private void TagComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            editTagBtn.Content = "收起";
         }
     }
 }

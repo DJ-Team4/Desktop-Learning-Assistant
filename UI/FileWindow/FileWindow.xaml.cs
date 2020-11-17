@@ -26,9 +26,29 @@ namespace UI.FileWindow
             TagFileService.EnsureDbAndFolderCreated();//TODO move it
             winVM = new FileWinVM();
             DataContext = winVM;
+            SetAlignment();
         }
 
         private readonly FileWinVM winVM;
+
+        /// <summary>
+        /// 设置弹窗菜单对齐方式
+        /// </summary>
+        /// <remarks>
+        /// 解决 Popup 位置在触摸屏电脑上左右颠倒的憨批行为。
+        /// </remarks>
+        private static void SetAlignment()
+        {
+            var ifLeft = SystemParameters.MenuDropAlignment;
+            if (ifLeft)
+            {
+                var t = typeof(SystemParameters);
+                var field = t.GetField("_menuDropAlignment",
+                    System.Reflection.BindingFlags.NonPublic
+                    | System.Reflection.BindingFlags.Static);
+                field?.SetValue(null, false);
+            }
+        }
 
         /// <summary>
         /// 添加标签
@@ -159,34 +179,168 @@ namespace UI.FileWindow
         }
 
         /// <summary>
-        /// 标签搜索框回车
+        /// 文件名搜索框按键事件
         /// </summary>
-        private void TagSearchBox_KeyDown(object sender, KeyEventArgs e)
+        private void FilenameSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 winVM.TagSearchText = tagSearchBox.Text;
                 winVM.FilenameSearchText = filenameSearchBox.Text;
-                GoToSearchResult();
+                winVM.GoToSearchResult();
             }
         }
 
         /// <summary>
-        /// 文件搜索框回车
+        /// 提示是否可用
         /// </summary>
-        private void FilenameSearchBox_KeyDown(object sender, KeyEventArgs e)
+        private bool IsPopupUsable()
+        {
+            return intelliPopup.IsOpen
+                   && winVM.IntelliItems.Count > 0;
+        }
+
+        /// <summary>
+        /// 把选中的提示放到输入框中，并关闭提示
+        /// </summary>
+        private void UseIntelliThenClose()
+        {
+            if (intelliLst.SelectedItem != null)
+            {
+                string tagName = (intelliLst.SelectedItem as IntelliItem).Name;
+                int prefixLen = IntelliUtils.ExtractPrefix(tagSearchBox.Text).Length;
+                string textWithoutPrefix = tagSearchBox.Text.Substring(0, tagSearchBox.Text.Length - prefixLen);
+                tagSearchBox.Text = textWithoutPrefix + tagName + "\" ";
+                tagSearchBox.CaretIndex = tagSearchBox.Text.Length;
+            }
+            intelliPopup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// 处理标签搜索框的 Enter, Tag, Esc, Up, Down, Back, Delete 按键事件
+        /// </summary>
+        private void TagSearchBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                winVM.TagSearchText = tagSearchBox.Text;
-                winVM.FilenameSearchText = filenameSearchBox.Text;
-                GoToSearchResult();
+                if (IsPopupUsable()) //插入提示
+                    UseIntelliThenClose();
+                else //搜索
+                {
+                    winVM.TagSearchText = tagSearchBox.Text;
+                    winVM.FilenameSearchText = filenameSearchBox.Text;
+                    winVM.GoToSearchResult();
+                }
+            }
+            else if (e.Key == Key.Tab)
+            {
+                if (IsPopupUsable())
+                {
+                    e.Handled = true; //屏蔽默认的 Tab 跳转行为
+                    UseIntelliThenClose();
+                }
+            }
+            else if (e.Key == Key.Escape)
+            {
+                intelliPopup.IsOpen = false;
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (IsPopupUsable())
+                {
+                    int cnt = winVM.IntelliItems.Count;
+                    intelliLst.SelectedIndex = (intelliLst.SelectedIndex - 1 + cnt) % cnt;
+                }
+            }
+            else if (e.Key == Key.Down)
+            {
+                if (IsPopupUsable())
+                {
+                    intelliLst.SelectedIndex = (intelliLst.SelectedIndex + 1)
+                                                % winVM.IntelliItems.Count;
+                }
+            }
+            else if (e.Key == Key.Back || e.Key == Key.Delete)
+                intelliPopup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// 是否发生了 PreviewTextInput 事件
+        /// </summary>
+        private bool previewTextInputHappend = false;
+
+        /// <summary>
+        /// 设置标志位，并处理自动补全右括号
+        /// </summary>
+        private void TagSearchBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            previewTextInputHappend = true;
+            if (e.Text == "(") //处理自动补全右括号
+            {
+                int oldIndex = tagSearchBox.CaretIndex;
+                string left = tagSearchBox.Text.Substring(0, oldIndex);
+                string right = tagSearchBox.Text.Length > 0
+                                    ? tagSearchBox.Text.Substring(oldIndex) : "";
+                tagSearchBox.Text = left + ")" + right;
+                tagSearchBox.CaretIndex = oldIndex;
             }
         }
 
-        private void GoToSearchResult()
+        /// <summary>
+        /// 处理补全提示的打开、更新、关闭
+        /// </summary>
+        /// <remarks>
+        /// 不能在 PreviewTextInput 中处理，因为中英文输入行为不一致。
+        /// </remarks>
+        private void TagSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            winVM.GoToSearchResult();
+            //需判断标志位，以免删除时触发
+            if (!previewTextInputHappend)
+                return;
+            if (IntelliUtils.IsQuoteOdd(tagSearchBox.Text)
+                && tagSearchBox.CaretIndex == tagSearchBox.Text.Length)
+            {
+                string prefix = IntelliUtils.ExtractPrefix(tagSearchBox.Text);
+                winVM.RefreshIntelliItems(prefix);
+                if (winVM.IntelliItems.Count > 0)
+                {
+                    intelliPopup.IsOpen = true;
+                    intelliLst.SelectedIndex = 0;
+                    if (prefix.Length == 0)
+                        intelliPopup.PlacementRectangle =
+                            tagSearchBox.GetRectFromCharacterIndex(
+                                tagSearchBox.Text.Length);
+                }
+                else
+                    intelliPopup.IsOpen = false;
+            }
+            else
+                intelliPopup.IsOpen = false;
+            previewTextInputHappend = false;
+        }
+
+        private void IntelliLst_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                intelliPopup.IsOpen = false;
+                tagSearchBox.Focus();
+            }
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                if (IsPopupUsable())
+                    UseIntelliThenClose();
+                intelliPopup.IsOpen = false;
+                tagSearchBox.Focus();
+            }
+        }
+
+        private void IntelliLst_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (IsPopupUsable())
+                UseIntelliThenClose();
+            intelliPopup.IsOpen = false;
+            tagSearchBox.Focus();
         }
     }
 }

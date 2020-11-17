@@ -18,8 +18,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Text Box with hint and round corner -->
-
         <TextBox Grid.Row="0"
                  x:Name="tagNameTxtbox"
                  HorizontalAlignment="Stretch"
@@ -51,7 +49,7 @@
                     pu:ButtonHelper.HoverBrush="#0077d7" />
 
             <Button Grid.Column="2"
-                    Name="CancelBtn"
+                    Name="cancelBtn"
                     Content="取消"
                     Click="CancelBtn_Click"
                     Padding="10,5,10,5"

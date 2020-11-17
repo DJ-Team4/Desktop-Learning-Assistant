@@ -9,10 +9,6 @@ using System.Runtime.CompilerServices;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile;
 using System.Diagnostics;
-using System.Windows.Media;
-using System.Windows.Interop;
-using System.Drawing;
-using System.Text.RegularExpressions;
 
 namespace UI.FileWindow
 {
@@ -209,6 +205,17 @@ namespace UI.FileWindow
             SelectedNavItem = UpNavItems[2];
         }
 
+        public void RefreshIntelliItems(string prefix)
+        {
+            IntelliItems.Clear();
+            foreach (var tagNav in DownNavItems)
+            {
+                string tagName = tagNav.Header;
+                if (tagName.StartsWith(prefix))
+                    IntelliItems.Add(new IntelliItem(tagName));
+            }
+        }
+
         /// <summary>
         /// 导航栏上半部分
         /// </summary>
@@ -300,6 +307,9 @@ namespace UI.FileWindow
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<IntelliItem> IntelliItems { get; }
+            = new ObservableCollection<IntelliItem>();
 
         private ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
         {

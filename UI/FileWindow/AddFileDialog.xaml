@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI.FileWindow"
         mc:Ignorable="d"
         Title="添加文件"
@@ -26,43 +27,28 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Textbox with hint -->
-                <Grid Grid.Column="0" VerticalAlignment="Center">
-                    <Grid.Resources>
-                        <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
-                    </Grid.Resources>
-                    <TextBlock Text="文件路径"
-                               VerticalAlignment="Center"
-                               FontSize="14"
-                               Padding="10,6,10,6"
-                               Foreground="LightSteelBlue"
-                               Visibility="{Binding ElementName=filepathTxtbox, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}"
-                               IsHitTestVisible="False" />
-                    <TextBox Grid.Row="0"
-                             x:Name="filepathTxtbox"
-                             HorizontalAlignment="Stretch"
-                             Padding="6"
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Background="Transparent">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}">
-                                <Style.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius"
-                                                Value="4" />
-                                    </Style>
-                                </Style.Resources>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                </Grid>
+                <TextBox Grid.Column="0"
+                         x:Name="filepathTxtbox"
+                         HorizontalAlignment="Stretch"
+                         Padding="6"
+                         FontSize="14"
+                         VerticalContentAlignment="Center"
+                         pu:TextBoxHelper.CornerRadius="4"
+                         pu:TextBoxHelper.FocusedShadowColor="Transparent"
+                         pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue"
+                         pu:TextBoxHelper.Watermark="文件路径" />
 
                 <Button Grid.Column="1"
                         Name="selectFileBtn"
                         Content="选择文件"
                         Margin="10,0,0,0"
-                        Click="SelectFileBtn_Click" />
+                        Padding="5"
+                        Click="SelectFileBtn_Click"
+                        Background="White"
+                        Foreground="Black"
+                        pu:ButtonHelper.ButtonStyle="Outline"
+                        pu:ButtonHelper.HoverBrush="Black"
+                        pu:ButtonHelper.CornerRadius="4" />
 
             </Grid>
 
@@ -71,12 +57,17 @@
                 <ComboBox Grid.Row="1"
                           x:Name="tagComboBox"
                           VerticalAlignment="Stretch"
+                          DropDownOpened="TagComboBox_DropDownOpened"
                           DropDownClosed="TagComboBox_DropDownClosed"
-                          ItemsSource="{Binding TagListForComboBox}">
+                          ItemsSource="{Binding TagListForComboBox}"
+                          HorizontalContentAlignment="Stretch"
+                          pu:ComboBoxHelper.DropDownCornerRadius="4"
+                          pu:ComboBoxHelper.ItemHeight="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:SelectableFileTag}">
                             <CheckBox Content="{Binding TagName}"
-                                      IsChecked="{Binding IsSelected}" />
+                                      IsChecked="{Binding IsSelected}"
+                                      pu:CheckBoxHelper.CheckedBackground="#0077d7"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -92,7 +83,8 @@
                     <TextBlock Grid.Row="0"
                                FontSize="14"
                                VerticalAlignment="Center"
-                               Text="标签：" />
+                               Text="标签："
+                               FontWeight="Bold" />
                     <TextBlock Grid.Column="1"
                                x:Name="tagTxt"
                                FontSize="14"
@@ -100,7 +92,13 @@
                     <Button Grid.Column="2"
                             Name="editTagBtn"
                             Content="编辑标签"
-                            Click="EditTagBtn_Click" />
+                            Click="EditTagBtn_Click"
+                            Padding="5"
+                            Background="White"
+                            Foreground="Black"
+                            pu:ButtonHelper.ButtonStyle="Outline"
+                            pu:ButtonHelper.HoverBrush="Black"
+                            pu:ButtonHelper.CornerRadius="4" />
                 </Grid>
             </Grid>
 
@@ -113,12 +111,14 @@
                              GroupName="AsShortcutRadioGroup"
                              IsChecked="True"
                              Content="是"
-                             Margin="5,0,5,0" />
+                             Margin="5,0,5,0"
+                             pu:RadioButtonHelper.CheckedBackground="#0077d7"/>
                 <RadioButton x:Name="notAsShortcutRadio"
                              GroupName="AsShortcutRadioGroup"
                              IsChecked="False"
                              Content="否"
-                             Margin="5,0,5,0" />
+                             Margin="5,0,5,0"
+                             pu:RadioButtonHelper.CheckedBackground="#0077d7"/>
             </StackPanel>
 
         </StackPanel>
@@ -135,13 +135,22 @@
                     Content="确定"
                     Click="ConfirmBtn_Click"
                     Padding="10,5,10,5"
-                    Margin="0,0,10,0" />
+                    Margin="0,0,10,0"
+                    FontWeight="Bold"
+                    Background="DodgerBlue"
+                    pu:ButtonHelper.CornerRadius="4"
+                    pu:ButtonHelper.HoverBrush="#0077d7" />
 
             <Button Grid.Column="2"
-                    Name="CancelBtn"
+                    Name="cancelBtn"
                     Content="取消"
                     Click="CancelBtn_Click"
-                    Padding="10,5,10,5" />
+                    Padding="10,5,10,5"
+                    Background="White"
+                    Foreground="Black"
+                    pu:ButtonHelper.ButtonStyle="Outline"
+                    pu:ButtonHelper.HoverBrush="Black"
+                    pu:ButtonHelper.CornerRadius="4" />
         </Grid>
     </Grid>
 

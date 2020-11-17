@@ -67,7 +67,30 @@
                      pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue"
                      pu:TextBoxHelper.FocusedShadowColor="Transparent"
                      pu:TextBoxHelper.Watermark="输入查询表达式并按回车"
-                     KeyDown="TagSearchBox_KeyDown" />
+                     PreviewKeyDown="TagSearchBox_PreviewKeyDown"
+                     PreviewTextInput="TagSearchBox_PreviewTextInput"
+                     TextChanged="TagSearchBox_TextChanged" />
+
+            <!-- 弹出提示 -->
+            <Popup x:Name="intelliPopup"
+                   PlacementTarget="{Binding ElementName=tagSearchBox}"
+                   Placement="Bottom"
+                   IsOpen="False"
+                   StaysOpen="False">
+                <ListBox x:Name="intelliLst"
+                         ItemsSource="{Binding IntelliItems}"
+                         pu:ListBoxHelper.SelectedBackground="#0077d7"
+                         pu:ListBoxHelper.SelectedForeground="White"
+                         KeyDown="IntelliLst_KeyDown"
+                         MouseDoubleClick="IntelliLst_MouseDoubleClick">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:IntelliItem}">
+                            <TextBlock Text="{Binding Name}"
+                                       Padding="5,0,5,0" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Popup>
 
             <!-- Filename Search Box -->
             <TextBox Grid.Column="3"
@@ -81,7 +104,7 @@
                      pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue"
                      pu:TextBoxHelper.FocusedShadowColor="Transparent"
                      pu:TextBoxHelper.Watermark="输入文件名并按回车"
-                     KeyDown="FilenameSearchBox_KeyDown" />
+                     PreviewKeyDown="FilenameSearchBox_PreviewKeyDown" />
 
         </Grid>
 
