@@ -92,6 +92,17 @@
                                     <RowDefinition Height="203*"/>
                                     <RowDefinition Height="46*"/>
                                 </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0" Margin="0,0,-0.4,0">
+                                    <Label Content="当前任务："    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="75" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
+                                    <Label x:Name="LabelCurrentTask"  Content=""    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
+
+                                    <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
+                                    <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,5,0,0">
+                                        <TextBlock Text="00" Visibility="Hidden" Name="HourArea" FontSize="12" Background="Transparent" Height="23"/>
+                                        <TextBlock Text=":" Visibility="Hidden" Name="HourSplitMinute" FontSize="12" Background="Transparent" Height="23" RenderTransformOrigin="1.136,0.513"/>
+                                        <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="85,0,0,0"/>
+                                        <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
+                                        <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
                                 <StackPanel Grid.Row="0" Margin="0">
                                     <WrapPanel>
                                         <Label Content="当前任务：" Height="30" Width="75" Margin="5"/>

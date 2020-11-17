@@ -143,5 +143,23 @@ namespace UI.Tomato
             newTaskWindow.Show();
             UpdateViewModel();
         }
+
+        private void SearchBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+                taskInfo=tts.GetTaskWithName(SearchTextBox.Text);
+                AllTasksListView.Items.Clear();
+                AllTasksListView.Items.Add(taskInfo);
+        }
+
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e) //搜索之后回退
+        {
+            if (SearchTextBox.Text == "")
+            {
+                UpdateViewModel();
+            }
+            else
+                return;
+        }
     }
+    
 }
