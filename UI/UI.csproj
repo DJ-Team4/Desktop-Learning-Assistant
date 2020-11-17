@@ -17,6 +17,21 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -120,8 +135,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileWindow\AddFileDialog.xaml.cs">
+      <DependentUpon>AddFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileWindow\AddOrRenameTagDialog.xaml.cs">
+      <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileWindow\EditFileDialog.xaml.cs">
+      <DependentUpon>EditFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileWindow\FileInfoForEdit.cs" />
     <Compile Include="FileWindow\FileWinVM.cs" />
-    <Compile Include="MainWindow\MainWindowVM.cs" />
+    <Compile Include="MainWindow\Model\MainWindowVM.cs" />
+    <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
+    <Compile Include="FileWindow\SelectableFileTag.cs" />
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
@@ -139,6 +166,18 @@
     <Compile Include="FileWindow\FileWindow.xaml.cs">
       <DependentUpon>FileWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="FileWindow\AddFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileWindow\AddOrRenameTagDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileWindow\EditFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -190,6 +229,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Icon\icon\.DS_Store" />
+    <None Include="Icon\__MACOSX\icon\._.DS_Store" />
+    <None Include="Image\Thumbs.db" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -202,55 +244,130 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon\Acrobat-File.png" />
-    <Resource Include="Icon\chrome.png" />
-    <Resource Include="Icon\file.jpeg" />
-    <Resource Include="Icon\PDF.png" />
-    <Resource Include="Icon\plus.png" />
-    <Resource Include="Icon\qq.png" />
-    <Resource Include="Icon\Visual Studio.png" />
-    <Resource Include="Icon\word %281%29.png" />
-    <Resource Include="Icon\word.png" />
-    <Resource Include="Icon\书.png" />
-    <Resource Include="Icon\右箭头.png" />
-    <Resource Include="Icon\微信.png" />
-    <Resource Include="Icon\Search.png" />
-    <Resource Include="Icon\文件夹.png" />
-    <Resource Include="Icon\时钟.png" />
-    <Resource Include="Icon\浏览器.png" />
-    <Resource Include="Icon\tomatofinished.png" />
-    <Resource Include="Icon\tomatounfinished.png" />
-    <Resource Include="Icon\箭头.png" />
-    <Resource Include="Icon\More.png" />
-    <Resource Include="Icon\详情.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\refresh.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\home.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\tag.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Pause.jpg" />
-    <Resource Include="Icon\Start.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Change.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon\Set.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Desktop-Learning-Assistant\Desktop-Learning-Assistant.csproj">
       <Project>{3bdcedcd-9866-44ad-b45e-347b30b7460e}</Project>
       <Name>Desktop-Learning-Assistant</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 无操作.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑.png" />
     <Resource Include="MainWindow\Set.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MainWindow\More.png" />
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Add-Halt.png" />
+    <Resource Include="Image\Add-Highlight.png" />
+    <Resource Include="Image\Add.png" />
+    <Resource Include="Image\Arrow-Right.png" />
+    <Resource Include="Image\Arrow.png" />
+    <Resource Include="Image\Change.jpg" />
+    <Resource Include="Image\Clock.png" />
+    <Resource Include="Image\Close-Halt.png" />
+    <Resource Include="Image\Close-HighLight.png" />
+    <Resource Include="Image\Close.png" />
+    <Resource Include="Image\Delete-Halt.png" />
+    <Resource Include="Image\Delete-Highlight.png" />
+    <Resource Include="Image\Delete.png" />
+    <Resource Include="Image\Detail.png" />
+    <Resource Include="Image\Directory.png" />
+    <Resource Include="Image\Edit-Halt.png" />
+    <Resource Include="Image\Edit-Highlight.png" />
+    <Resource Include="Image\Edit.png" />
+    <Resource Include="Image\File.jpeg" />
+    <Resource Include="Image\Home.jpg" />
+    <Resource Include="Image\More.png" />
+    <Resource Include="Image\Pause-Halt.png" />
+    <Resource Include="Image\Pause-Highlight.png" />
+    <Resource Include="Image\Pause.jpg" />
+    <Resource Include="Image\Pause.png" />
+    <Resource Include="Image\plus.png" />
+    <Resource Include="Image\Search-Halt.png" />
+    <Resource Include="Image\Search-Highlight.png" />
+    <Resource Include="Image\Search.png" />
+    <Resource Include="Image\Set.png" />
+    <Resource Include="Image\spring.ico" />
+    <Resource Include="Image\Start-Halt.png" />
+    <Resource Include="Image\Start-Highlight.png" />
+    <Resource Include="Image\Start.jpeg" />
+    <Resource Include="Image\Start.png" />
+    <Resource Include="Image\tag.jpg" />
+    <Resource Include="Image\TaskList-Halt.png" />
+    <Resource Include="Image\TaskList-Highlight.png" />
+    <Resource Include="Image\TaskList.png" />
+    <Resource Include="Image\Tomato-Finished.png" />
+    <Resource Include="Image\Tomato-Unfinished.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\icon\add\add.png" />
+    <Resource Include="Icon\icon\add\add_highlight.png" />
+    <Resource Include="Icon\icon\add\add_hover.png" />
+    <Resource Include="Icon\icon\close\close.png" />
+    <Resource Include="Icon\icon\close\close_highlight.png" />
+    <Resource Include="Icon\icon\close\close_hover.png" />
+    <Resource Include="Icon\icon\delete\delete.png" />
+    <Resource Include="Icon\icon\delete\delete_highlight.png" />
+    <Resource Include="Icon\icon\delete\delete_hover.png" />
+    <Resource Include="Icon\icon\edit\edit.png" />
+    <Resource Include="Icon\icon\edit\edit_highlight.png" />
+    <Resource Include="Icon\icon\edit\edit_hover.png" />
+    <Resource Include="Icon\icon\search\search.png" />
+    <Resource Include="Icon\icon\search\search_highlight.png" />
+    <Resource Include="Icon\icon\search\serach_hover.png" />
+    <Resource Include="Icon\icon\start\start.png" />
+    <Resource Include="Icon\icon\start\start_highlight.png" />
+    <Resource Include="Icon\icon\start\start_hover.png" />
+    <Resource Include="Icon\icon\stop\stop.png" />
+    <Resource Include="Icon\icon\stop\stop_highlight.png" />
+    <Resource Include="Icon\icon\stop\stop_hover.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist_highlight.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist_hover.png" />
+    <Resource Include="Icon\icon\timeline\timeline.png" />
+    <Resource Include="Icon\icon\timeline\timeline_highlight.png" />
+    <Resource Include="Icon\icon\timeline\timeline_hover.png" />
+    <Resource Include="Icon\icon\timeline\timeline_nooperation.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

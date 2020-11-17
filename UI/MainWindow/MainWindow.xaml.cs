@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -34,18 +35,60 @@ namespace UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Windows.Threading.DispatcherTimer m_Timer1 = new System.Windows.Threading.DispatcherTimer();
-
-        double m_Percent = 0;
-        bool m_IsStart = false;
-        public SeriesCollection SeriesCollection { get; set; }
+        #region 屏幕时间统计模块
 
         private MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+        private int updateSlice = 5;       // 更新屏幕时间统计数据的时间间隔（秒）
+        private DispatcherTimer timeDataUpdateTimer = new DispatcherTimer();
 
-        // 关于番茄时钟倒计时
+        private void TimeDataUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
+        }
+
+        #endregion
+        private NotifyIcon notifyIcon = null;
+
+        #region 任务/番茄钟模块
+
+        private TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
+
         private TimeCount timeCount;
+        private double m_Percent = 0;
+        private bool m_IsStart = false;
 
         private DispatcherTimer tomatoTimer;
+
+        private void UpdateRecentFilesListView()
+        {
+            
+        }
+
+        #endregion
+
+        #region 文件管理模块
+
+        private void File_DragEnter(object sender, System.Windows.DragEventArgs e)
+        {
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+                e.Effects = System.Windows.DragDropEffects.Link;
+            else
+                e.Effects = System.Windows.DragDropEffects.None;
+        }
+
+        private void File_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            System.Windows.MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            var tagWindow = new FileWindow.FileWindow();
+            tagWindow.Show();
+        }
+
+        #endregion
+
+        private DispatcherTimer m_Timer1 = new DispatcherTimer();
 
         System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
 
@@ -65,38 +108,12 @@ namespace UI
             //_timer.Start();
 
             this.DataContext = mainWindowViewModel;
-            
-            // 当数据发生变化时，更新ViewModel数据
-            ActivityMonitor am = ActivityMonitor.GetMonitor();
-            am.DataUpdateEvent += Am_DataUpdateEvent;
-            //Timer timer = new Timer(new TimerCallback((object state) => { Am_DataUpdateEvent(state, new EventArgs()); }), this, 0, 1000);
+
+            // 定时更新ViewModel数据
+            timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
+            timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
+            timeDataUpdateTimer.Start();
         }
-
-        void TimerDealy(object o, EventArgs e)
-        {
-            if (this.Top > 3)
-            {
-                return;
-            }
-            //获取鼠标在屏幕上的位置
-            double mouse_x = System.Windows.Forms.Form.MousePosition.X;   //需要添加引用System.Drawing
-            double mouse_y = System.Windows.Forms.Form.MousePosition.Y;
-
-            bool is_in_collasped_range = (mouse_y > this.Top + this.Height) || (mouse_x < this.Left || mouse_x > this.Left + this.Width);//缩起的条件
-            bool is_in_visiable_range = (mouse_y < 1 && mouse_x >= this.Left && mouse_x <= this.Left + this.Width); //展开的条件         
-
-            if (this.Top < 3 && this.Top >= 0 && is_in_collasped_range)
-            {
-                System.Threading.Thread.Sleep(300);
-                this.Top = -this.ActualHeight - 3;
-            }
-            else if (this.Top < 0 && is_in_visiable_range)
-            {
-                this.Top = 1;
-            }
-            
-        }
-
 
         private void testTmp()
         {
@@ -118,7 +135,7 @@ namespace UI
                 EndTime = DateTime.Today.AddDays(1),
             };
 
-            TaskTomatoService tts = TaskTomatoService.GetTimeStatisticService();
+            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
             tts.AddTask(taskInfo1);
             tts.AddTask(taskInfo2);
 
@@ -139,11 +156,6 @@ namespace UI
             };
             tts.FinishedOneTomato(tomato);
             taskInfos = tts.GetAllUnfinishedTaskInfos();
-        }
-
-        private void Am_DataUpdateEvent(object sender, EventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
         }
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
@@ -205,16 +217,14 @@ namespace UI
                     }
                 }));
                 thread.Start();
-
             }
-
+            circleProgressBar.CurrentValue1 = 0;
             StartChange(m_IsStart);
         }
 
         private void TomatoClock_OnLoaded(object sender, RoutedEventArgs e)
         {
             //设置定时器
-
             tomatoTimer = new DispatcherTimer();
             tomatoTimer.Interval = new TimeSpan(10000000); //时间间隔为一秒
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
@@ -261,24 +271,6 @@ namespace UI
                 tomatoTimer.Stop();
         }
 
-        private void File_DragEnter(object sender, DragEventArgs e)
-        {
-            //MessageBox.Show("File Drop Enter");
-            Debug.WriteLine("drag in");
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Link;
-            else
-                e.Effects = DragDropEffects.None;
-        }
-
-        private void File_Drop(object sender, DragEventArgs e)
-        {
-            MessageBox.Show("File Drop");
-            Debug.WriteLine("drop");
-            var tagWindow = new FileWindow.FileWindow();
-            tagWindow.Show();
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Settings settings = new Settings();
@@ -306,7 +298,7 @@ namespace UI
         {
             tomatoTimer.Stop();
             m_Timer1.Stop();
-            ImageSource start = new BitmapImage(new Uri("Icon/Start.jpeg", UriKind.Relative));
+            ImageSource start = new BitmapImage(new Uri("Image/Start.jpeg", UriKind.Relative));
         }
 
 
@@ -324,7 +316,7 @@ namespace UI
 
         }
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if(e.LeftButton==MouseButtonState.Pressed)
             {
@@ -339,11 +331,6 @@ namespace UI
                 this.Top = 0;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
@@ -355,16 +342,55 @@ namespace UI
             Environment.Exit(0);
         }
 
-        private void MenuItem_Checked(object sender, RoutedEventArgs e)
-        {
-            _timer.Interval = 300;
-            _timer.Tick += TimerDealy;
-            _timer.Start();
-        }
 
         private void OpenAllTasks_OnClick(object sender, RoutedEventArgs e)
         {
             AllTasksWindow allTasksWindow=new AllTasksWindow();
+            allTasksWindow.Show();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            notify();
+        }
+        private void notify()
+        {
+            //隐藏主窗体
+            this.Visibility = Visibility.Hidden;
+
+            //设置托盘的各个属性
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Text = "桌面学习助手";
+            notifyIcon.Icon = new System.Drawing.Icon("./Image/spring.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
+        }
+
+        /// <summary>
+        /// 鼠标单击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            //如果鼠标左键单击
+            if (e.Button == MouseButtons.Left)
+            {
+                if (this.Visibility == Visibility.Visible)
+                {
+                    this.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this.Visibility = Visibility.Visible;
+                    this.Activate();
+                }
+            }
+        }
+
+        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
+        {
+            AllTasksWindow allTasksWindow = new AllTasksWindow();
             allTasksWindow.Show();
         }
     }
