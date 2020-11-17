@@ -115,49 +115,6 @@ namespace UI
             timeDataUpdateTimer.Start();
         }
 
-        private void testTmp()
-        {
-            TaskInfo taskInfo1 = new TaskInfo()
-            {
-                Name = "重写美偲的接口",
-                Notes = "……",
-                TotalTomatoCount = 5,
-                StartTime = DateTime.Today,
-                EndTime = DateTime.Today.AddDays(1),
-            };
-
-            TaskInfo taskInfo2 = new TaskInfo()
-            {
-                Name = "解决频闪问题",
-                Notes = "……",
-                TotalTomatoCount = 5,
-                StartTime = DateTime.Today,
-                EndTime = DateTime.Today.AddDays(1),
-            };
-
-            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
-            tts.AddTask(taskInfo1);
-            tts.AddTask(taskInfo2);
-
-            TaskInfo taskInfo3 = tts.GetTaskWithID(1);
-            TaskInfo taskInfo4 = tts.GetTaskWithName("解决频闪问题");
-
-            List<TaskInfo> taskInfos = tts.GetAllUnfinishedTaskInfos();
-
-            tts.DeleteTask(taskInfo3.TaskID);
-            tts.DeleteTask(taskInfo4.TaskID);
-
-            tts.AddTask(taskInfo1);
-            TTomato tomato = new TTomato()
-            {
-                TaskID = 1,
-                BeginTime = DateTime.Today,
-                EndTime = DateTime.Now
-            };
-            tts.FinishedOneTomato(tomato);
-            taskInfos = tts.GetAllUnfinishedTaskInfos();
-        }
-
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
             var chart = (LiveCharts.Wpf.PieChart) chartpoint.ChartView;
@@ -230,14 +187,13 @@ namespace UI
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
 
             //转换成秒数
-            Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
             Int32 second = Convert.ToInt32(SecondArea.Text);
 
             //处理倒计时的类
-            timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
+            timeCount = new TimeCount(minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-           //  timer.Start();
+           // timer.Start();
         }
 
         /// <summary>
@@ -263,7 +219,6 @@ namespace UI
         {
             if (OnCountDown())
             {
-                HourArea.Text = timeCount.GetHour();
                 MinuteArea.Text = timeCount.GetMinute();
                 SecondArea.Text = timeCount.GetSecond();
             }

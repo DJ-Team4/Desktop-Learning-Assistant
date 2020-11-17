@@ -231,8 +231,8 @@ namespace UI
             {
                 RelativeFileItems.Add(new RelativeFileItem()
                 {
-                    //IconImage = Image.FromFile(".. / Icon / word.png"),
-                    FileName = file.FilePath
+                    IconImage = Image.FromFile("./Image/Set.png"),
+                    FilePath = file.FilePath
                 });
             }
         }
