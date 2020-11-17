@@ -69,8 +69,10 @@ namespace UI.FileWindow
         /// </summary>
         private async void RemoveTagMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TODO delete dialog
-            await winVM.RemoveSelectedTagAsync();
+            var dialog = new ConfirmDialog(
+                $"你确定要删除标签 {winVM.CurrentTagName} 吗？", "删除标签");
+            if (dialog.ShowDialog().GetValueOrDefault(false))
+                await winVM.RemoveSelectedTagAsync();
         }
 
         /// <summary>
@@ -137,8 +139,10 @@ namespace UI.FileWindow
         /// </summary>
         private async void DeleteFileToRecycleBinMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TODO delete dialog
-            await winVM.DeleteSelectedFileToRecycleBin();
+            var dialog = new ConfirmDialog(
+                $"你确定要移动此文件到回收站吗？", "删除文件");
+            if (dialog.ShowDialog().GetValueOrDefault(false))
+                await winVM.DeleteSelectedFileToRecycleBin();
         }
 
         /// <summary>
@@ -146,8 +150,10 @@ namespace UI.FileWindow
         /// </summary>
         private async void DeleteFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //TODO delete dialog
-            await winVM.DeleteSelectedFile();
+            var dialog = new ConfirmDialog(
+                $"你确定要彻底删除此文件吗？", "删除文件");
+            if (dialog.ShowDialog().GetValueOrDefault(false))
+                await winVM.DeleteSelectedFile();
         }
 
         /// <summary>
