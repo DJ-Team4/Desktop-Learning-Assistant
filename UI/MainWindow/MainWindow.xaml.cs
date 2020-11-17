@@ -59,6 +59,8 @@ namespace UI
 
         private DispatcherTimer tomatoTimer;
 
+        
+
         private void UpdateRecentFilesListView()
         {
             
@@ -95,7 +97,10 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            LabelCurrentTask.Content=tts
+
+
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
             //25分钟走完一个番茄钟
             //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
@@ -103,18 +108,16 @@ namespace UI
 
             m_Timer1.Tick += M_Timer1_Tick;
 
-            //_timer.Interval = 300;
-            //_timer.Tick += TimerDealy;
-            //_timer.Start();
-
             this.DataContext = mainWindowViewModel;
 
             // 定时更新ViewModel数据
             timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
             timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
             timeDataUpdateTimer.Start();
-        }
 
+
+
+        }
         private void testTmp()
         {
             TaskInfo taskInfo1 = new TaskInfo()
@@ -204,7 +207,7 @@ namespace UI
             }
             else
             {
-                //              m_Percent = 0;
+                // m_Percent = 0;
                 m_Timer1.Start();
                 m_IsStart = true;
                 tomatoTimer.Start();
@@ -278,21 +281,6 @@ namespace UI
 
         }
 
-   /*     private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
-        {
-          tomatoTimer.Start();
-          Thread thread = new Thread(new ThreadStart(() =>
-          {
-              for (int i = 1; i <= 2500; i++)
-              {
-            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
-                  Thread.Sleep(10000);
-              }
-          }));
-          thread.Start();
-
-            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-        }*/
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
@@ -393,6 +381,8 @@ namespace UI
             AllTasksWindow allTasksWindow = new AllTasksWindow();
             allTasksWindow.Show();
         }
+
+   
     }
 }
 

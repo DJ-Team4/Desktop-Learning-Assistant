@@ -94,7 +94,7 @@
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0" Margin="0,0,-0.4,0">
                                     <Label Content="当前任务："    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="75" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
-                                    <Label Name="LabelCurrentTask" Content="完成选题报告"    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
+                                    <Label x:Name="LabelCurrentTask"  Content=""    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="128" Margin="80,-20,0,-9" DockPanel.Dock="Top"/>
 
                                     <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="173" Width="180" HorizontalAlignment="Center" VerticalAlignment="Top" DockPanel.Dock="Top" Margin="0"/>
                                     <WrapPanel DockPanel.Dock="Top" Height="27" Margin="0,5,0,0">
