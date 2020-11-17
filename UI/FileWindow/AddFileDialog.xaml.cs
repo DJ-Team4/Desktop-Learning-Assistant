@@ -103,15 +103,12 @@ namespace UI.FileWindow
             }
             else
             {
-                try
+                if(!System.IO.File.Exists(filepath))
                 {
-                    await AddFileAsync();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "添加文件时出错");
+                    MessageBox.Show($"文件 {filepath} 不存在", "文件不存在");
                     return;
                 }
+                await AddFileAsync();
                 DialogResult = true;
             }
             Close();
