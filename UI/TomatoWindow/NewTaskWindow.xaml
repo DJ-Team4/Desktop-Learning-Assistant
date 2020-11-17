@@ -53,21 +53,25 @@
                     <!--Image Width="35" Height="35" Source="../Image/Tomato-Finished.png"/-->
                 </StackPanel>
                 <Button
-                    Content="+"
-                    Foreground="black"
-                    silver:ButtonHelper.ButtonStyle="Outline"
-                    silver:ButtonHelper.CornerRadius="3" Background="aliceblue"
+                    silver:ButtonHelper.ButtonStyle="Link"
+                    silver:ButtonHelper.CornerRadius="3"
                     Margin="5"
                     Click='AddTomatoNum_OnClick' 
-                    Height="25" Width="26"/>
+                    Height="25" Width="26">
+                    <WrapPanel>
+                        <Image Source="../Image/Add.png"></Image>
+                    </WrapPanel>
+                </Button>
                 <Button
-                    Content="-"
-                    Foreground="black"
-                    silver:ButtonHelper.ButtonStyle="Outline"
-                    silver:ButtonHelper.CornerRadius="3" Background="aliceblue"
+                    silver:ButtonHelper.ButtonStyle="Link"
+                    silver:ButtonHelper.CornerRadius="3"
                     Margin="5"
                     Click='DeleteTomatoNum_OnClick' 
-                    Height="25" Width="26"/>
+                    Height="25" Width="26">
+                    <WrapPanel>
+                        <Image Source="../Image/Delete.png"></Image>
+                    </WrapPanel>
+                </Button>
             </WrapPanel>
 
             <TextBox x:Name="TextBoxNotes" 
