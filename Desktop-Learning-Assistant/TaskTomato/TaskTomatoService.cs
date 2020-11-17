@@ -157,11 +157,15 @@ namespace DesktopLearningAssistant.TaskTomato
             }
         }
 
+        /// <summary>
+        /// 获取最近的一个未完成任务
+        /// </summary>
+        /// <returns></returns>
         public TaskInfo GetCurrentTaskInfo()
         {
             using(var context = Context)
             {
-                var query = context.TaskModels.Include(tm => tm.Tomatoes).Include(tm => tm.RelativeFiles).Where(tm => !tm.Finished).OrderBy(tm => tm.TaskID).FirstOrDefault();
+                var query = context.TaskModels.Include(tm => tm.Tomatoes).Include(tm => tm.RelativeFiles).Where(tm => !tm.Finished).OrderBy(tm => tm.EndTime).FirstOrDefault();
                 return query;
             }
         }
@@ -210,6 +214,12 @@ namespace DesktopLearningAssistant.TaskTomato
 
                 // 将番茄钟加入表中
                 context.TomatoesModels.Add(tomato);
+
+                // 把焦点任务加入表中
+                foreach (FocusApp focusApp in tomato.FocusApps)
+                {
+                    context.FocusAppModels.Add(focusApp);
+                }
 
                 // 修改任务状态
                 taskInfo.FinishedTomatoCount++;

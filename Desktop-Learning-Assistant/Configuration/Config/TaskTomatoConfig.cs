@@ -10,9 +10,15 @@ namespace DesktopLearningAssistant.Configuration.Config
     {
         public string DbPath { get; set; }       // 数据库路径
 
+        public Dictionary<string, List<string>> WhiteLists { get; set; }       // 所有白名单
+
         public void SetDefault()
         {
             DbPath = "TaskTomato.db";
+            WhiteLists = new Dictionary<string, List<string>>
+            {
+                { "Coding", new List<string>() { "QQ", "vs" } }
+            };
         }
     }
 }

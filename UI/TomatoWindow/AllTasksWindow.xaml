@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.Tomato"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"
         Title="所有任务" Height="450" Width="520" >
     <Grid>
@@ -14,7 +15,8 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
             <DockPanel Height="32" Margin="0,0,0.2,0">
-                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"/>
+                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"
+                         pu:TextBoxHelper.IsClearButtonVisible="True"/>
                 <Button x:Name="SearchBtn" Content="搜索" Margin="0"/>
             </DockPanel>
         </StackPanel>
