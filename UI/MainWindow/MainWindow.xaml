@@ -10,7 +10,11 @@
 
         xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="360" AllowDrop="True" WindowStyle="None" MouseMove="Window_MouseMove" WindowStartupLocation="Manual" Left="{Binding left}" Top="0">
+        Title="MainWindow" 
+        Height="500" Width="360" 
+        AllowDrop="True" WindowStyle="None" MouseMove="Window_MouseMove" WindowStartupLocation="Manual" 
+        Left="{Binding left}" Top="0"
+        Icon="../Image/Icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="194*"/>
@@ -108,7 +112,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                             <TextBlock Text="白名单：" Margin="5,0,0,0"/>
-                                            <ComboBox Name="WhiteListComboBox" Width="90" Height="30" Margin="5"/>
+                                            <ComboBox Name="WhiteListComboBox" Width="90" Height="30" Margin="5" ItemsSource="{Binding WhiteListNames}"/>
                                             <Button Name="btn" Content="开始"
                                                     Click="ButtonStart_Click"
                                                     Foreground="Black"
@@ -209,7 +213,7 @@
             </Button>
             <WrapPanel Margin="0" Grid.Row="1" Grid.RowSpan="1" Width="32" Height="32">
                 <WrapPanel.Background>
-                    <ImageBrush ImageSource="More.png" Stretch="Uniform"/>
+                    <ImageBrush ImageSource="../Image/More.png" Stretch="Uniform"/>
                 </WrapPanel.Background>
                 <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" Opacity="0">
                     <MenuItem Width="32" Height="32" Click="MenuItem_Click">

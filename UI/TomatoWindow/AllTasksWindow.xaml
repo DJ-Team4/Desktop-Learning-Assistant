@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI.Tomato"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"
         Title="所有任务" Height="450" Width="520" >
     <Grid>
@@ -15,12 +16,18 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
             <DockPanel Height="32" Margin="0,0,0.2,0">
-                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0" />
+                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" 
+                         pu:TextBoxHelper.IsClearButtonVisible="True" 
+                         TextChanged="SearchTextBox_OnTextChanged"
+                         Foreground="DarkGray" Width="400" Margin="0"
+                         />
                 <Button pu:ButtonHelper.ButtonStyle="Link" x:Name="SearchBtn" Margin="0">
                     <WrapPanel>
                         <Image Source="../Image/Search.png"></Image>
                     </WrapPanel>
                 </Button>
+
+                
             </DockPanel>
         </StackPanel>
         <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
