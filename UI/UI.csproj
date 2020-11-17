@@ -229,6 +229,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Icon\icon\.DS_Store" />
+    <None Include="Icon\__MACOSX\icon\._.DS_Store" />
     <None Include="Image\Thumbs.db" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -248,6 +250,34 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\任务列表\._任务列表.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\关闭窗口\._关闭窗口.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\删除\._删除.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\开始\._开始.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 无操作.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\时间轴\._时间轴.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\暂停\._暂停.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\查询\._查询.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\添加\._添加.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑 悬停.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑 高亮.png" />
+    <Resource Include="Icon\__MACOSX\icon\编辑\._编辑.png" />
     <Resource Include="MainWindow\Set.png" />
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +338,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\icon\add\add.png" />
+    <Resource Include="Icon\icon\add\add_highlight.png" />
+    <Resource Include="Icon\icon\add\add_hover.png" />
+    <Resource Include="Icon\icon\close\close.png" />
+    <Resource Include="Icon\icon\close\close_highlight.png" />
+    <Resource Include="Icon\icon\close\close_hover.png" />
+    <Resource Include="Icon\icon\delete\delete.png" />
+    <Resource Include="Icon\icon\delete\delete_highlight.png" />
+    <Resource Include="Icon\icon\delete\delete_hover.png" />
+    <Resource Include="Icon\icon\edit\edit.png" />
+    <Resource Include="Icon\icon\edit\edit_highlight.png" />
+    <Resource Include="Icon\icon\edit\edit_hover.png" />
+    <Resource Include="Icon\icon\search\search.png" />
+    <Resource Include="Icon\icon\search\search_highlight.png" />
+    <Resource Include="Icon\icon\search\serach_hover.png" />
+    <Resource Include="Icon\icon\start\start.png" />
+    <Resource Include="Icon\icon\start\start_highlight.png" />
+    <Resource Include="Icon\icon\start\start_hover.png" />
+    <Resource Include="Icon\icon\stop\stop.png" />
+    <Resource Include="Icon\icon\stop\stop_highlight.png" />
+    <Resource Include="Icon\icon\stop\stop_hover.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist_highlight.png" />
+    <Resource Include="Icon\icon\tasklist\tasklist_hover.png" />
+    <Resource Include="Icon\icon\timeline\timeline.png" />
+    <Resource Include="Icon\icon\timeline\timeline_highlight.png" />
+    <Resource Include="Icon\icon\timeline\timeline_hover.png" />
+    <Resource Include="Icon\icon\timeline\timeline_nooperation.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
