@@ -15,9 +15,12 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
             <DockPanel Height="32" Margin="0,0,0.2,0">
-                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"
-                         pu:TextBoxHelper.IsClearButtonVisible="True"/>
-                <Button x:Name="SearchBtn" Content="搜索" Margin="0"/>
+                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" 
+                         pu:TextBoxHelper.IsClearButtonVisible="True" 
+                         TextChanged="SearchTextBox_OnTextChanged"
+                         Foreground="DarkGray" Width="400" Margin="0"
+                         />
+                <Button x:Name="SearchBtn" Content="搜索" Margin="0" Click="SearchBtn_OnClick" />
             </DockPanel>
         </StackPanel>
         <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
