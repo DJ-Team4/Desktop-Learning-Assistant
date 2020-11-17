@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI.FileWindow"
         mc:Ignorable="d"
         Title="添加文件"
@@ -99,8 +100,12 @@
                                VerticalAlignment="Center" />
                     <Button Grid.Column="2"
                             Name="editTagBtn"
-                            Content="编辑标签"
-                            Click="EditTagBtn_Click" />
+                            Click="EditTagBtn_Click"
+                            pu:ButtonHelper.ButtonStyle="Link">
+                        <WrapPanel>
+                            <Image Source="../Image/Edit.png"></Image>
+                        </WrapPanel>
+                    </Button>
                 </Grid>
             </Grid>
 
