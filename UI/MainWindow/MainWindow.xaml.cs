@@ -116,6 +116,7 @@ namespace UI
 
 
 
+
         }
         private void testTmp()
         {
@@ -159,6 +160,7 @@ namespace UI
             tts.FinishedOneTomato(tomato);
             taskInfos = tts.GetAllUnfinishedTaskInfos();
         }
+
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -232,14 +234,13 @@ namespace UI
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
 
             //转换成秒数
-            Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
             Int32 second = Convert.ToInt32(SecondArea.Text);
 
             //处理倒计时的类
-            timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
+            timeCount = new TimeCount(minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-           //  timer.Start();
+           // timer.Start();
         }
 
         /// <summary>
@@ -265,7 +266,6 @@ namespace UI
         {
             if (OnCountDown())
             {
-                HourArea.Text = timeCount.GetHour();
                 MinuteArea.Text = timeCount.GetMinute();
                 SecondArea.Text = timeCount.GetSecond();
             }

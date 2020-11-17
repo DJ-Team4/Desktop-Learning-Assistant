@@ -13,6 +13,16 @@ namespace UI
     public class RelativeFileItem
     {
         public Image IconImage { get; set; }
-        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public string FileName
+        {
+            get
+            {
+                List<string> tmp = new List<string>(FilePath.Split('\\'));
+                if (tmp.Count < 1) return "";
+                return tmp[tmp.Count - 1];
+            }
+        }
+        
     }
 }

@@ -25,7 +25,7 @@
                 pu:TabControlHelper.CanRemove="False"
                 pu:TabControlHelper.SelectedBackground="AliceBlue"
                 TabStripPlacement="Left" 
-                Margin="0,0,-0.4,0.6" HorizontalAlignment="Left" Width="354" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                Margin="0" HorizontalAlignment="Left" Width="354" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem Header="时间统计" Name="TimeStatisticTabItem">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -33,7 +33,7 @@
                     </Grid.RowDefinitions>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                                 TabStripPlacement="Top" Margin="0,0,-0.4,-0.4">
+                                 TabStripPlacement="Top" Margin="0">
                         <TabItem Header="今日">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -88,9 +88,9 @@
                         <TabItem Header="番茄钟">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="128*"/>
-                                    <RowDefinition Height="81*"/>
-                                    <RowDefinition Height="23*"/>
+                                    <RowDefinition Height="213*"/>
+                                    <RowDefinition Height="203*"/>
+                                    <RowDefinition Height="46*"/>
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0" Margin="0,0,-0.4,0">
                                     <Label Content="当前任务："    HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="75" Margin="0,0,0,-9" DockPanel.Dock="Top"/>
@@ -103,28 +103,53 @@
                                         <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26" Margin="85,0,0,0"/>
                                         <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
                                         <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
+                                <StackPanel Grid.Row="0" Margin="0">
+                                    <WrapPanel>
+                                        <Label Content="当前任务：" Height="30" Width="75" Margin="5"/>
+                                        <Label x:Name="LabelCurrentTask" Content="完成选题报告" Height="30" Width="133" Margin="5" FontSize="15"/>
                                     </WrapPanel>
-                                    <Button Name="btn" Content="开始"
-                                        Click="ButtonStart_Click"
-                                        Foreground="Black"
-                                        MouseRightButtonDown="TimeCountPause_Click"
-                                        Background="aliceblue"
-                                        pu:ButtonHelper.ButtonStyle="Outline"
-                                        pu:ButtonHelper.CornerRadius="5"
-                                        HorizontalAlignment="Center" Width="75" Height="22" DockPanel.Dock="Bottom" Margin="102,5,100.6,0" VerticalAlignment="Bottom"/>
-                                </DockPanel>
-                                <ListView Name="RecentFilesListView" ItemsSource="{Binding RecentFileItems}" Grid.Row="1" Margin="5,5,5,5" Grid.RowSpan="1">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <WrapPanel>
-                                                <!--Image Name="IconImage"/-->
-                                                <TextBlock Name="FileNameTextBlock" Text="{Binding FileName}"/>
-                                            </WrapPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <StackPanel Orientation="Vertical">
+                                            <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="150" Width="150" Margin="0"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27" Margin="0">
+                                                <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26"/>
+                                                <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
+                                                <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                            <TextBlock Text="白名单：" Margin="5,0,0,0"/>
+                                            <ComboBox Name="WhiteListComboBox" Width="90" Height="30" Margin="5"/>
+                                            <Button Name="btn" Content="开始"
+                                                    Click="ButtonStart_Click"
+                                                    Foreground="Black"
+                                                    MouseRightButtonDown="TimeCountPause_Click"
+                                                    Background="aliceblue"
+                                                    pu:ButtonHelper.ButtonStyle="Outline"
+                                                    pu:ButtonHelper.CornerRadius="5"
+                                                    HorizontalAlignment="Center" 
+                                                    Width="90" Height="30" Margin="5"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <WrapPanel>
+                                        <TextBlock Text="相关文件：" Height="20" Margin="5"/>
+                                    </WrapPanel>
+                                    
+                                    <ListView Name="RelativeFilesListView" ItemsSource="{Binding RelativeFileItems}"  Margin="5" Height="160" Background="{x:Null}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <WrapPanel>
+                                                    <Image Name="IconImage" Width="25" Height="25"/>
+                                                    <TextBlock Name="FileNameTextBlock" Text="{Binding FileName}"/>
+                                                </WrapPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
                                 <Button Grid.Row="2" Content="详情" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="56" Height="25"
-                                        Click="OpenAllTasksWindow" Margin="0,0,9.6,8.2"/>
+                                        Click="OpenAllTasksWindow" Margin="0,0,9.6,8.4"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="效率统计">
@@ -164,8 +189,6 @@
                               HorizontalAlignment="Stretch"
                               Background="Red"/>-->
                     </Border>
-                    <Image HorizontalAlignment="Left" Height="25" Margin="12,231,0,0" 
-                           VerticalAlignment="Top" Width="24"/>
 
                     <Button Content="文件管理"
                             Foreground="black"
@@ -174,7 +197,7 @@
                             Margin="89,275,83.6,168.8"
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
-                    <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Icon/plus.png" Opacity="0.9"/> -->
+                    <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Image/plus.png" Opacity="0.9"/> -->
 
                 </Grid>
             </TabItem>
@@ -199,7 +222,7 @@
                 <WrapPanel.Background>
                     <ImageBrush ImageSource="More.png" Stretch="Uniform"/>
                 </WrapPanel.Background>
-                <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" >
+                <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" Opacity="0">
                     <MenuItem Width="32" Height="32" Click="MenuItem_Click">
                         <MenuItem Header="隐藏" Click="MenuItem_Click_1"/>
                         <MenuItem Header="退出" Click="MenuItem_Click_2"/>
