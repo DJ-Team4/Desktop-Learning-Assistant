@@ -29,31 +29,16 @@
                         <RowDefinition Height="339*"/>
                     </Grid.RowDefinitions>
                     <Label Content="设置白名单以统计任务效率" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="27" Width="251"/>
-                    <ComboBox Name="WhiteListNameComboBox" Margin="10,4,178.2,312.2" Grid.Row="1" SelectedIndex="0"/>
-                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,41,7.2,10.2">
-                        <Grid>
-                            <CheckBox Content="QQ" IsChecked="False"></CheckBox>
-                        </Grid>
-                        <WrapPanel>
-                            <CheckBox Content="YoudaoDict" IsChecked="True"></CheckBox>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <CheckBox Content="chrome" IsChecked="True"></CheckBox>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <CheckBox Content="vs" IsChecked="True"></CheckBox>
-                        </WrapPanel>
-                    </StackPanel>
-                    <Button pu:ButtonHelper.ButtonStyle="Link" Margin="9.667,34,10.667,0" VerticalAlignment="Top" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="33">
-                        <WrapPanel>
-                            <Image Source="../Image/Add.png"></Image>
-                        </WrapPanel>
-                    </Button>
-                    <Button pu:ButtonHelper.ButtonStyle="Link" HorizontalAlignment="Left" Margin="9.667,72,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="33">
-                        <WrapPanel>
-                            <Image Source="../Image/Delete.png"></Image>
-                        </WrapPanel>
-                    </Button>
+                    <ComboBox Name="WhiteListNameComboBox" Margin="10,4,178.2,312.2" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding KeyList}"/>
+                    <ListView Name="SoftwareListView" Grid.Row="1" Grid.Column="0" Margin="10,41,7.2,10.2" Initialized="SoftwareListView_Initialized" ItemsSource="{Binding ValueList}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Name="AddWhiteListBtn" Content="增加" Margin="9.8,34,10.4,0" VerticalAlignment="Top" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19" Click="AddWhiteListBtn_Click"/>
+                        <Button Name="DeleteWhiteListBtn" Content="删除" HorizontalAlignment="Left" Margin="9.8,72,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19" Click="DeleteWhiteListBtn_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="软件类型设置">
