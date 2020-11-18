@@ -46,7 +46,7 @@
                     Background="Transparent"
                     pu:ButtonHelper.HoverBrush="LightGray"
                     pu:ButtonHelper.CornerRadius="4">
-                <Image Source="../Image/refresh.png" />
+                <Image Source="../Image/refresh-in-filewin.png" />
             </Button>
 
             <!-- Add File Button -->
@@ -57,7 +57,7 @@
                     Background="Transparent"
                     pu:ButtonHelper.HoverBrush="LightGray"
                     pu:ButtonHelper.CornerRadius="4">
-                <Image Source="../Image/plus.png" />
+                <Image Source="../Image/add-in-filewin.png" />
             </Button>
 
             <!-- Tag Search Box -->
@@ -178,7 +178,7 @@
                             Height="28"
                             pu:ButtonHelper.HoverBrush="LightGray"
                             pu:ButtonHelper.CornerRadius="4">
-                        <Image Source="../Image/plus.png" />
+                        <Image Source="../Image/add-in-filewin.png" />
                     </Button>
                 </Grid>
                 <ListView x:Name="downNavList"
