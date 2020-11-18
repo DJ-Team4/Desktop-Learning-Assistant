@@ -41,13 +41,24 @@ namespace UI
         private int updateSlice = 5;       // 更新屏幕时间统计数据的时间间隔（秒）
         private DispatcherTimer timeDataUpdateTimer = new DispatcherTimer();
 
+        private void TodayPieChart_OnDataClick(object sender, ChartPoint chartpoint)
+        {
+            var chart = (LiveCharts.Wpf.PieChart)chartpoint.ChartView;
+
+            //clear selected slice.
+            foreach (PieSeries series in chart.Series)
+                series.PushOut = 0;
+
+            var selectedSeries = (PieSeries)chartpoint.SeriesView;
+            selectedSeries.PushOut = 8;
+        }
+
         private void TimeDataUpdateTimer_Tick(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(mainWindowViewModel.Update));
         }
 
         #endregion
-        private NotifyIcon notifyIcon = null;
 
         #region 任务/番茄钟模块
 
@@ -58,121 +69,23 @@ namespace UI
         private bool m_IsStart = false;
 
         private DispatcherTimer tomatoTimer;
+        private NotifyIcon notifyIcon = null;
 
-        
+        /// <summary>
+        /// 处理倒计时的委托
+        /// </summary>
+        public delegate bool CountDownHandler();
+
+        /// <summary>
+        /// 处理事件
+        /// </summary>
+        public event CountDownHandler CountDown;
 
         private void UpdateRecentFilesListView()
         {
             
         }
 
-        #endregion
-
-        #region 文件管理模块
-
-        private void File_DragEnter(object sender, System.Windows.DragEventArgs e)
-        {
-            //MessageBox.Show("File Drop Enter");
-            Debug.WriteLine("drag in");
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
-                e.Effects = System.Windows.DragDropEffects.Link;
-            else
-                e.Effects = System.Windows.DragDropEffects.None;
-        }
-
-        private void File_Drop(object sender, System.Windows.DragEventArgs e)
-        {
-            System.Windows.MessageBox.Show("File Drop");
-            Debug.WriteLine("drop");
-            var tagWindow = new FileWindow.FileWindow();
-            tagWindow.Show();
-        }
-
-        #endregion
-
-        private DispatcherTimer m_Timer1 = new DispatcherTimer();
-
-        System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
-
-        public MainWindow()
-        {
-            InitializeComponent();
-
-
-
-            this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
-            //25分钟走完一个番茄钟
-            //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
-            m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
-
-            m_Timer1.Tick += M_Timer1_Tick;
-
-            this.DataContext = mainWindowViewModel;
-
-            // 定时更新ViewModel数据
-            timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
-            timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
-            timeDataUpdateTimer.Start();
-
-
-
-
-        }
-        private void testTmp()
-        {
-            TaskInfo taskInfo1 = new TaskInfo()
-            {
-                Name = "重写美偲的接口",
-                Notes = "……",
-                TotalTomatoCount = 5,
-                StartTime = DateTime.Today,
-                EndTime = DateTime.Today.AddDays(1),
-            };
-
-            TaskInfo taskInfo2 = new TaskInfo()
-            {
-                Name = "解决频闪问题",
-                Notes = "……",
-                TotalTomatoCount = 5,
-                StartTime = DateTime.Today,
-                EndTime = DateTime.Today.AddDays(1),
-            };
-
-            TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
-            tts.AddTask(taskInfo1);
-            tts.AddTask(taskInfo2);
-
-            TaskInfo taskInfo3 = tts.GetTaskWithID(1);
-            TaskInfo taskInfo4 = tts.GetTaskWithName("解决频闪问题");
-
-            List<TaskInfo> taskInfos = tts.GetAllUnfinishedTaskInfos();
-
-            tts.DeleteTask(taskInfo3.TaskID);
-            tts.DeleteTask(taskInfo4.TaskID);
-
-            tts.AddTask(taskInfo1);
-            TTomato tomato = new TTomato()
-            {
-                TaskID = 1,
-                BeginTime = DateTime.Today,
-                EndTime = DateTime.Now
-            };
-            tts.FinishedOneTomato(tomato);
-            taskInfos = tts.GetAllUnfinishedTaskInfos();
-        }
-
-
-        private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
-        {
-            var chart = (LiveCharts.Wpf.PieChart) chartpoint.ChartView;
-
-            //clear selected slice.
-            foreach (PieSeries series in chart.Series)
-                series.PushOut = 0;
-
-            var selectedSeries = (PieSeries) chartpoint.SeriesView;
-            selectedSeries.PushOut = 8;
-        }
         private void M_Timer1_Tick(object sender, EventArgs e)
         {
             m_Percent += 0.01;
@@ -186,6 +99,7 @@ namespace UI
 
             circleProgressBar.CurrentValue1 = m_Percent;
         }
+
         /// <summary>
         /// UI变化
         /// </summary>
@@ -193,9 +107,9 @@ namespace UI
         private void StartChange(bool bState)
         {
             if (bState)
-                btn.Content = "停止";
+                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Pause.png", UriKind.Relative)); 
             else
-                btn.Content = "开始";
+                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
@@ -240,19 +154,8 @@ namespace UI
             //处理倒计时的类
             timeCount = new TimeCount(minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-           // timer.Start();
+            // timer.Start();
         }
-
-        /// <summary>
-        /// 处理倒计时的委托
-        /// </summary>
-
-        public delegate bool CountDownHandler();
-
-        /// <summary>
-        /// 处理事件
-        /// </summary>
-        public event CountDownHandler CountDown;
 
         public bool OnCountDown()
         {
@@ -273,21 +176,21 @@ namespace UI
                 tomatoTimer.Stop();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Settings settings = new Settings();
-            settings.Show();
-
-        }
-
-
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
             tomatoTimer.Stop();
             m_Timer1.Stop();
-            ImageSource start = new BitmapImage(new Uri("Image/Start.jpeg", UriKind.Relative));
+            ImageSource start = new BitmapImage(new Uri("./Image/Start.jpeg", UriKind.Relative));
         }
 
+        private void TomatoTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region 文件管理模块
 
         /// <summary>
         /// 点击“文件管理”按钮
@@ -298,48 +201,65 @@ namespace UI
             new FileWindow.FileWindow().Show();
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// 文件拖入
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void File_DragEnter(object sender, System.Windows.DragEventArgs e)
         {
-
+            //MessageBox.Show("File Drop Enter");
+            Debug.WriteLine("drag in");
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+                e.Effects = System.Windows.DragDropEffects.Link;
+            else
+                e.Effects = System.Windows.DragDropEffects.None;
         }
 
-        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        /// <summary>
+        /// 文件拖入且松开
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void File_Drop(object sender, System.Windows.DragEventArgs e)
         {
-            if(e.LeftButton==MouseButtonState.Pressed)
-            {
-                this.DragMove();
-               
-            }
-            if (this.Left < 10)
-                this.Left = 0;
-            else if (this.Left > SystemParameters.WorkArea.Width)
-                this.Left = SystemParameters.WorkArea.Width;
-            if (this.Top < 10)
-                this.Top = 0;
+            System.Windows.MessageBox.Show("File Drop");
+            Debug.WriteLine("drop");
+            var tagWindow = new FileWindow.FileWindow();
+            tagWindow.Show();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 打开所有任务界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
         {
-
-        }
-
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
-
-        private void OpenAllTasks_OnClick(object sender, RoutedEventArgs e)
-        {
-            AllTasksWindow allTasksWindow=new AllTasksWindow();
+            AllTasksWindow allTasksWindow = new AllTasksWindow();
             allTasksWindow.Show();
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region 设置、隐藏与关闭
+
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.Show();
+        }
+
+        private void HideMenuItem_Click(object sender, RoutedEventArgs e)
         {
             notify();
         }
+
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void notify()
         {
             //隐藏主窗体
@@ -375,13 +295,48 @@ namespace UI
             }
         }
 
-        private void OpenAllTasksWindow(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region 磁吸贴边
+
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            AllTasksWindow allTasksWindow = new AllTasksWindow();
-            allTasksWindow.Show();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+            if (this.Left < 10)
+                this.Left = 0;
+            else if (this.Left > SystemParameters.WorkArea.Width)
+                this.Left = SystemParameters.WorkArea.Width;
+            if (this.Top < 10)
+                this.Top = 0;
         }
 
-   
+        #endregion
+
+        private DispatcherTimer m_Timer1 = new DispatcherTimer();
+
+        System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
+            //25分钟走完一个番茄钟
+            //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
+            m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
+
+            m_Timer1.Tick += M_Timer1_Tick;
+
+            this.DataContext = mainWindowViewModel;
+
+            // 定时更新ViewModel数据
+            timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
+            timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
+            timeDataUpdateTimer.Start();
+        }
     }
 }
 

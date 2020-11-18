@@ -31,21 +31,31 @@ namespace UI
 
             viewModel = new SettingsWindowVM();
             this.DataContext = viewModel;
+
+            RefreshControls();
+        }
+
+        private void RefreshControls()
+        {
+            WhiteListKeyComboBox.Items.Refresh();
+            WhiteListValueListView.Items.Refresh();
+            TypeKeyComboBox.Items.Refresh();
+            TypeValueComboBox.Items.Refresh();
         }
 
         private void TypeSelectionChange(object sender, SelectionChangedEventArgs e)
         {
-            string software = SoftWareComboBox.SelectedItem.ToString();
-            string type = TypeComboBox.SelectedItem.ToString();
+            string software = TypeKeyComboBox.SelectedItem.ToString();
+            string type = TypeValueComboBox.SelectedItem.ToString();
             ConfigService configService = ConfigService.GetConfigService();
             configService.TSConfig.TypeDict[software] = type;
         }
 
         private void SoftWareSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string software = SoftWareComboBox.SelectedItem.ToString();
+            string software = TypeKeyComboBox.SelectedItem.ToString();
             string type = ConfigService.GetConfigService().TSConfig.TypeDict[software];
-            TypeComboBox.SelectedItem = type;
+            TypeValueComboBox.SelectedItem = type;
         }
 
         private void SoftwareListView_Initialized(object sender, EventArgs e)
@@ -55,12 +65,65 @@ namespace UI
 
         private void AddWhiteListBtn_Click(object sender, RoutedEventArgs e)
         {
+            NewWhiteList newWhiteList = new NewWhiteList();
+            if ((bool)newWhiteList.ShowDialog())
+            {
+                string newWhiteListName = newWhiteList.WhiteListName;
+                ConfigService configService = ConfigService.GetConfigService();
+                if (configService.TTConfig.WhiteLists.ContainsKey(newWhiteListName)) return;
 
+                // 更新数据
+                configService.TTConfig.WhiteLists.Add(newWhiteListName, new List<string>());
+                viewModel.UpdateWhiteListKey();
+                WhiteListKeyComboBox.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateSource();
+                WhiteListKeyComboBox.SelectedItem = newWhiteList.WhiteListName;
+                viewModel.UpdateWhiteListValue(newWhiteList.WhiteListName);
+
+                // 刷新控件
+                
+                WhiteListValueListView.Items.Refresh();
+            }
         }
 
         private void DeleteWhiteListBtn_Click(object sender, RoutedEventArgs e)
         {
+            string selectedKey = WhiteListKeyComboBox.SelectedItem.ToString();
+            ConfigService configService = ConfigService.GetConfigService();
 
+            // 更新数据
+            configService.TTConfig.WhiteLists.Remove(selectedKey);
+            viewModel.UpdateWhiteListKey();
+            viewModel.UpdateWhiteListValue();
+
+            // 刷新控件
+            RefreshControls();
+        }
+
+        private void SaveWhiteListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedKey = WhiteListKeyComboBox.SelectedItem.ToString();
+            List<string> selectedValues = new List<string>();
+            foreach (Software software in viewModel.WhiteListValueList)
+            {
+                if (software.IsChecked) selectedValues.Add(software.Name);
+            }
+
+            if (selectedKey == "") return;
+
+            ConfigService configService = ConfigService.GetConfigService();
+            configService.TTConfig.WhiteLists[selectedKey] = selectedValues;        // 更新专注白名单
+        }
+
+        private void WhiteListKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (WhiteListKeyComboBox.SelectedItem == null) return;
+            string selectedKey = WhiteListKeyComboBox.SelectedItem.ToString();
+
+            // 更新数据
+            viewModel.UpdateWhiteListValue(selectedKey);
+
+            // 刷新控件
+            WhiteListValueListView.Items.Refresh();
         }
     }
 }

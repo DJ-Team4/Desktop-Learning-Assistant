@@ -24,8 +24,8 @@ namespace UI
     {
         [DllImport("user32.dll")] public static extern int MessageBoxTimeoutA(IntPtr hWnd, string msg, string Caps, int type, int Id, int time); //引用DLL
 
-        public TaskInfo taskInfo { get; set; }
-        public bool isModify { get; set; }
+        public TaskInfo NewTaskInfo { get; set; }
+        public bool IsModify { get; set; }
 
         public string tomatoFinishedImagePath = @"Image\Tomato-Finished.png";
 
@@ -39,22 +39,32 @@ namespace UI
         {
             InitializeComponent();
 
-            taskInfo = new TaskInfo();
-            isModify = false;
+            NewTaskInfo = new TaskInfo();
+            IsModify = false;
+
+            StartTimeSelect.Value = DateTime.Now;
+            EndTimeSelect.Value = DateTime.Now + TimeSpan.FromDays(1);
         }
 
-        public void FillData()
+        /// <summary>
+        /// 当传入一个TaskInfo进行构造时，表示是修改此TaskInfo
+        /// </summary>
+        /// <param name="taskInfo"></param>
+        public NewTaskWindow(TaskInfo taskInfo)
         {
-            if (isModify)
+            InitializeComponent();
+
+            NewTaskInfo = taskInfo;
+            IsModify = true;
+
+            TxtBoxTaskName.Text = taskInfo.Name;
+            StartTimeSelect.Value = taskInfo.StartTime;
+            EndTimeSelect.Value = taskInfo.EndTime;
+            for (int i = 0; i < taskInfo.TotalTomatoCount; i++)
             {
-                TxtBoxTaskName.Text = taskInfo.Name;
-                StartTimeSelect.Value = taskInfo.StartTime;
-                EndTimeSelect.Value = taskInfo.EndTime;
-                for (int i = 0; i < taskInfo.TotalTomatoCount; i++)
-                {
-                    AddTomatoNum_OnClick(this, null);
-                }
+                AddTomatoNum_OnClick(this, null);
             }
+            TxtBoxNotes.Text = taskInfo.Notes;
         }
 
         private void Affirm_Click(object sender, RoutedEventArgs e)
@@ -62,19 +72,19 @@ namespace UI
             MessageBoxTimeoutA((IntPtr)0, "保存成功", "提示", 0, 0, 1000); // 直接调用 1秒
             TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
 
-            taskInfo.Name = TxtBoxTaskName.Text;
-            taskInfo.StartTime = DateTime.Parse(StartTimeSelect.Value.ToString());
-            taskInfo.EndTime = DateTime.Parse(EndTimeSelect.Value.ToString());
-            taskInfo.TotalTomatoCount = TomatoListStackPanel.Children.Count;
-            taskInfo.Notes = TextBoxNotes.Text;
+            NewTaskInfo.Name = TxtBoxTaskName.Text;
+            NewTaskInfo.StartTime = DateTime.Parse(StartTimeSelect.Value.ToString());
+            NewTaskInfo.EndTime = DateTime.Parse(EndTimeSelect.Value.ToString());
+            NewTaskInfo.TotalTomatoCount = TomatoListStackPanel.Children.Count;
+            NewTaskInfo.Notes = TxtBoxNotes.Text;
 
-            if (!isModify)
+            if (!IsModify)
             {
-                tts.AddTask(taskInfo);
+                tts.AddTask(NewTaskInfo);
             }
             else
             {
-                tts.ModifyTask(taskInfo);
+                tts.ModifyTask(NewTaskInfo);
             }
             
             this.Close();

@@ -54,6 +54,9 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.1\lib\net45\Castle.Core.dll</HintPath>
@@ -149,6 +152,9 @@
     <Compile Include="MainWindow\Model\MainWindowVM.cs" />
     <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
     <Compile Include="FileWindow\SelectableFileTag.cs" />
+    <Compile Include="SettingsWindow\NewWhiteList.xaml.cs">
+      <DependentUpon>NewWhiteList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsWindow\SettingsWindowVM.cs" />
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
@@ -190,6 +196,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SettingsWindow\NewWhiteList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TomatoWindow\AllTasksWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,44 +270,23 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\Add-Halt.png" />
-    <Resource Include="Image\Add-Highlight.png" />
     <Resource Include="Image\Add.png" />
     <Resource Include="Image\Arrow-Right.png" />
     <Resource Include="Image\Arrow.png" />
     <Resource Include="Image\Change.jpg" />
     <Resource Include="Image\Clock.png" />
-    <Resource Include="Image\Close-Halt.png" />
-    <Resource Include="Image\Close-HighLight.png" />
     <Resource Include="Image\Close.png" />
-    <Resource Include="Image\Delete-Halt.png" />
-    <Resource Include="Image\Delete-Highlight.png" />
     <Resource Include="Image\Delete.png" />
-    <Resource Include="Image\Detail.png" />
     <Resource Include="Image\Directory.png" />
-    <Resource Include="Image\Edit-Halt.png" />
-    <Resource Include="Image\Edit-Highlight.png" />
     <Resource Include="Image\Edit.png" />
     <Resource Include="Image\File.jpeg" />
     <Resource Include="Image\Home.jpg" />
     <Resource Include="Image\More.png" />
-    <Resource Include="Image\Pause-Halt.png" />
-    <Resource Include="Image\Pause-Highlight.png" />
-    <Resource Include="Image\Pause.jpg" />
     <Resource Include="Image\Pause.png" />
-    <Resource Include="Image\plus.png" />
-    <Resource Include="Image\Search-Halt.png" />
-    <Resource Include="Image\Search-Highlight.png" />
     <Resource Include="Image\Search.png" />
     <Resource Include="Image\Set.png" />
-    <Resource Include="Image\spring.ico" />
-    <Resource Include="Image\Start-Halt.png" />
-    <Resource Include="Image\Start-Highlight.png" />
-    <Resource Include="Image\Start.jpeg" />
     <Resource Include="Image\Start.png" />
     <Resource Include="Image\tag.jpg" />
-    <Resource Include="Image\TaskList-Halt.png" />
-    <Resource Include="Image\TaskList-Highlight.png" />
     <Resource Include="Image\TaskList.png" />
     <Resource Include="Image\Tomato-Finished.png" />
     <Resource Include="Image\Tomato-Unfinished.png" />
@@ -307,6 +296,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

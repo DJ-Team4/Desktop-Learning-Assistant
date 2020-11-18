@@ -10,8 +10,8 @@
 
         xmlns:myProgressbar="clr-namespace:UI.TomatoWindow.MyProgressbar"
         mc:Ignorable="d"
-        Title="MainWindow" 
-        Height="500" Width="360" 
+        Title="桌面学习助手" 
+        Height="500" Width="372" 
         AllowDrop="True" WindowStyle="None" MouseMove="Window_MouseMove" WindowStartupLocation="Manual" 
         Left="{Binding left}" Top="0"
         Icon="../Image/Icon.ico">
@@ -29,7 +29,7 @@
                 pu:TabControlHelper.CanRemove="False"
                 pu:TabControlHelper.SelectedBackground="AliceBlue"
                 TabStripPlacement="Left" 
-                Margin="0" HorizontalAlignment="Left" Width="354" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                Margin="0" HorizontalAlignment="Left" Width="360" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem Header="时间统计" Name="TimeStatisticTabItem">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -44,7 +44,7 @@
                                     <RowDefinition Height="202*"/>
                                     <RowDefinition Height="261*"/>
                                 </Grid.RowDefinitions>
-                                <lvc:PieChart Name="today_piechart" Grid.Row="0" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="Chart_OnDataClick" Opacity="0.8" Margin="5" AnimationsSpeed="0">
+                                <lvc:PieChart Name="today_piechart" Grid.Row="0" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="TodayPieChart_OnDataClick" Opacity="0.8" Margin="5" AnimationsSpeed="0">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
@@ -88,7 +88,7 @@
                 <Grid>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
-                        TabStripPlacement="Top" SelectionChanged="TabControl_SelectionChanged" Margin="0">
+                        TabStripPlacement="Top" SelectionChanged="TomatoTabControl_SelectionChanged" Margin="0,0,0,0">
                         <TabItem Header="番茄钟">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -99,7 +99,7 @@
                                 <StackPanel Grid.Row="0" Margin="0">
                                     <WrapPanel>
                                         <Label Content="当前任务：" Height="30" Width="75" Margin="5"/>
-                                        <Label x:Name="LabelCurrentTask" Content="完成选题报告" Height="30" Width="133" Margin="5" FontSize="15"/>
+                                        <Label x:Name="LabelCurrentTask" Content="完成选题报告" Height="30" Width="133" Margin="5" FontSize="14"/>
                                     </WrapPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <StackPanel Orientation="Vertical">
@@ -113,15 +113,16 @@
                                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                             <TextBlock Text="白名单：" Margin="5,0,0,0"/>
                                             <ComboBox Name="WhiteListComboBox" Width="90" Height="30" Margin="5" ItemsSource="{Binding WhiteListNames}"/>
-                                            <Button Name="btn" Content="开始"
+                                            <Button Name="ClockBtn"
                                                     Click="ButtonStart_Click"
-                                                    Foreground="Black"
                                                     MouseRightButtonDown="TimeCountPause_Click"
-                                                    Background="aliceblue"
-                                                    pu:ButtonHelper.ButtonStyle="Outline"
-                                                    pu:ButtonHelper.CornerRadius="5"
                                                     HorizontalAlignment="Center" 
-                                                    Width="90" Height="30" Margin="5"/>
+                                                    Width="35" Height="35" Margin="5"
+                                                    pu:ButtonHelper.ButtonStyle="Link">
+                                                <WrapPanel>
+                                                    <Image x:Name="ClockBtnImage" Source="../Image/Start.png" Stretch="UniformToFill"/>
+                                                </WrapPanel>
+                                            </Button>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -141,8 +142,12 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
                                 </StackPanel>
-                                <Button Grid.Row="2" Content="详情" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="56" Height="25"
-                                        Click="OpenAllTasksWindow" Margin="0,0,9.6,8.4"/>
+                                <Button Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="35" Height="35"
+                                        Click="OpenAllTasksWindow" Margin="0,0,10,8.4" pu:ButtonHelper.ButtonStyle="Link">
+                                    <WrapPanel>
+                                        <Image Source="../Image/TaskList.png" Stretch="UniformToFill"/>
+                                    </WrapPanel>
+                                </Button>
                             </Grid>
                         </TabItem>
                         <TabItem Header="效率统计">
@@ -206,19 +211,19 @@
                 <RowDefinition Height="18*"/>
                 <RowDefinition Height="17*"/>
             </Grid.RowDefinitions>
-            <Button Click="Button_Click" Grid.Row="0" Grid.RowSpan="1" pu:ButtonHelper.ButtonStyle="Link" Margin="5">
+            <Button Height="30" Width="30" Click="SettingButton_Click" Grid.Row="0" Grid.RowSpan="1" pu:ButtonHelper.ButtonStyle="Link" Margin="5">
                 <WrapPanel>
-                    <Image Source="../Image/Set.png" Height="32" Width="32"/>
+                    <Image Source="../Image/Set.png" Stretch="UniformToFill"/>
                 </WrapPanel>
             </Button>
-            <WrapPanel Margin="0" Grid.Row="1" Grid.RowSpan="1" Width="32" Height="32">
+            <WrapPanel Margin="0" Grid.Row="1" Grid.RowSpan="1" Height="30" Width="30">
                 <WrapPanel.Background>
-                    <ImageBrush ImageSource="../Image/More.png" Stretch="Uniform"/>
+                    <ImageBrush ImageSource="../Image/More.png" Stretch="UniformToFill"/>
                 </WrapPanel.Background>
                 <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" Opacity="0">
-                    <MenuItem Width="32" Height="32" Click="MenuItem_Click">
-                        <MenuItem Header="隐藏" Click="MenuItem_Click_1"/>
-                        <MenuItem Header="退出" Click="MenuItem_Click_2"/>
+                    <MenuItem Width="30" Height="30">
+                        <MenuItem Name="HideMenuItem" Header="隐藏" Click="HideMenuItem_Click"/>
+                        <MenuItem Name="ExitMenuItem" Header="退出" Click="ExitMenuItem_Click"/>
                     </MenuItem>
                 </Menu>
             </WrapPanel>
