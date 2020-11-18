@@ -254,12 +254,23 @@ namespace DesktopLearningAssistant.TagFile
 
         public async Task UpdateFileRelationAsync(FileItem fileItem, IEnumerable<Tag> newTags)
         {
+            var newTagIds = new HashSet<int>(); //用户设置的标签
+            foreach (Tag newTag in newTags)
+                newTagIds.Add(newTag.TagId);
+            var oldTagIds = new HashSet<int>(); //原有的标签
             var oldRelations = await context.Relations.Where(
                 relation => relation.FileItemId == fileItem.FileItemId).ToListAsync();
             foreach (var oldRelation in oldRelations)
-                context.Relations.Remove(oldRelation);
+            {
+                oldTagIds.Add(oldRelation.TagId);
+                //若不在用户设置的标签中，则移除
+                if (!newTagIds.Contains(oldRelation.TagId))
+                    context.Relations.Remove(oldRelation);
+            }
+            //若不在原有标签中，则添加
             foreach (Tag tag in newTags)
-                await AddRelationAsync(tag, fileItem);
+                if (!oldTagIds.Contains(tag.TagId))
+                    await AddRelationAsync(tag, fileItem);
             await context.SaveChangesAsync();
         }
 

@@ -159,10 +159,19 @@ namespace UI.FileWindow
                 if (tag != null)
                     tags.Add(tag);
             }
-            await service.UpdateFileRelationAsync(SelectedFile.FileItem, tags);
+            FileItem selectedFile = SelectedFile.FileItem;
+            await service.UpdateFileRelationAsync(selectedFile, tags);
             //update filename
-            await service.RenameFileItemAsync(SelectedFile.FileItem, fileInfo.Filename);
-            await RefreshFilesAsync();
+            await service.RenameFileItemAsync(selectedFile, fileInfo.Filename);
+            //update UI
+            for (int i = 0; i < Files.Count; i++)
+            {
+                if (Files[i].FileItem.FileItemId == selectedFile.FileItemId)
+                {
+                    Files[i] = new FileVM(selectedFile);
+                    break;
+                }
+            }
         }
 
         /// <summary>
