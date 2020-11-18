@@ -280,12 +280,14 @@
     <Resource Include="Image\Edit.png" />
     <Resource Include="Image\File.jpeg" />
     <Resource Include="Image\Home.jpg" />
+    <Resource Include="Image\Icon.ico" />
     <Resource Include="Image\More.png" />
     <Resource Include="Image\Pause-Halt.png" />
     <Resource Include="Image\Pause-Highlight.png" />
     <Resource Include="Image\Pause.jpg" />
     <Resource Include="Image\Pause.png" />
     <Resource Include="Image\plus.png" />
+    <Resource Include="Image\refresh.png" />
     <Resource Include="Image\Search-Halt.png" />
     <Resource Include="Image\Search-Highlight.png" />
     <Resource Include="Image\Search.png" />
@@ -301,12 +303,6 @@
     <Resource Include="Image\TaskList.png" />
     <Resource Include="Image\Tomato-Finished.png" />
     <Resource Include="Image\Tomato-Unfinished.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image\refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image\Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

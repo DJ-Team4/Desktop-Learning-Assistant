@@ -215,7 +215,7 @@
                 <WrapPanel.Background>
                     <ImageBrush ImageSource="../Image/More.png" Stretch="Uniform"/>
                 </WrapPanel.Background>
-                <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" Opacity="0">
+                <Menu pu:MenuHelper.MenuStyle="Standard" Width="Auto" Opacity="0">
                     <MenuItem Width="32" Height="32" Click="MenuItem_Click">
                         <MenuItem Header="隐藏" Click="MenuItem_Click_1"/>
                         <MenuItem Header="退出" Click="MenuItem_Click_2"/>
