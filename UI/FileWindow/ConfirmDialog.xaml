@@ -1,4 +1,4 @@
-﻿<pu:WindowX x:Class="UI.FileWindow.AddOrRenameTagDialog"
+﻿<pu:WindowX x:Class="UI.FileWindow.ConfirmDialog"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,9 +6,9 @@
             xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
             xmlns:local="clr-namespace:UI.FileWindow"
             mc:Ignorable="d"
-            Title="添加标签"
+            Title="ConfirmDialog"
             Height="200"
-            Width="300"
+            Width="350"
             ResizeMode="NoResize"
             Background="#f2f2f2"
             pu:WindowXCaption.Padding="10,0,0,0">
@@ -19,17 +19,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0"
-                 x:Name="tagNameTxtbox"
-                 HorizontalAlignment="Stretch"
-                 Padding="6"
-                 FontSize="14"
-                 VerticalContentAlignment="Stretch"
-                 Height="30"
-                 pu:TextBoxHelper.CornerRadius="4"
-                 pu:TextBoxHelper.FocusedShadowColor="Transparent"
-                 pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue"
-                 pu:TextBoxHelper.Watermark="输入标签名" />
+        <TextBlock Grid.Row="0"
+                   x:Name="msgTxt"
+                   Margin="5"
+                   Text="test"
+                   FontSize="14"
+                   VerticalAlignment="Center" />
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

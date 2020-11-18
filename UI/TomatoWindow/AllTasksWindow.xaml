@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI.Tomato"
+        mc:Ignorable="d"
         Title="所有任务" Height="450" Width="520" >
     <Grid>
         <Grid.RowDefinitions>
