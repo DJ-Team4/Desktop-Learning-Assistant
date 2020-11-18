@@ -60,6 +60,11 @@ namespace UI
         /// </summary>
         public double left = SystemParameters.WorkArea.Width;
 
+        /// <summary>
+        /// 白名单列表
+        /// </summary>
+        public List<string> WhiteListNames { get; set; }
+
         #endregion
 
         #region 公有方法
@@ -80,6 +85,7 @@ namespace UI
 
             CurrentTaskId = 1;
             RelativeFileItems = new List<RelativeFileItem>();
+            WhiteListNames = new List<string>();
 
             Update();
         }
@@ -95,6 +101,7 @@ namespace UI
             GetWeekPieSeriesData();
             GetRecentFiles();
             GetLineSeriesData();
+            GetWhiteLists();
         }
 
         #endregion
@@ -231,10 +238,16 @@ namespace UI
             {
                 RelativeFileItems.Add(new RelativeFileItem()
                 {
-                    //IconImage = Image.FromFile(".. / Icon / word.png"),
-                    FileName = file.FilePath
+                    IconImage = Image.FromFile("./Image/Set.png"),
+                    FilePath = file.FilePath
                 });
             }
+        }
+
+        private void GetWhiteLists()
+        {
+            ConfigService configService = ConfigService.GetConfigService();
+            WhiteListNames = configService.TTConfig.WhiteLists.Keys.ToList();
         }
 
         #endregion

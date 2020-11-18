@@ -59,6 +59,8 @@ namespace UI
 
         private DispatcherTimer tomatoTimer;
 
+        
+
         private void UpdateRecentFilesListView()
         {
             
@@ -95,7 +97,9 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
-            
+
+
+
             this.Loaded += new RoutedEventHandler(TomatoClock_OnLoaded); //***加载倒计时
             //25分钟走完一个番茄钟
             //  m_Timer1.Interval = new TimeSpan(0, 0, 0, 15, 0);
@@ -103,18 +107,17 @@ namespace UI
 
             m_Timer1.Tick += M_Timer1_Tick;
 
-            //_timer.Interval = 300;
-            //_timer.Tick += TimerDealy;
-            //_timer.Start();
-
             this.DataContext = mainWindowViewModel;
 
             // 定时更新ViewModel数据
             timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
             timeDataUpdateTimer.Tick += TimeDataUpdateTimer_Tick;
             timeDataUpdateTimer.Start();
-        }
 
+
+
+
+        }
         private void testTmp()
         {
             TaskInfo taskInfo1 = new TaskInfo()
@@ -157,6 +160,7 @@ namespace UI
             tts.FinishedOneTomato(tomato);
             taskInfos = tts.GetAllUnfinishedTaskInfos();
         }
+
 
         private void Chart_OnDataClick(object sender, ChartPoint chartpoint)
         {
@@ -204,7 +208,7 @@ namespace UI
             }
             else
             {
-                //              m_Percent = 0;
+                // m_Percent = 0;
                 m_Timer1.Start();
                 m_IsStart = true;
                 tomatoTimer.Start();
@@ -230,14 +234,13 @@ namespace UI
             tomatoTimer.Tick += new EventHandler(Timer_Tick);
 
             //转换成秒数
-            Int32 hour = Convert.ToInt32(HourArea.Text);
             Int32 minute = Convert.ToInt32(MinuteArea.Text);
             Int32 second = Convert.ToInt32(SecondArea.Text);
 
             //处理倒计时的类
-            timeCount = new TimeCount(hour * 3600 + minute * 60 + second);
+            timeCount = new TimeCount(minute * 60 + second);
             CountDown += new CountDownHandler(timeCount.TimeCountDown);
-           //  timer.Start();
+           // timer.Start();
         }
 
         /// <summary>
@@ -263,7 +266,6 @@ namespace UI
         {
             if (OnCountDown())
             {
-                HourArea.Text = timeCount.GetHour();
                 MinuteArea.Text = timeCount.GetMinute();
                 SecondArea.Text = timeCount.GetSecond();
             }
@@ -278,21 +280,6 @@ namespace UI
 
         }
 
-   /*     private void TimeCountStart_OnClick(object sender, RoutedEventArgs e)
-        {
-          tomatoTimer.Start();
-          Thread thread = new Thread(new ThreadStart(() =>
-          {
-              for (int i = 1; i <= 2500; i++)
-              {
-            //      this.TomatoProgressBar.Dispatcher.Invoke(() => this.TomatoProgressBar.Value = i);
-                  Thread.Sleep(10000);
-              }
-          }));
-          thread.Start();
-
-            ImageSource pause = new BitmapImage(new Uri("Icon/Pause.jpg", UriKind.Relative));
-        }*/
 
         private void TimeCountPause_Click(object sender, MouseButtonEventArgs e)
         {
@@ -361,7 +348,7 @@ namespace UI
             //设置托盘的各个属性
             notifyIcon = new NotifyIcon();
             notifyIcon.Text = "桌面学习助手";
-            notifyIcon.Icon = new System.Drawing.Icon("./Image/spring.ico");
+            notifyIcon.Icon = new System.Drawing.Icon("./Image/Icon.ico");
             notifyIcon.Visible = true;
             notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
         }
@@ -393,6 +380,8 @@ namespace UI
             AllTasksWindow allTasksWindow = new AllTasksWindow();
             allTasksWindow.Show();
         }
+
+   
     }
 }
 

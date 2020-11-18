@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:UI.TomatoWindow.MyProgressbar"
              mc:Ignorable="d" Height="100" Width="100">
     <Viewbox >
-        <Grid Width="38" Height="41">
-            <Path Name="MyCycleProcessBar1" Data="M17,3 A14,14 0 0 1 16,3 " Stroke="Green" StrokeThickness="4" Height="34" Width="34" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid Width="34" Height="34">
+            <Path Name="MyCycleProcessBar1" Data="M17,3 A14,14 0 0 1 16,3 " Stroke="SkyBlue" StrokeThickness="4" Height="34" Width="34" VerticalAlignment="Center" HorizontalAlignment="Center">
             </Path>
             <Label Name="lbValue" Content="50%" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="4"  />
         </Grid>

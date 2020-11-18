@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         xmlns:local="clr-namespace:UI.Tomato"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         mc:Ignorable="d"
         Title="所有任务" Height="450" Width="520" >
     <Grid>
@@ -14,8 +16,18 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
             <DockPanel Height="32" Margin="0,0,0.2,0">
-                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" Width="400" Margin="0"/>
-                <Button x:Name="SearchBtn" Content="搜索" Margin="0"/>
+                <TextBox x:Name="SearchTextBox" Text="输入搜索内容" 
+                         pu:TextBoxHelper.IsClearButtonVisible="True" 
+                         TextChanged="SearchTextBox_OnTextChanged"
+                         Foreground="DarkGray" Width="400" Margin="0"
+                         />
+                <Button pu:ButtonHelper.ButtonStyle="Link" x:Name="SearchBtn" Margin="0">
+                    <WrapPanel>
+                        <Image Source="../Image/Search.png"></Image>
+                    </WrapPanel>
+                </Button>
+
+                
             </DockPanel>
         </StackPanel>
         <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
@@ -88,9 +100,21 @@
                 <ColumnDefinition Width="99*"/>
                 <ColumnDefinition Width="107*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="修改任务" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="1" />
-            <Button Content="删除任务" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="2" />
-            <Button Content="增加任务" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="3" />
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="ModifyTasks" Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="1" >
+                <WrapPanel>
+                    <Image Source="../Image/Edit.png"></Image>
+                </WrapPanel>
+            </Button>
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="DeleteTask"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="2" >
+                <WrapPanel>
+                    <Image Source="../Image/Delete.png"></Image>
+                </WrapPanel>
+            </Button>
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="AddNewTask_OnClick"  Width="71"  HorizontalAlignment="Right" Margin="5" Grid.Column="3" >
+                <WrapPanel>
+                    <Image Source="../Image/Add.png"></Image>
+                </WrapPanel>
+            </Button>
         </Grid>
     </Grid>
 </Window>
