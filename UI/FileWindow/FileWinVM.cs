@@ -17,8 +17,7 @@ namespace UI.FileWindow
         public FileWinVM()
         {
             service = TagFileService.GetService();
-            FillNavItems();
-
+            FillNavItemsThenNotify();
         }
 
         private readonly ITagFileService service;
@@ -26,15 +25,18 @@ namespace UI.FileWindow
         /// <summary>
         /// 填充导航栏的数据
         /// </summary>
-        public void FillNavItems()
+        public void FillNavItemsThenNotify()
         {
             UpNavItems.Add(new AllFilesNavItem());
             UpNavItems.Add(new NoTagNavItem());
             UpNavItems.Add(new SearchResultNavItem());
             SelectedNavItem = UpNavItems[0];
-            List<Tag> tags = service.TagListAsync().Result;//TODO async
-            foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
-                DownNavItems.Add(tagNav);
+            Task.Run(async () =>
+            {
+                List<Tag> tags = await service.TagListAsync();
+                foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
+                    DownNavItems.Add(tagNav);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace UI.FileWindow
             if (needRefresh)
             {
                 tagNav.NotifyHeaderChanged();
-                RefreshFiles();
+                await RefreshFilesAsync();
             }
         }
 
@@ -112,7 +114,6 @@ namespace UI.FileWindow
         {
             await SelectedFile?.FileItem.DeleteToRecycleBinAsync();
             Files.Remove(SelectedFile);
-            OnFilesChanged();
         }
 
         /// <summary>
@@ -122,7 +123,6 @@ namespace UI.FileWindow
         {
             await SelectedFile?.FileItem.DeleteAsync();
             Files.Remove(SelectedFile);
-            OnFilesChanged();
         }
 
         /// <summary>
@@ -162,15 +162,34 @@ namespace UI.FileWindow
             await service.UpdateFileRelationAsync(SelectedFile.FileItem, tags);
             //update filename
             await service.RenameFileItemAsync(SelectedFile.FileItem, fileInfo.Filename);
-            RefreshFiles();
+            await RefreshFilesAsync();
+        }
+
+        /// <summary>
+        /// 刷新文件区文件集合，完成后会自动通知界面刷新
+        /// </summary>
+        public void RefreshFilesThenNotify()
+        {
+            RefreshFilesAsync().ConfigureAwait(false);
         }
 
         /// <summary>
         /// 刷新文件区的文件集合
         /// </summary>
-        public void RefreshFiles()
+        public async Task RefreshFilesAsync()
         {
-            OnFilesChanged();
+            ObservableCollection<FileVM> observableFiles;
+            try
+            {
+                observableFiles = FileItemsToFileVMs(await FilesFromNavAsync());
+            }
+            catch (Exception e)
+            {
+                //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
+                Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
+                observableFiles = new ObservableCollection<FileVM>();
+            }
+            Files = observableFiles;
         }
 
         /// <summary>
@@ -199,13 +218,13 @@ namespace UI.FileWindow
         /// <summary>
         /// 导航栏上半部分
         /// </summary>
-        public ObservableCollection<INavItem> UpNavItems { get; private set; }
+        public ObservableCollection<INavItem> UpNavItems { get; }
             = new ObservableCollection<INavItem>();
 
         /// <summary>
         /// 导航栏下半部分
         /// </summary>
-        public ObservableCollection<INavItem> DownNavItems { get; private set; }
+        public ObservableCollection<INavItem> DownNavItems { get; }
             = new ObservableCollection<INavItem>();
 
         /// <summary>
@@ -230,21 +249,14 @@ namespace UI.FileWindow
         /// <summary>
         /// 要显示的文件
         /// </summary>
+        private ObservableCollection<FileVM> files = new ObservableCollection<FileVM>();
         public ObservableCollection<FileVM> Files
         {
-            get
+            get => files;
+            private set
             {
-                try
-                {
-                    var fileItems = FilesFromNavAsync().Result;//TODO async
-                    return FileItemsToFileVMs(fileItems);
-                }
-                catch (Exception e)
-                {
-                    //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
-                    Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
-                    return FileItemsToFileVMs(new List<FileItem>());
-                }
+                files = value;
+                OnPropertyChanged();
             }
         }
 
@@ -360,13 +372,13 @@ namespace UI.FileWindow
         /// <summary>
         /// 导航栏被选中条目改变。
         /// 1. 通知 SelectedNavItem 属性改变。
-        /// 2. 通知 Files 属性改变。
+        /// 2. 刷新文件区。
         /// 3. 若选中了标签，则设置表达式栏。
         /// </summary>
         private void OnSelectedNavItemChanged()
         {
             OnPropertyChanged("SelectedNavItem");
-            OnFilesChanged();
+            RefreshFilesThenNotify();
             if (SelectedNavItem is TagNavItem)
             {
                 var sb = new StringBuilder();
@@ -387,14 +399,6 @@ namespace UI.FileWindow
                 TagSearchText = "";
                 FilenameSearchText = "";
             }
-        }
-
-        /// <summary>
-        /// 显示的文件集合改变
-        /// </summary>
-        private void OnFilesChanged()
-        {
-            OnPropertyChanged("Files");
         }
 
         #endregion

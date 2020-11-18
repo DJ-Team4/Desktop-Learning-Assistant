@@ -100,7 +100,7 @@ namespace UI.FileWindow
             var allTagNames = await winVM.AllTagNamesAsync();
             var dialog = new AddFileDialog(allTagNames);
             if (dialog.ShowDialog().GetValueOrDefault(false))
-                winVM.RefreshFiles();
+                await winVM.RefreshFilesAsync();
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace UI.FileWindow
         /// <summary>
         /// 刷新文件集合页面
         /// </summary>
-        private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
         {
-            winVM.RefreshFiles();
+            await winVM.RefreshFilesAsync();
         }
 
         /// <summary>
