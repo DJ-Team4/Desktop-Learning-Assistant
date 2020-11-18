@@ -7,6 +7,7 @@ using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile.Expression;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using DesktopLearningAssistant.TagFile.Extraction;
 
 namespace DesktopLearningAssistant.TagFile
 {
@@ -495,6 +496,33 @@ namespace DesktopLearningAssistant.TagFile
 #if DISPOSE_CONTEXT_IMMEDIATELY
             }
 #endif
+        }
+
+        public async Task<List<Tag>> RecommendTagAsync(string filepath)
+        {
+            var result = new List<Tag>();
+            var resultSet = new HashSet<string>();
+            var tagNames = new List<string>();
+            (await TagListAsync()).ForEach(tag => tagNames.Add(tag.TagName));
+            var counter = new WordCounter(tagNames);
+            string filename = System.IO.Path.GetFileName(filepath);
+            List<string> lst = counter.OrderedListFromText(filename);
+            if (lst.Count > 0)
+            {
+                //出现在文件名中次数最多的那个单词排第一位
+                result.Add(await GetTagByNameAsync(lst[0]));
+                resultSet.Add(lst[0]);
+            }
+            lst = await Task.Run(() => counter.OrderedListFromFile(filepath));
+            foreach(string tagName in lst)
+            {
+                if(!resultSet.Contains(tagName))
+                {
+                    result.Add(await GetTagByNameAsync(tagName));
+                    resultSet.Add(tagName);
+                }
+            }
+            return result;
         }
 
         #endregion

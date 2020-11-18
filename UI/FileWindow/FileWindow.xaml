@@ -1,14 +1,17 @@
-﻿<Window x:Class="UI.FileWindow.FileWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI.FileWindow"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-        d:DataContext="{d:DesignInstance Type=local:FileWinVM}"
-        mc:Ignorable="d"
-        Title="文件管理">
+﻿<pu:WindowX x:Class="UI.FileWindow.FileWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:UI.FileWindow"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            d:DataContext="{d:DesignInstance Type=local:FileWinVM}"
+            mc:Ignorable="d"
+            Title="文件管理"
+            WindowStartupLocation="CenterScreen"
+            pu:WindowXCaption.Padding="10,0,0,0"
+            pu:WindowXCaption.Background="#f2f2f2">
     <Window.Resources>
         <!-- 字体大小 -->
         <sys:Double x:Key="BaseFontSize">14</sys:Double>
@@ -43,7 +46,7 @@
                     Background="Transparent"
                     pu:ButtonHelper.HoverBrush="LightGray"
                     pu:ButtonHelper.CornerRadius="4">
-                <Image Source="../Image/refresh.png" />
+                <Image Source="../Image/refresh-in-filewin.png" />
             </Button>
 
             <!-- Add File Button -->
@@ -54,7 +57,7 @@
                     Background="Transparent"
                     pu:ButtonHelper.HoverBrush="LightGray"
                     pu:ButtonHelper.CornerRadius="4">
-                <Image Source="../Image/plus.png" />
+                <Image Source="../Image/add-in-filewin.png" />
             </Button>
 
             <!-- Tag Search Box -->
@@ -175,7 +178,7 @@
                             Height="28"
                             pu:ButtonHelper.HoverBrush="LightGray"
                             pu:ButtonHelper.CornerRadius="4">
-                        <Image Source="../Image/plus.png" />
+                        <Image Source="../Image/add-in-filewin.png" />
                     </Button>
                 </Grid>
                 <ListView x:Name="downNavList"
@@ -329,4 +332,4 @@
         </Grid>
 
     </Grid>
-</Window>
+</pu:WindowX>

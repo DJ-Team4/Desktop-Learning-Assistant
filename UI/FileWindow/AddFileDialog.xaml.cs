@@ -15,13 +15,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Panuon.UI.Silver;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace UI.FileWindow
 {
     /// <summary>
     /// AddFileDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class AddFileDialog : WindowX
+    public partial class AddFileDialog : WindowX, INotifyPropertyChanged
     {
         public AddFileDialog(IEnumerable<string> allTagNames)
         {
@@ -35,8 +37,8 @@ namespace UI.FileWindow
         {
             InitializeComponent();
             DataContext = this;
-            filepathTxtbox.Text = filepath;
-            //TODO get recommend
+            Filepath = filepath;
+            UpdateRecommendation(Filepath).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -45,13 +47,46 @@ namespace UI.FileWindow
         public ObservableCollection<SelectableFileTag> FileTags { get; }
             = new ObservableCollection<SelectableFileTag>();
 
+        private Visibility recommendVisibility = Visibility.Collapsed;
+        public Visibility RecommendVisibility
+        {
+            get => recommendVisibility;
+            private set
+            {
+                recommendVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string mfilepath;
+        public string Filepath
+        {
+            get => mfilepath;
+            set
+            {
+                mfilepath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string tagsStr;
+        public string TagsStr
+        {
+            get => tagsStr;
+            set
+            {
+                tagsStr = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// 执行添加文件
         /// </summary>
         public async Task AddFileAsync()
         {
             //Get the result
-            string filepath = System.IO.Path.GetFullPath(filepathTxtbox.Text);
+            string filepath = System.IO.Path.GetFullPath(Filepath);
             bool asShortcut = asShortcutRadio.IsChecked.GetValueOrDefault(true);
             var tagNames = new List<string>();
             foreach (var stag in FileTags)
@@ -68,27 +103,72 @@ namespace UI.FileWindow
             }
         }
 
+        private async Task UpdateRecommendation(string filepath)
+        {
+            List<Tag> tags;
+            try
+            {
+                tags = await service.RecommendTagAsync(filepath);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "读取文件时出错");
+                return;
+            }
+            var showSet = new HashSet<string>();
+            foreach (Tag tag in tags.Take(MAX_RECOMMEND))
+                showSet.Add(tag.TagName);
+            foreach (var stag in FileTags)
+                stag.IsSelected = showSet.Contains(stag.TagName);
+
+            if (tags.Count == 0)
+                RecommendVisibility = Visibility.Collapsed;
+            else
+            {
+                RecommendVisibility = Visibility.Visible;
+                var sb = new StringBuilder();
+                bool isfirst = true;
+                foreach (Tag tag in tags.Take(MAX_RECOMMEND))
+                {
+                    if (isfirst)
+                        isfirst = false;
+                    else
+                        sb.Append(", ");
+                    sb.Append(tag.TagName);
+                }
+                TagsStr = sb.ToString();
+            }
+        }
+
         /// <summary>
         /// 确定
         /// </summary>
         private async void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            string filepath = filepathTxtbox.Text;
-            if (filepath == null || filepath.Trim().Length == 0)
+            if (Filepath == null || Filepath.Trim().Length == 0)
             {
                 DialogResult = false;
+                Close();
             }
             else
             {
-                if (!System.IO.File.Exists(filepath))
+                if (!System.IO.File.Exists(Filepath))
                 {
-                    MessageBox.Show($"文件 {filepath} 不存在", "文件不存在");
+                    MessageBox.Show($"文件 {Filepath} 不存在", "文件不存在");
                     return;
                 }
-                await AddFileAsync();
+                try
+                {
+                    await AddFileAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "添加文件时出错");
+                    return;
+                }
                 DialogResult = true;
+                Close();
             }
-            Close();
         }
 
         /// <summary>
@@ -103,7 +183,7 @@ namespace UI.FileWindow
         /// <summary>
         /// 选择文件
         /// </summary>
-        private void SelectFileBtn_Click(object sender, RoutedEventArgs e)
+        private async void SelectFileBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
@@ -111,13 +191,21 @@ namespace UI.FileWindow
                 var result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    string filepath = dialog.FileName;
-                    filepathTxtbox.Text = filepath;
+                    Filepath = dialog.FileName;
+                    await UpdateRecommendation(Filepath);
                 }
-                //TODO update recommend
             }
         }
 
         private readonly ITagFileService service = TagFileService.GetService();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        /// <summary>
+        /// 最大推荐数
+        /// </summary>
+        private const int MAX_RECOMMEND = 5;
     }
 }
