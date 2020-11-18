@@ -181,6 +181,10 @@ namespace UI.FileWindow
             SelectedNavItem = UpNavItems[2];
         }
 
+        /// <summary>
+        /// 刷新智能提示列表
+        /// </summary>
+        /// <param name="prefix">标签前缀</param>
         public void RefreshIntelliItems(string prefix)
         {
             IntelliItems.Clear();

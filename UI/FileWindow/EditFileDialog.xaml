@@ -102,6 +102,12 @@
                                   pu:CheckBoxHelper.CheckedBackground="#0077d7" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Focusable"
+                                Value="False" />
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
 

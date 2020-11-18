@@ -29,11 +29,8 @@ namespace UI.FileWindow
             //fill FileTag Collection
             foreach (string tagName in allTagName)
             {
-                FileTags.Add(new SelectableFileTag
-                {
-                    IsSelected = fileInfo.TagNames.Contains(tagName),
-                    TagName = tagName
-                });
+                FileTags.Add(new SelectableFileTag(
+                    tagName, fileInfo.TagNames.Contains(tagName)));
             }
         }
 
