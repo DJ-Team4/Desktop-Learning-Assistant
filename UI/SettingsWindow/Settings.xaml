@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="512.8">
+        Title="设置" Height="400" Width="512.8">
     <Grid>
         <TabControl 
             HorizontalAlignment="Left" 
@@ -16,10 +16,10 @@
             pu:TabControlHelper.ItemHeight="30"
             pu:TabControlHelper.CanRemove="False"
             pu:TabControlHelper.SelectedBackground="AliceBlue"
-            TabStripPlacement="Left" 
+            TabStripPlacement="Left"
             Margin="0,0,0,-0.6">
             <TabItem Header="白名单">
-                <Grid Margin="0,0,51.6,0.2">
+                <Grid Margin="0,0,0.6,0.2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="263*"/>
                         <ColumnDefinition Width="87*"/>
@@ -29,26 +29,36 @@
                         <RowDefinition Height="339*"/>
                     </Grid.RowDefinitions>
                     <Label Content="设置白名单以统计任务效率" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Height="27" Width="251"/>
-                    <ComboBox Name="WhiteListNameComboBox" Margin="10,4,178.2,312.2" Grid.Row="1" SelectedIndex="0" ItemsSource="{Binding KeyList}"/>
-                    <ListView Name="SoftwareListView" Grid.Row="1" Grid.Column="0" Margin="10,41,7.2,10.2" Initialized="SoftwareListView_Initialized" ItemsSource="{Binding ValueList}">
+                    <ComboBox Name="WhiteListKeyComboBox" Margin="10,10,166.8,306.2" Grid.Row="1" ItemsSource="{Binding WhiteListKeyList}" SelectionChanged="WhiteListKey_SelectionChanged"/>
+                    <ListView Name="WhiteListValueListView" Grid.Row="1" Grid.Column="0" Margin="10,41,7.2,10.2" Initialized="SoftwareListView_Initialized" ItemsSource="{Binding WhiteListValueList}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button Name="AddWhiteListBtn" Content="增加" Margin="9.8,34,10.4,0" VerticalAlignment="Top" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19" Click="AddWhiteListBtn_Click"/>
-                        <Button Name="DeleteWhiteListBtn" Content="删除" HorizontalAlignment="Left" Margin="9.8,72,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="19" Click="DeleteWhiteListBtn_Click"/>
+                    <Button Name="AddWhiteListBtn" Content="增加" Margin="9.8,41,10.4,0" VerticalAlignment="Top" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="25" Click="AddWhiteListBtn_Click"
+                            Foreground="black"
+                            pu:ButtonHelper.ButtonStyle="Outline"
+                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
+                    <Button Name="DeleteWhiteListBtn" Content="删除" HorizontalAlignment="Left" Margin="10.2,72,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="25" Click="DeleteWhiteListBtn_Click"
+                            Foreground="black"
+                            pu:ButtonHelper.ButtonStyle="Outline"
+                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
+                    <Button Name="SaveWhiteListBtn" Content="保存" HorizontalAlignment="Left" Margin="10.2,104,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="2.884,6.097" Grid.Row="1" Grid.Column="1" Height="25" Click="SaveWhiteListBtn_Click"
+                            Foreground="black"
+                            pu:ButtonHelper.ButtonStyle="Outline"
+                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
                 </Grid>
             </TabItem>
             <TabItem Header="软件类型设置">
                 <Grid>
-                    <Border BorderBrush="White" BorderThickness="1" Height="284" Margin="10,39,-0.4,0" VerticalAlignment="Top">
+                    <Border BorderBrush="White" BorderThickness="1" Height="284" Margin="10,39,34.6,0" VerticalAlignment="Top">
                         <Grid>
-                            <Label Content="软件:" Width="50" Margin="10,19,330.4,234.4"/>
-                            <Label Content="类型:" Width="50" Margin="214,19,126.4,234.4"/>
-                            <ComboBox Name="SoftWareComboBox" Height="32" Margin="60,16,237.4,234.4" ItemsSource="{Binding Path=SoftWareList}" SelectionChanged="SoftWareSelectionChanged"/>
-                            <ComboBox Name="TypeComboBox" Height="32" Margin="264,16,46.4,234.4" ItemsSource="{Binding Path=TypeList}" SelectionChanged="TypeSelectionChange"/>
+                            <Label Content="软件:" Margin="10,19,292.2,234.4"/>
+                            <Label Content="类型:" Width="50" Margin="179,19,126.2,234.4"/>
+                            <ComboBox Name="TypeKeyComboBox" Height="32" Margin="63,19,186.2,231.4" ItemsSource="{Binding Path=TypeKeyList}" SelectionChanged="SoftWareSelectionChanged"/>
+                            <ComboBox Name="TypeValueComboBox" Height="32" Margin="229,19,20.2,231.4" ItemsSource="{Binding Path=TypeValueList}" SelectionChanged="TypeSelectionChange"/>
                         </Grid>
                     </Border>
                     <Label Content="设置各软件的软件类型" Margin="10,10,237.6,332.2"/>

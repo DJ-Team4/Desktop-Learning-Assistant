@@ -8,16 +8,16 @@
         xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
 
         mc:Ignorable="d"
-        Title="新建任务" Height="421.6" Width="500" >
+        Title="新建任务" Height="368" Width="500" >
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="123*"/>
-            <RowDefinition Height="34*"/>
+            <RowDefinition Height="288*"/>
+            <RowDefinition Height="37*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="93*"/>
-            <ColumnDefinition Width="239*"/>
-            <ColumnDefinition Width="81*"/>
+            <ColumnDefinition Width="109*"/>
+            <ColumnDefinition Width="272*"/>
+            <ColumnDefinition Width="103*"/>
         </Grid.ColumnDefinitions>
         <Label Content="任务名" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Height="28" Width="49" Background="AliceBlue" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
         <Label Content="开始时间" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="28" Width="62"  Background="AliceBlue" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
@@ -25,7 +25,7 @@
         <Label Content="备注" HorizontalAlignment="Left" Margin="10,181,0,0" VerticalAlignment="Top" Height="25" Width="36"  Background="AliceBlue" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
         <Label Content="所需番茄数" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Height="27" Width="76"  Background="AliceBlue" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0.2,0,0,0.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <TextBox Name="TxtBoxTaskName" HorizontalAlignment="Left" Height="30" Margin="5,5,5,5" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
             <TimeTool:Dameer  
                           Name="StartTimeSelect"
@@ -49,7 +49,7 @@
                           Margin="5">
             </TimeTool:Dameer>
             <WrapPanel Margin="0,0,10.2,0" Height="64">
-                <StackPanel Name="TomatoListStackPanel" Width="250" Orientation="Horizontal" Margin="5">
+                <StackPanel Name="TomatoListStackPanel" Width="250" Orientation="Horizontal" Margin="5" Height="54">
                     <!--Image Width="35" Height="35" Source="../Image/Tomato-Finished.png"/-->
                 </StackPanel>
                 <Button
@@ -57,9 +57,9 @@
                     silver:ButtonHelper.CornerRadius="3"
                     Margin="5"
                     Click='AddTomatoNum_OnClick' 
-                    Height="25" Width="26">
+                    Height="25" Width="25">
                     <WrapPanel>
-                        <Image Source="../Image/Add.png"></Image>
+                        <Image Source="../Image/Add.png" Stretch="UniformToFill"></Image>
                     </WrapPanel>
                 </Button>
                 <Button
@@ -67,14 +67,14 @@
                     silver:ButtonHelper.CornerRadius="3"
                     Margin="5"
                     Click='DeleteTomatoNum_OnClick' 
-                    Height="25" Width="26">
+                    Height="25" Width="25">
                     <WrapPanel>
                         <Image Source="../Image/Delete.png"></Image>
                     </WrapPanel>
                 </Button>
             </WrapPanel>
 
-            <TextBox x:Name="TextBoxNotes" 
+            <TextBox x:Name="TxtBoxNotes" 
                      HorizontalAlignment="Left" VerticalAlignment="Top"
                      Height="94" Margin="5,5,0,5"
                      TextWrapping="Wrap" 
@@ -85,7 +85,7 @@
             Content="确认"
             Foreground="black"
             silver:ButtonHelper.ButtonStyle="Outline"
-            silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="5.2,5.2,4.8,5.4"
+            silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="5.2,4.8,10,5.8"
             Click="Affirm_Click" 
             Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1"/>
     </Grid>

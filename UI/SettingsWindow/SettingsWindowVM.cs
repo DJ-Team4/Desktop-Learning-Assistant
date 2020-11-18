@@ -6,6 +6,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace UI.SettingsWindow
 {
@@ -13,29 +15,43 @@ namespace UI.SettingsWindow
     {
         private ConfigService configService;
 
-        public List<string> KeyList { get; set; }
+        public List<string> TypeKeyList { get; set; }
 
-        public List<string> TypeList { get; set; }
+        public List<string> TypeValueList { get; set; }
 
-        public List<Software> ValueList { get; set; }
+        public List<string> WhiteListKeyList { get; set; }
+
+        public List<Software> WhiteListValueList { get; set; }
 
         public SettingsWindowVM()
         {
             configService = ConfigService.GetConfigService();
 
-            KeyList = new List<string>();
-            TypeList = new List<string>();
-            ValueList = new List<Software>();
+            TypeKeyList = new List<string>();
+            TypeValueList = new List<string>();
+            WhiteListKeyList = new List<string>();
+            WhiteListValueList = new List<Software>();
 
             InitializeViewModel();
         }
 
-        private void InitializeViewModel()
+        public void InitializeViewModel()
         {
-            KeyList = configService.TSConfig.TypeDict.Keys.ToList();
-            TypeList = configService.TSConfig.TypeList;
+            UpdateWhiteListKey();
+            UpdateWhiteListValue();
+            UpdateTypeKey();
+            UpdateTypeValue();
+        }
 
-            ValueList.Clear();
+        public void UpdateWhiteListKey()
+        {
+            WhiteListKeyList.Clear();
+            WhiteListKeyList = configService.TTConfig.WhiteLists.Keys.ToList();
+        }
+
+        public void UpdateWhiteListValue(string selectedWhiteListKey = null)
+        {
+            WhiteListValueList.Clear();
             TimeStatisticService tss = TimeStatisticService.GetTimeStatisticService();
             List<string> softwareNames = tss.GetSoftwareNames();
 
@@ -43,9 +59,28 @@ namespace UI.SettingsWindow
             {
                 Software software = new Software();
                 software.Name = softwareName;
-                software.IsChecked = false;
-                ValueList.Add(software);
+                if (selectedWhiteListKey != null && configService.TTConfig.WhiteLists[selectedWhiteListKey].Contains(softwareName))
+                {
+                    software.IsChecked = true;
+                }
+                else
+                {
+                    software.IsChecked = false;
+                }
+
+                WhiteListValueList.Add(software);
             }
+            
+        }
+
+        public void UpdateTypeKey()
+        {
+            TypeKeyList = configService.TSConfig.TypeDict.Keys.ToList();
+        }
+
+        public void UpdateTypeValue()
+        {
+            TypeValueList = configService.TSConfig.TypeList;
         }
     }
 

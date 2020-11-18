@@ -29,8 +29,8 @@ namespace UI.Tomato
 
         public String StartTime { get; set; }
         public String DeadLine { get; set; }
-        public bool finishedTomato { get; set; }
-        public int totalTomato { get; set; }
+        public bool FinishedTomato { get; set; }
+        public int TotalTomato { get; set; }
         public List<Image> TomatoImageList { get; set; }
     }
 
@@ -62,6 +62,7 @@ namespace UI.Tomato
             List<TaskInfo> allTaskInfos = tts.GetAllFinishedTaskInfo();
             allTaskInfos.AddRange(tts.GetAllUnfinishedTaskInfos());
             TaskItems.AddRange(TransferTaskItemsFromTaskInfo(allTaskInfos));
+            AllTasksListView.Items.Refresh();
         }
 
         private List<TaskItem> TransferTaskItemsFromTaskInfo(List<TaskInfo> taskInfos)
@@ -75,8 +76,8 @@ namespace UI.Tomato
                     Name = taskInfo.Name,
                     StartTime = taskInfo.StartTime.ToString(),
                     DeadLine = taskInfo.EndTime.ToString(),
-                    finishedTomato = taskInfo.Finished,
-                    totalTomato = taskInfo.TotalTomatoCount,
+                    FinishedTomato = taskInfo.Finished,
+                    TotalTomato = taskInfo.TotalTomatoCount,
                     TomatoImageList = GetTomatoImages(taskInfo.FinishedTomatoCount, taskInfo.TotalTomatoCount)
                 };
                 taskItems.Add(taskItem);
@@ -111,7 +112,7 @@ namespace UI.Tomato
         private void AddNewTask_OnClick(object sender, RoutedEventArgs e)
         {
             NewTaskWindow newTaskWindow = new NewTaskWindow();
-            newTaskWindow.Show();
+            newTaskWindow.ShowDialog();
             UpdateViewModel();
         }
 
@@ -136,19 +137,16 @@ namespace UI.Tomato
                 return;
             }
 
-            NewTaskWindow newTaskWindow = new NewTaskWindow();
-            newTaskWindow.taskInfo = TransferTaskInfoFromTaskItem(selectedTaskItem);
-            newTaskWindow.isModify = true;
-            newTaskWindow.FillData();
-            newTaskWindow.Show();
+            NewTaskWindow newTaskWindow = new NewTaskWindow(TransferTaskInfoFromTaskItem(selectedTaskItem));
+            newTaskWindow.ShowDialog();
             UpdateViewModel();
         }
 
         private void SearchBtn_OnClick(object sender, RoutedEventArgs e)
         {
-                taskInfo=tts.GetTaskWithName(SearchTextBox.Text);
-                AllTasksListView.Items.Clear();
-                AllTasksListView.Items.Add(taskInfo);
+            taskInfo=tts.GetTaskWithName(SearchTextBox.Text);
+            AllTasksListView.Items.Clear();
+            AllTasksListView.Items.Add(taskInfo);
         }
 
         private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e) //搜索之后回退
