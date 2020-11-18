@@ -16,12 +16,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Tool Bar -->
         <Grid Grid.Row="0"
-              Background="White">
+              Background="#f2f2f2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -108,15 +109,20 @@
 
         </Grid>
 
+        <!--<Separator Grid.Row="1"
+                   Margin="0"
+                   Background="LightGray" />-->
+
         <!-- Down Part -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Left Part: 导航栏 -->
-            <StackPanel Grid.Row="0"
+            <!-- Left Part: 左侧导航栏 -->
+            <StackPanel Grid.Column="0"
                         Background="#f2f2f2">
                 <TextBlock Text="综合"
                            FontWeight="Bold"
@@ -211,8 +217,13 @@
                 </ListView>
             </StackPanel>
 
+            <!--<Separator Grid.Column="1"
+                       Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                       Margin="0"
+                       Background="LightGray" />-->
+
             <!-- Right Part: File Area -->
-            <Grid Grid.Column="1"
+            <Grid Grid.Column="2"
                   Name="fileAreaGrid">
                 <ListView x:Name="fileList"
                           ItemsSource="{Binding Files}"
@@ -260,7 +271,7 @@
                                                    Text="快捷方式" />
                                         <!-- tag str -->
                                         <StackPanel Margin="20,0,0,0"
-                                            Orientation="Horizontal"
+                                                    Orientation="Horizontal"
                                                     Visibility="{Binding TagStrVisibility}">
                                             <TextBlock Text="标签："
                                                        Foreground="Gray" />

@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Panuon.UI.Silver;
 
 namespace UI.FileWindow
 {
     /// <summary>
     /// AddTagDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class AddOrRenameTagDialog : Window
+    public partial class AddOrRenameTagDialog : WindowX
     {
         /// <summary>
         /// 结果：输入的标签名

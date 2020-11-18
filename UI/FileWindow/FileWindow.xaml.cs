@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+//using Panuon.UI.Silver;
 using DesktopLearningAssistant.TagFile;
 
 namespace UI.FileWindow
