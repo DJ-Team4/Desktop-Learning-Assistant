@@ -24,6 +24,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -35,7 +36,6 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0"
-                         x:Name="filepathTxtbox"
                          Text="{Binding Filepath}"
                          HorizontalAlignment="Stretch"
                          Padding="6"
@@ -63,7 +63,7 @@
             <!-- add as shortcut -->
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
-                        Margin="0,10,0,10">
+                        Margin="0,10,0,4">
                 <TextBlock Text="添加为快捷方式："
                            VerticalAlignment="Center"
                            FontSize="14" />
@@ -81,8 +81,19 @@
                              pu:RadioButtonHelper.CheckedBackground="#0077d7" />
             </StackPanel>
 
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        Visibility="{Binding RecommendVisibility}"
+                        Margin="0,4,0,4">
+                <TextBlock FontSize="14"
+                           Text="推荐标签：" />
+                <TextBlock x:Name="recommendationTxt"
+                           FontSize="14"
+                           Text="{Binding TagsStr}"/>
+            </StackPanel>
+            
             <!-- tag caption -->
-            <TextBlock Grid.Row="2"
+            <TextBlock Grid.Row="3"
                        Text="标签"
                        FontSize="14"
                        FontWeight="Bold"

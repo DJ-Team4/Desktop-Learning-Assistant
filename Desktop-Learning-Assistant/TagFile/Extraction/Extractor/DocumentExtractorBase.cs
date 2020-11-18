@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Extraction
+namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
 {
     /// <summary>
     /// 文档提取器的公共抽象基类。
