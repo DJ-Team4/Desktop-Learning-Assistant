@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Panuon.UI.Silver;
 
 namespace UI.FileWindow
 {
     /// <summary>
     /// ConfirmDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class ConfirmDialog : Window
+    public partial class ConfirmDialog : WindowX
     {
         public ConfirmDialog(string message, string caption)
         {

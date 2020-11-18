@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:UI.FileWindow"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+        d:DataContext="{d:DesignInstance Type=local:FileWinVM}"
         mc:Ignorable="d"
         Title="文件管理">
     <Window.Resources>
@@ -109,9 +110,10 @@
 
         </Grid>
 
-        <!--<Separator Grid.Row="1"
+        <Separator Grid.Row="1"
                    Margin="0"
-                   Background="LightGray" />-->
+                   Background="LightGray"
+                   Visibility="Collapsed" />
 
         <!-- Down Part -->
         <Grid Grid.Row="2">
@@ -217,10 +219,11 @@
                 </ListView>
             </StackPanel>
 
-            <!--<Separator Grid.Column="1"
+            <Separator Grid.Column="1"
                        Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                        Margin="0"
-                       Background="LightGray" />-->
+                       Background="LightGray"
+                       Visibility="Collapsed" />
 
             <!-- Right Part: File Area -->
             <Grid Grid.Column="2"
