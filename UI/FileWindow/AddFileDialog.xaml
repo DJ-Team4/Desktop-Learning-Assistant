@@ -1,115 +1,68 @@
-﻿<Window x:Class="UI.FileWindow.AddFileDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-        xmlns:local="clr-namespace:UI.FileWindow"
-        mc:Ignorable="d"
-        Title="添加文件"
-        Height="250"
-        Width="450"
-        ResizeMode="NoResize">
+<pu:WindowX x:Class="UI.FileWindow.AddFileDialog"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            xmlns:local="clr-namespace:UI.FileWindow"
+            mc:Ignorable="d"
+            Title="添加文件"
+            Height="450"
+            Width="450"
+            Background="#f2f2f2"
+            ResizeMode="NoResize"
+            pu:WindowXCaption.Padding="10,0,0,0">
 
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    VerticalAlignment="Center">
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Grid>
+            <!-- select file -->
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Textbox with hint -->
-                <Grid Grid.Column="0" VerticalAlignment="Center">
-                    <Grid.Resources>
-                        <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
-                    </Grid.Resources>
-                    <TextBlock Text="文件路径"
-                               VerticalAlignment="Center"
-                               FontSize="14"
-                               Padding="10,6,10,6"
-                               Foreground="LightSteelBlue"
-                               Visibility="{Binding ElementName=filepathTxtbox, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}"
-                               IsHitTestVisible="False" />
-                    <TextBox Grid.Row="0"
-                             x:Name="filepathTxtbox"
-                             HorizontalAlignment="Stretch"
-                             Padding="6"
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Background="Transparent">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}">
-                                <Style.Resources>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius"
-                                                Value="4" />
-                                    </Style>
-                                </Style.Resources>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                </Grid>
+                <TextBox Grid.Column="0"
+                         x:Name="filepathTxtbox"
+                         Text="{Binding Filepath}"
+                         HorizontalAlignment="Stretch"
+                         Padding="6"
+                         FontSize="14"
+                         VerticalContentAlignment="Center"
+                         pu:TextBoxHelper.CornerRadius="4"
+                         pu:TextBoxHelper.FocusedShadowColor="Transparent"
+                         pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue"
+                         pu:TextBoxHelper.Watermark="文件路径" />
 
                 <Button Grid.Column="1"
                         Name="selectFileBtn"
                         Content="选择文件"
                         Margin="10,0,0,0"
-                        Click="SelectFileBtn_Click" />
+                        Padding="5"
+                        Click="SelectFileBtn_Click"
+                        Background="White"
+                        Foreground="Black"
+                        pu:ButtonHelper.ButtonStyle="Outline"
+                        pu:ButtonHelper.HoverBrush="Black"
+                        pu:ButtonHelper.CornerRadius="4" />
 
             </Grid>
 
-            <Grid Height="30"
-                  Margin="0,10,0,0">
-                <ComboBox Grid.Row="1"
-                          x:Name="tagComboBox"
-                          VerticalAlignment="Stretch"
-                          DropDownClosed="TagComboBox_DropDownClosed"
-                          ItemsSource="{Binding TagListForComboBox}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:SelectableFileTag}">
-                            <CheckBox Content="{Binding TagName}"
-                                      IsChecked="{Binding IsSelected}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <Grid Background="White"
-                      VerticalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                               FontSize="14"
-                               VerticalAlignment="Center"
-                               Text="标签：" />
-                    <TextBlock Grid.Column="1"
-                               x:Name="tagTxt"
-                               FontSize="14"
-                               VerticalAlignment="Center" />
-                    <Button Grid.Column="2"
-                            Name="editTagBtn"
-                            Click="EditTagBtn_Click"
-                            pu:ButtonHelper.ButtonStyle="Link">
-                        <WrapPanel>
-                            <Image Source="../Image/Edit.png"></Image>
-                        </WrapPanel>
-                    </Button>
-                </Grid>
-            </Grid>
-
-            <StackPanel Orientation="Horizontal"
+            <!-- add as shortcut -->
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
                         Margin="0,10,0,10">
                 <TextBlock Text="添加为快捷方式："
                            VerticalAlignment="Center"
@@ -118,17 +71,50 @@
                              GroupName="AsShortcutRadioGroup"
                              IsChecked="True"
                              Content="是"
-                             Margin="5,0,5,0" />
+                             Margin="5,0,5,0"
+                             pu:RadioButtonHelper.CheckedBackground="#0077d7" />
                 <RadioButton x:Name="notAsShortcutRadio"
                              GroupName="AsShortcutRadioGroup"
                              IsChecked="False"
                              Content="否"
-                             Margin="5,0,5,0" />
+                             Margin="5,0,5,0"
+                             pu:RadioButtonHelper.CheckedBackground="#0077d7" />
             </StackPanel>
 
-        </StackPanel>
+            <!-- tag caption -->
+            <TextBlock Grid.Row="2"
+                       Text="标签"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Margin="0,5,0,5" />
 
-        <Grid Grid.Row="2">
+            <!-- tag list -->
+            <ListView Grid.Row="4"
+                      SelectionMode="Single"
+                      ItemsSource="{Binding FileTags}"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:SelectableFileTag}">
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                  Content="{Binding TagName}"
+                                  FontSize="14"
+                                  Padding="5"
+                                  pu:CheckBoxHelper.CheckedBackground="#0077d7" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Focusable"
+                                Value="False" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -140,14 +126,23 @@
                     Content="确定"
                     Click="ConfirmBtn_Click"
                     Padding="10,5,10,5"
-                    Margin="0,0,10,0" />
+                    Margin="0,0,10,0"
+                    FontWeight="Bold"
+                    Background="DodgerBlue"
+                    pu:ButtonHelper.CornerRadius="4"
+                    pu:ButtonHelper.HoverBrush="#0077d7" />
 
             <Button Grid.Column="2"
-                    Name="CancelBtn"
+                    Name="cancelBtn"
                     Content="取消"
                     Click="CancelBtn_Click"
-                    Padding="10,5,10,5" />
+                    Padding="10,5,10,5"
+                    Background="White"
+                    Foreground="Black"
+                    pu:ButtonHelper.ButtonStyle="Outline"
+                    pu:ButtonHelper.HoverBrush="Black"
+                    pu:ButtonHelper.CornerRadius="4" />
         </Grid>
     </Grid>
 
-</Window>
+</pu:WindowX>

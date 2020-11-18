@@ -220,7 +220,7 @@
                 <WrapPanel.Background>
                     <ImageBrush ImageSource="../Image/More.png" Stretch="UniformToFill"/>
                 </WrapPanel.Background>
-                <Menu pu:MenuHelper.MenuStyle="Modern" Width="Auto" Background="{x:Null}" Opacity="0">
+                <Menu pu:MenuHelper.MenuStyle="Standard" Width="Auto" Opacity="0">
                     <MenuItem Width="30" Height="30">
                         <MenuItem Name="HideMenuItem" Header="隐藏" Click="HideMenuItem_Click"/>
                         <MenuItem Name="ExitMenuItem" Header="退出" Click="ExitMenuItem_Click"/>

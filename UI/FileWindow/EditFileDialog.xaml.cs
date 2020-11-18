@@ -12,13 +12,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Panuon.UI.Silver;
 
 namespace UI.FileWindow
 {
     /// <summary>
     /// EditFileDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class EditFileDialog : Window
+    public partial class EditFileDialog : WindowX
     {
         public EditFileDialog(FileInfoForEdit fileInfo, IEnumerable<string> allTagName)
         {
@@ -28,11 +29,8 @@ namespace UI.FileWindow
             //fill FileTag Collection
             foreach (string tagName in allTagName)
             {
-                FileTags.Add(new SelectableFileTag
-                {
-                    IsSelected = fileInfo.TagNames.Contains(tagName),
-                    TagName = tagName
-                });
+                FileTags.Add(new SelectableFileTag(
+                    tagName, fileInfo.TagNames.Contains(tagName)));
             }
         }
 

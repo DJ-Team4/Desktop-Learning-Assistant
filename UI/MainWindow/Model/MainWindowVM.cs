@@ -247,7 +247,7 @@ namespace UI
         private void GetWhiteLists()
         {
             ConfigService configService = ConfigService.GetConfigService();
-            WhiteListNames = configService.TTConfig.WhiteLists.Keys.ToList();
+            //WhiteListNames = configService.TTConfig.WhiteLists.Keys.ToList();
         }
 
         #endregion

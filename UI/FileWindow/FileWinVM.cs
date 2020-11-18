@@ -9,9 +9,6 @@ using System.Runtime.CompilerServices;
 using DesktopLearningAssistant.TagFile.Model;
 using DesktopLearningAssistant.TagFile;
 using System.Diagnostics;
-using System.Windows.Media;
-using System.Windows.Interop;
-using System.Drawing;
 
 namespace UI.FileWindow
 {
@@ -20,8 +17,7 @@ namespace UI.FileWindow
         public FileWinVM()
         {
             service = TagFileService.GetService();
-            FillNavItems();
-
+            FillNavItemsThenNotify();
         }
 
         private readonly ITagFileService service;
@@ -29,15 +25,18 @@ namespace UI.FileWindow
         /// <summary>
         /// 填充导航栏的数据
         /// </summary>
-        public void FillNavItems()
+        public void FillNavItemsThenNotify()
         {
             UpNavItems.Add(new AllFilesNavItem());
             UpNavItems.Add(new NoTagNavItem());
             UpNavItems.Add(new SearchResultNavItem());
             SelectedNavItem = UpNavItems[0];
-            List<Tag> tags = service.TagListAsync().Result;//TODO async
-            foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
-                DownNavItems.Add(tagNav);
+            Task.Run(async () =>
+            {
+                List<Tag> tags = await service.TagListAsync();
+                foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
+                    DownNavItems.Add(tagNav);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -60,7 +59,10 @@ namespace UI.FileWindow
                 return;
             bool needRefresh = await service.RenameTagAsync(tagNav.Tag, newTagName);
             if (needRefresh)
-                RefreshFiles();
+            {
+                tagNav.NotifyHeaderChanged();
+                await RefreshFilesAsync();
+            }
         }
 
         /// <summary>
@@ -73,30 +75,6 @@ namespace UI.FileWindow
                 return;
             await service.RemoveTagAsync(tagNav.Tag);
             DownNavItems.Remove(tagNav);
-        }
-
-        /// <summary>
-        /// 添加文件
-        /// </summary>
-        /// <param name="filepath">文件路径</param>
-        /// <param name="asShortcut">是否添加快捷方式</param>
-        /// <param name="tagNames">要添加的标签</param>
-        public async Task AddFileAsync(string filepath,
-                                       bool asShortcut,
-                                       IEnumerable<string> tagNames)
-        {
-            FileItem fileItem;
-            if (asShortcut)
-                fileItem = await service.AddShortcutToRepoAsync(filepath);
-            else
-                fileItem = await service.MoveFileToRepoAsync(filepath);
-            foreach (string tagName in tagNames)
-            {
-                Tag tag = await service.GetTagByNameAsync(tagName);
-                if (tag != null)
-                    await service.AddRelationAsync(tag, fileItem);
-            }
-            RefreshFiles();
         }
 
         /// <summary>
@@ -136,7 +114,6 @@ namespace UI.FileWindow
         {
             await SelectedFile?.FileItem.DeleteToRecycleBinAsync();
             Files.Remove(SelectedFile);
-            OnFilesChanged();
         }
 
         /// <summary>
@@ -146,7 +123,6 @@ namespace UI.FileWindow
         {
             await SelectedFile?.FileItem.DeleteAsync();
             Files.Remove(SelectedFile);
-            OnFilesChanged();
         }
 
         /// <summary>
@@ -183,18 +159,46 @@ namespace UI.FileWindow
                 if (tag != null)
                     tags.Add(tag);
             }
-            await service.UpdateFileRelationAsync(SelectedFile.FileItem, tags);
+            FileItem selectedFile = SelectedFile.FileItem;
+            await service.UpdateFileRelationAsync(selectedFile, tags);
             //update filename
-            await service.RenameFileItemAsync(SelectedFile.FileItem, fileInfo.Filename);
-            RefreshFiles();
+            await service.RenameFileItemAsync(selectedFile, fileInfo.Filename);
+            //update UI
+            for (int i = 0; i < Files.Count; i++)
+            {
+                if (Files[i].FileItem.FileItemId == selectedFile.FileItemId)
+                {
+                    Files[i] = new FileVM(selectedFile);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 刷新文件区文件集合，完成后会自动通知界面刷新
+        /// </summary>
+        public void RefreshFilesThenNotify()
+        {
+            RefreshFilesAsync().ConfigureAwait(false);
         }
 
         /// <summary>
         /// 刷新文件区的文件集合
         /// </summary>
-        public void RefreshFiles()
+        public async Task RefreshFilesAsync()
         {
-            OnFilesChanged();
+            ObservableCollection<FileVM> observableFiles;
+            try
+            {
+                observableFiles = FileItemsToFileVMs(await FilesFromNavAsync());
+            }
+            catch (Exception e)
+            {
+                //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
+                Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
+                observableFiles = new ObservableCollection<FileVM>();
+            }
+            Files = observableFiles;
         }
 
         /// <summary>
@@ -206,15 +210,30 @@ namespace UI.FileWindow
         }
 
         /// <summary>
+        /// 刷新智能提示列表
+        /// </summary>
+        /// <param name="prefix">标签前缀</param>
+        public void RefreshIntelliItems(string prefix)
+        {
+            IntelliItems.Clear();
+            foreach (var tagNav in DownNavItems)
+            {
+                string tagName = tagNav.Header;
+                if (tagName.StartsWith(prefix))
+                    IntelliItems.Add(new IntelliItem(tagName));
+            }
+        }
+
+        /// <summary>
         /// 导航栏上半部分
         /// </summary>
-        public ObservableCollection<INavItem> UpNavItems { get; private set; }
+        public ObservableCollection<INavItem> UpNavItems { get; }
             = new ObservableCollection<INavItem>();
 
         /// <summary>
         /// 导航栏下半部分
         /// </summary>
-        public ObservableCollection<INavItem> DownNavItems { get; private set; }
+        public ObservableCollection<INavItem> DownNavItems { get; }
             = new ObservableCollection<INavItem>();
 
         /// <summary>
@@ -239,21 +258,14 @@ namespace UI.FileWindow
         /// <summary>
         /// 要显示的文件
         /// </summary>
+        private ObservableCollection<FileVM> files = new ObservableCollection<FileVM>();
         public ObservableCollection<FileVM> Files
         {
-            get
+            get => files;
+            private set
             {
-                try
-                {
-                    var fileItems = FilesFromNavAsync().Result;//TODO async
-                    return FileItemsToFileVMs(fileItems);
-                }
-                catch (Exception e)
-                {
-                    //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
-                    Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
-                    return FileItemsToFileVMs(new List<FileItem>());
-                }
+                files = value;
+                OnPropertyChanged();
             }
         }
 
@@ -296,6 +308,9 @@ namespace UI.FileWindow
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<IntelliItem> IntelliItems { get; }
+            = new ObservableCollection<IntelliItem>();
 
         private ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
         {
@@ -366,13 +381,13 @@ namespace UI.FileWindow
         /// <summary>
         /// 导航栏被选中条目改变。
         /// 1. 通知 SelectedNavItem 属性改变。
-        /// 2. 通知 Files 属性改变。
+        /// 2. 刷新文件区。
         /// 3. 若选中了标签，则设置表达式栏。
         /// </summary>
         private void OnSelectedNavItemChanged()
         {
             OnPropertyChanged("SelectedNavItem");
-            OnFilesChanged();
+            RefreshFilesThenNotify();
             if (SelectedNavItem is TagNavItem)
             {
                 var sb = new StringBuilder();
@@ -395,112 +410,7 @@ namespace UI.FileWindow
             }
         }
 
-        /// <summary>
-        /// 显示的文件集合改变
-        /// </summary>
-        private void OnFilesChanged()
-        {
-            OnPropertyChanged("Files");
-        }
-
         #endregion
 
-    }
-
-    /// <summary>
-    /// 导航栏条目
-    /// </summary>
-    public interface INavItem
-    {
-        string Header { get; }
-    }
-
-    /// <summary>
-    /// “所有文件条目”
-    /// </summary>
-    public class AllFilesNavItem : INavItem
-    {
-        public string Header { get => "所有文件"; }
-    }
-
-    /// <summary>
-    /// 无标签文件条目
-    /// </summary>
-    public class NoTagNavItem : INavItem
-    {
-        public string Header { get => "无标签文件"; }
-    }
-
-    /// <summary>
-    /// 搜索结果条目
-    /// </summary>
-    public class SearchResultNavItem : INavItem
-    {
-        public string Header { get => "搜索结果"; }
-    }
-
-    /// <summary>
-    /// 标签条目
-    /// </summary>
-    public class TagNavItem : INavItem
-    {
-        public TagNavItem(Tag tag) => Tag = tag;
-
-        public string Header { get => Tag.TagName; }
-
-        public Tag Tag { get; private set; }
-    }
-
-    /// <summary>
-    /// 文件 View Model
-    /// </summary>
-    public class FileVM
-    {
-        public FileVM(FileItem fileItem)
-        {
-            FileItem = fileItem;
-            realPath = fileItem.RealPath();
-            foreach (var relation in fileItem.Relations)
-                TagNames.Add(relation.Tag.TagName);
-        }
-
-        //TODO display name remove .lnk
-        public string DisplayName { get => FileItem.DisplayName; }
-
-        public string CreateAt
-        {
-            get
-            {
-                DateTime createAt = System.IO.File.GetCreationTime(realPath);
-                return createAt.ToString();
-            }
-        }
-
-        public string AccessAt
-        {
-            get
-            {
-                DateTime accessAt = System.IO.File.GetLastAccessTime(realPath);
-                return accessAt.ToString();
-            }
-        }
-
-        public ObservableCollection<string> TagNames { get; }
-            = new ObservableCollection<string>();
-
-        public ImageSource IconSrc
-        {
-            get
-            {
-                Icon ico = Icon.ExtractAssociatedIcon(realPath);
-                return Imaging.CreateBitmapSourceFromHIcon(
-                    ico.Handle,
-                    System.Windows.Int32Rect.Empty,
-                    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-            }
-        }
-
-        public FileItem FileItem { get; private set; }
-        private readonly string realPath;
     }
 }

@@ -144,11 +144,22 @@
     <Compile Include="FileWindow\AddOrRenameTagDialog.xaml.cs">
       <DependentUpon>AddOrRenameTagDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileWindow\AllFilesNavItem.cs" />
+    <Compile Include="FileWindow\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileWindow\EditFileDialog.xaml.cs">
       <DependentUpon>EditFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileWindow\FileInfoForEdit.cs" />
+    <Compile Include="FileWindow\FileVM.cs" />
     <Compile Include="FileWindow\FileWinVM.cs" />
+    <Compile Include="FileWindow\INavItem.cs" />
+    <Compile Include="FileWindow\IntelliItem.cs" />
+    <Compile Include="FileWindow\IntelliUtils.cs" />
+    <Compile Include="FileWindow\NoTagNavItem.cs" />
+    <Compile Include="FileWindow\SearchResultNavItem.cs" />
+    <Compile Include="FileWindow\TagNavItem.cs" />
     <Compile Include="MainWindow\Model\MainWindowVM.cs" />
     <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
     <Compile Include="FileWindow\SelectableFileTag.cs" />
@@ -177,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileWindow\AddOrRenameTagDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileWindow\ConfirmDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -281,6 +296,7 @@
     <Resource Include="Image\Edit.png" />
     <Resource Include="Image\File.jpeg" />
     <Resource Include="Image\Home.jpg" />
+    <Resource Include="Image\Icon.ico" />
     <Resource Include="Image\More.png" />
     <Resource Include="Image\Pause.png" />
     <Resource Include="Image\Search.png" />
@@ -290,15 +306,6 @@
     <Resource Include="Image\TaskList.png" />
     <Resource Include="Image\Tomato-Finished.png" />
     <Resource Include="Image\Tomato-Unfinished.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image\refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image\Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
