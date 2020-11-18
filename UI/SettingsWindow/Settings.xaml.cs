@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UI.SettingsWindow;
+using DesktopLearningAssistant.TimeStatistic;
+using DesktopLearningAssistant.TimeStatistic.Model;
 
 namespace UI
 {
@@ -44,6 +46,21 @@ namespace UI
             string software = SoftWareComboBox.SelectedItem.ToString();
             string type = ConfigService.GetConfigService().TSConfig.TypeDict[software];
             TypeComboBox.SelectedItem = type;
+        }
+
+        private void SoftwareListView_Initialized(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void AddWhiteListBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteWhiteListBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
