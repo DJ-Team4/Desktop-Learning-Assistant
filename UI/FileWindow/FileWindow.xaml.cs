@@ -209,9 +209,11 @@ namespace UI.FileWindow
         {
             if (intelliLst.SelectedItem != null)
             {
-                string tagName = (intelliLst.SelectedItem as IntelliItem).Name;
+                string tagName = IntelliUtils.EscapeTagName(
+                    (intelliLst.SelectedItem as IntelliItem).Name);
                 int prefixLen = IntelliUtils.ExtractPrefix(tagSearchBox.Text).Length;
-                string textWithoutPrefix = tagSearchBox.Text.Substring(0, tagSearchBox.Text.Length - prefixLen);
+                string textWithoutPrefix = tagSearchBox.Text.Substring(
+                    0, tagSearchBox.Text.Length - prefixLen);
                 tagSearchBox.Text = textWithoutPrefix + tagName + "\" ";
                 tagSearchBox.CaretIndex = tagSearchBox.Text.Length;
             }
