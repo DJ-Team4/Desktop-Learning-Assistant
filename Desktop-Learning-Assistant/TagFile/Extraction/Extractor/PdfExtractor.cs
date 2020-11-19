@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
 {
     /// <summary>
-    /// 使用 OpenXml 提取 Excel 中的文字。
-    /// 只支持 XML 格式的 Excel（*.xlsx）。
+    /// 使用 iTextSharp 提取 PDF 中的文字
     /// </summary>
-    class ExcelExtractor : DocumentExtractorBase
+    class PdfExtractor : DocumentExtractorBase
     {
-        public ExcelExtractor(string filepath, int lengthLimit = -1)
+        public PdfExtractor(string filepath, int lengthLimit = -1)
         {
             Filepath = filepath;
             LengthLimit = lengthLimit;
         }
 
         public override IEnumerable<string> EnumerableText
-            => new EnumerableExcel(Filepath);
+            => new EnumerablePdf(Filepath);
     }
 }

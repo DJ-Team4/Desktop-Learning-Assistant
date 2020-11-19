@@ -12,11 +12,7 @@ namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
     /// </summary>
     class SlideExtractor : DocumentExtractorBase
     {
-        public SlideExtractor() { }
-
-        public SlideExtractor(string filepath) => Filepath = filepath;
-
-        public SlideExtractor(string filepath, int lengthLimit)
+        public SlideExtractor(string filepath, int lengthLimit = -1)
         {
             Filepath = filepath;
             LengthLimit = lengthLimit;
