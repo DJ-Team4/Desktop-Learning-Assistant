@@ -27,6 +27,8 @@ namespace DesktopLearningAssistant.TagFile.Extraction
                 return new ExcelExtractor(filepath, lengthLimit);
             else if (ext == ".pdf")
                 return new PdfExtractor(filepath, lengthLimit);
+            else if (ext == ".txt" || ext == ".md")
+                return new PlainTextExtractor(filepath, lengthLimit);
             else
                 return null;
         }

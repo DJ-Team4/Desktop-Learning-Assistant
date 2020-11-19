@@ -210,6 +210,7 @@
     <Compile Include="TagFile\Extraction\Extractor\DocumentExtractorBase.cs" />
     <Compile Include="TagFile\Extraction\Extractor\EnumerableExcel.cs" />
     <Compile Include="TagFile\Extraction\Extractor\EnumerablePdf.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerablePlainText.cs" />
     <Compile Include="TagFile\Extraction\Extractor\EnumerableSlide.cs" />
     <Compile Include="TagFile\Extraction\Extractor\EnumerableWord.cs" />
     <Compile Include="TagFile\Extraction\Extractor\ExcelExtractor.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="TagFile\Extraction\Extractor\IDocumentExtractor.cs" />
     <Compile Include="TagFile\Extraction\Extractor\LengthLimitEnumerable.cs" />
     <Compile Include="TagFile\Extraction\Extractor\PdfExtractor.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\PlainTextExtractor.cs" />
     <Compile Include="TagFile\Extraction\Extractor\SlideExtractor.cs" />
     <Compile Include="TagFile\Extraction\Extractor\WordExtractor.cs" />
     <Compile Include="TagFile\Extraction\StringExtension.cs" />

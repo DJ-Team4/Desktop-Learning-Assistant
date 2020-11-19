@@ -9,7 +9,7 @@ using iTextSharp.text.pdf.parser;
 namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
 {
     /// <summary>
-    /// 用户获取 PDF 中每行内容的可迭代对象
+    /// 用于获取 PDF 中每行内容的可迭代对象
     /// </summary>
     class EnumerablePdf : IEnumerable<string>
     {
