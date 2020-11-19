@@ -16,7 +16,7 @@ namespace DesktopLearningAssistant.TagFile.Extraction
         /// <param name="filepath">文件路径</param>
         /// <param name="lengthLimit">最大字数限制</param>
         /// <returns>若无对应的提取器则返回 null</returns>
-        public static IDocumentExtractor CreateExtractor(string filepath, int lengthLimit=-1)
+        public static IDocumentExtractor CreateExtractor(string filepath, int lengthLimit = -1)
         {
             string ext = Path.GetExtension(filepath);
             if (ext == ".docx")
@@ -25,6 +25,10 @@ namespace DesktopLearningAssistant.TagFile.Extraction
                 return new SlideExtractor(filepath, lengthLimit);
             else if (ext == ".xlsx")
                 return new ExcelExtractor(filepath, lengthLimit);
+            else if (ext == ".pdf")
+                return new PdfExtractor(filepath, lengthLimit);
+            else if (ext == ".txt" || ext == ".md")
+                return new PlainTextExtractor(filepath, lengthLimit);
             else
                 return null;
         }

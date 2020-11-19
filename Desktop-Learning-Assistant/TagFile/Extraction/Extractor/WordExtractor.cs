@@ -12,11 +12,7 @@ namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
     /// </summary>
     public class WordExtractor : DocumentExtractorBase
     {
-        public WordExtractor() { }
-
-        public WordExtractor(string filepath) => Filepath = filepath;
-
-        public WordExtractor(string filepath, int lengthLimit)
+        public WordExtractor(string filepath, int lengthLimit = -1)
         {
             Filepath = filepath;
             LengthLimit = lengthLimit;
