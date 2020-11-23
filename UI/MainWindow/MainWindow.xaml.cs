@@ -15,6 +15,8 @@ using DesktopLearningAssistant.TaskTomato.Model;
 using DesktopLearningAssistant.Configuration;
 using UI.AllTaskWindow;
 using UI.FileWindow;
+using DesktopLearningAssistant.TagFile;
+using System.IO;
 
 namespace UI
 {
@@ -141,6 +143,22 @@ namespace UI
         }
 
         /// <summary>
+        /// 双击打开相关文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RelativeFilesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int selectedIndex = RelativeFilesListView.SelectedIndex;
+            if (selectedIndex == -1) return;
+            string filePath = viewModel.RelativeFileItems[selectedIndex].FilePath;
+
+            if (!File.Exists(filePath)) return;
+
+            FileUtils.OpenFile(filePath);   // 用默认程序打开文件
+        }
+
+        /// <summary>
         /// clockTimer完成一个工作钟时回调
         /// </summary>
         private void WorkClockFinishedHandler(object sender)
@@ -177,6 +195,7 @@ namespace UI
                 CurrentTaskInfo = tts.GetTaskWithID(CurrentTaskInfo.TaskID);
                 if (CurrentTaskInfo.FinishedTomatoCount >= CurrentTaskInfo.TotalTomatoCount)
                 {
+                    tts.SetTaskFinished(CurrentTaskInfo);
                     UpdateCurrentTaskInfo();
                 }
             }));
@@ -190,7 +209,11 @@ namespace UI
             if (CurrentTaskInfo == null) return;
             nextState = ClockState.Working;
             // UI恢复
-            ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
+            }));
         }
         
         /// <summary>

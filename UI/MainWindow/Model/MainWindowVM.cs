@@ -137,23 +137,23 @@ namespace UI
         #region 私有方法
 
         /// <summary>
-        /// 最近k个任务效率折线图
+        /// 最近k个任务的效率折线图
         /// </summary>
         private void GetLineSeriesData()
         {
             LineSeriesCollection.Clear();
             LineXLabels.Clear();
-            List<double> values = new List<double>() { 0.7, 0.8, 0.65, 0.89, 0.73, 0.3, 0.56, 0.74};
-            //List<TaskEfficiency> taskEfficiencies = taskTomatoService.GetTaskEfficiencies(DateTime.Now, 5);
-            //for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
-            //{
-                //LineXLabels.Add(taskEfficiencies[i].Name);
-                //values.Add(taskEfficiencies[i].Efficiency);
-            //}
+            List<double> values = new List<double>();
+            List<TaskEfficiency> taskEfficiencies = tts.GetTaskEfficiencies(DateTime.Now, 5);
+            for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
+            {
+                LineXLabels.Add(taskEfficiencies[i].Name);
+                values.Add(taskEfficiencies[i].Efficiency);
+            }
             
             LineSeriesCollection.Add(new LineSeries
             {
-                //Title = "Today",
+                Title = "Efficiency",
                 DataLabels = false,
                 Values = new ChartValues<double>(values)
             });

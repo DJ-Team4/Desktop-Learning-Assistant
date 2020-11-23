@@ -126,7 +126,8 @@
                                     <WrapPanel>
                                         <TextBlock Text="相关文件：" Height="20" Margin="5,0,0,0"/>
                                     </WrapPanel>
-                                    <ListView Name="RelativeFilesListView" ItemsSource="{Binding RelativeFileItems}"  Margin="5" Height="155">
+                                    <ListView Name="RelativeFilesListView" ItemsSource="{Binding RelativeFileItems}"  Margin="5" Height="155"
+                                              MouseDoubleClick="RelativeFilesListView_MouseDoubleClick">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <WrapPanel>
@@ -152,6 +153,9 @@
                                     <RowDefinition Height="334*"/>
                                     <RowDefinition Height="76*"/>
                                 </Grid.RowDefinitions>
+                                <WrapPanel Grid.Row="0" Margin="5" VerticalAlignment="Bottom">
+                                    <Label Content="最近任务的效率："/>
+                                </WrapPanel>
                                 <lvc:CartesianChart Series="{Binding LineSeriesCollection}"  Margin="5" Grid.Row="1" Grid.RowSpan="1">
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
@@ -164,18 +168,22 @@
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
                 <Grid>
-                    <WrapPanel Name="FileDropPanel"
-                               Height="200" Width="200"
-                               Drop="File_Drop"
-                               DragEnter="File_DragEnter"
-                               Background="AliceBlue"/>
-                    <!--Label Content="将文件拖拽入此" Margin="85,197,86,269.6"/-->
+                    <Border CornerRadius="6"
+                            BorderBrush="#FFA59D9D"
+                            Background="White"
+                            BorderThickness="2"
+                            Padding="8"
+                            Height="200" Width="200"
+                            Drop="File_Drop"
+                            DragEnter="File_DragEnter" Margin="42,90,42,190">
+                        <Label Content="将文件拖拽入此" VerticalAlignment="Center" HorizontalAlignment="Center" Width="Auto"/>
+                    </Border>
 
                     <Button Content="文件管理"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
                             pu:ButtonHelper.CornerRadius="7"
-                            Margin="98,364,98,87.6"
+                            Margin="98,337,98,114.6"
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Image/plus.png" Opacity="0.9"/> -->

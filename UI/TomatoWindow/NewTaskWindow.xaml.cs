@@ -93,8 +93,8 @@ namespace UI
         private void AddTomatoNum_OnClick(object sender, RoutedEventArgs e)
         {
             Image image = new Image() { Source = new BitmapImage(new Uri(MLinePath, UriKind.Absolute)) };
-            image.Width = 35;
-            image.Height = 35;
+            image.Width = 30;
+            image.Height = 30;
             TomatoListStackPanel.Children.Add(image);
         }
 
