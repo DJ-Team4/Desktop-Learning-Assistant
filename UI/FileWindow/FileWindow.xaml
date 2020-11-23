@@ -12,10 +12,6 @@
             WindowStartupLocation="CenterScreen"
             pu:WindowXCaption.Padding="10,0,0,0"
             pu:WindowXCaption.Background="#f2f2f2">
-    <Window.Resources>
-        <!-- 字体大小 -->
-        <sys:Double x:Key="BaseFontSize">14</sys:Double>
-    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>

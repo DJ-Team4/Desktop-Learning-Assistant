@@ -101,8 +101,10 @@ namespace UI.FileWindow
         private async void AddFileBtn_Click(object sender, RoutedEventArgs e)
         {
             var allTagNames = await winVM.AllTagNamesAsync();
-            var dialog = new AddFileDialog(allTagNames);
-            dialog.Owner = this;
+            var dialog = new AddFileDialog(allTagNames)
+            {
+                Owner = this
+            };
             if (dialog.ShowDialog().GetValueOrDefault(false))
                 await winVM.RefreshFilesAsync();
         }

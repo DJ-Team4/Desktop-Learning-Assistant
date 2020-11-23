@@ -32,7 +32,6 @@ namespace DesktopLearningAssistant.TagFile.Extraction
                 return acAutomaton.Query(text);
             else
             {
-                //TODO use task
                 var counter = new Dictionary<string, int>();
                 foreach (string pattern in words)
                     counter[pattern] = CountSubstr(text, pattern);
