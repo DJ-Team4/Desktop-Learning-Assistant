@@ -154,6 +154,11 @@ namespace DesktopLearningAssistant.TagFile
         /// </summary>
         Task<List<FileItem>> FilesWithoutTagAsync();
 
+        /// <summary>
+        /// 推荐标签
+        /// </summary>
+        Task<List<Tag>> RecommendTagAsync(string filepath);
+
         #endregion
     }
 }

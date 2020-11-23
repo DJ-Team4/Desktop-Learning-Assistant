@@ -42,8 +42,17 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.11.3.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.11.3\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -140,6 +149,14 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -190,12 +207,24 @@
     <Compile Include="TagFile\Extraction\AcAutomaton\BasicAcAutomaton.cs" />
     <Compile Include="TagFile\Extraction\AcAutomaton\BasicTrieChildren.cs" />
     <Compile Include="TagFile\Extraction\AcAutomaton\BasicTrieNode.cs" />
-    <Compile Include="TagFile\Extraction\DocumentExtractorBase.cs" />
-    <Compile Include="TagFile\Extraction\IDocumentExtractor.cs" />
-    <Compile Include="TagFile\Extraction\LengthLimitEnumerable.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\DocumentExtractorBase.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerableExcel.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerablePdf.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerablePlainText.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerableSlide.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\EnumerableWord.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\ExcelExtractor.cs" />
+    <Compile Include="TagFile\Extraction\ExtractorFactory.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\IDocumentExtractor.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\LengthLimitEnumerable.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\PdfExtractor.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\PlainTextExtractor.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\SlideExtractor.cs" />
+    <Compile Include="TagFile\Extraction\Extractor\WordExtractor.cs" />
     <Compile Include="TagFile\Extraction\StringExtension.cs" />
     <Compile Include="TagFile\Extraction\StringUnicodePoints.cs" />
     <Compile Include="TagFile\Extraction\AcAutomaton\Utf32AcAutomaton.cs" />
+    <Compile Include="TagFile\Extraction\WordCounter.cs" />
     <Compile Include="TagFile\ModelMethodExtension.cs" />
     <Compile Include="TagFile\Model\FileItem.cs" />
     <Compile Include="TagFile\Model\Tag.cs" />
@@ -247,6 +276,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

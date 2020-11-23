@@ -65,9 +65,10 @@ namespace DesktopLearningAssistant.TagFile.Expression
             var files = ToFiles(relations);
             var root = Parse(Tokenize(expression)); // AST 的根节点
             var idList = new List<int>(); // 符合查询结果的 Id 的列表
+            //若为空树，则添加所有文件
             foreach (var file in files)
             {
-                if (root.Value(file))
+                if (root == null || root.Value(file))
                     idList.Add(file.Id);
             }
             return idList;

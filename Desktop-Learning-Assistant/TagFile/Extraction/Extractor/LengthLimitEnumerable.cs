@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DesktopLearningAssistant.TagFile.Extraction
+namespace DesktopLearningAssistant.TagFile.Extraction.Extractor
 {
     /// <summary>
     /// 用于限制总字数的可迭代对象

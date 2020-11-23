@@ -30,5 +30,20 @@ namespace UI.FileWindow
             Match match = reg.Match(text);
             return match.Groups[1].Value;
         }
+
+        /// <summary>
+        /// 转义标签名
+        /// </summary>
+        public static string EscapeTagName(string tagName)
+        {
+            var sb = new StringBuilder();
+            foreach(char ch in tagName)
+            {
+                if (ch == '"')
+                    sb.Append('\\');
+                sb.Append(ch);
+            }
+            return sb.ToString();
+        }
     }
 }
