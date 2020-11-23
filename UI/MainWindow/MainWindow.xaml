@@ -172,27 +172,25 @@
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
                 <Grid>
+                    <Label Content="拖拽入此：" Margin="21,40,184,414.6"/>
                     <Border
-                        BorderBrush="Black"
-                        BorderThickness="30"
-                        Opacity="0.2"
+                        BorderBrush="Blue"
+                        BorderThickness="5"
+                        Opacity="0.3"
                         pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
                         pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
                         pu:TextBoxHelper.CornerRadius="3"
-                        Margin="36,44,30.6,247.8"
+                        Margin="21,84,18,159.6"
                         AllowDrop="True"
                         DragEnter="File_DragEnter"
                         Drop="File_Drop">
-                        <!--<Grid VerticalAlignment="Stretch" 
-                              HorizontalAlignment="Stretch"
-                              Background="Red"/>-->
                     </Border>
 
                     <Button Content="文件管理"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
                             pu:ButtonHelper.CornerRadius="7"
-                            Margin="89,275,83.6,168.8"
+                            Margin="98,364,98,87.6"
                             Background="aliceblue"
                             Click="OpenFileWinButton_Click"/>
                     <!-- <Image HorizontalAlignment="Left" Height="54" Margin="99,86,0,0" VerticalAlignment="Top" Width="55" Source="Image/plus.png" Opacity="0.9"/> -->
