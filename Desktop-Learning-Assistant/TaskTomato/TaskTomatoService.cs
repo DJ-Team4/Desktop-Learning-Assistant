@@ -135,11 +135,11 @@ namespace DesktopLearningAssistant.TaskTomato
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public TaskInfo GetTaskWithName(string name)
+        public List<TaskInfo> GetTaskWithName(string name)
         {
             using (var context = Context)
             {
-                TaskInfo taskInfo = context.TaskModels.Include(tm => tm.Tomatoes).Include(tm => tm.RelativeFiles).FirstOrDefault(t => t.Name == name);
+                List<TaskInfo> taskInfo = context.TaskModels.Include(tm => tm.Tomatoes).Include(tm => tm.RelativeFiles).Where(t => t.Name.Contains(name)).ToList();
                 return taskInfo;
             }
         }
@@ -216,10 +216,12 @@ namespace DesktopLearningAssistant.TaskTomato
                 context.TomatoesModels.Add(tomato);
 
                 // 把焦点任务加入表中
+                /*
                 foreach (FocusApp focusApp in tomato.FocusApps)
                 {
                     context.FocusAppModels.Add(focusApp);
                 }
+                */
 
                 // 修改任务状态
                 taskInfo.FinishedTomatoCount++;
@@ -289,7 +291,7 @@ namespace DesktopLearningAssistant.TaskTomato
             foreach (var fileInfo in fileInfos)
             {
                 if (!fileInfo.Exists) continue;
-                if (!(fileInfo.CreationTime > beginTime && fileInfo.CreationTime < endTime)) continue;
+                if (!(fileInfo.LastAccessTime >= beginTime && fileInfo.LastAccessTime <= endTime)) continue;
 
                 // 获取快捷路径指向的位置
                 WshShell shell = new WshShell();

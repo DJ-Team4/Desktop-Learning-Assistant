@@ -44,12 +44,12 @@
                                     <RowDefinition Height="202*"/>
                                     <RowDefinition Height="261*"/>
                                 </Grid.RowDefinitions>
-                                <lvc:PieChart Name="today_piechart" Grid.Row="0" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="TodayPieChart_OnDataClick" Opacity="0.8" Margin="5" AnimationsSpeed="0">
+                                <lvc:PieChart Name="today_piechart" Grid.Row="0" Hoverable="False" Series="{Binding TodayPieSeriesCollection}" DataClick="TodayPieChart_OnDataClick" Opacity="0.8" Margin="5">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Series="{Binding TodayColumnSeriesCollection}" Margin="5" Grid.Row="1" AnimationsSpeed="0">
+                                <lvc:CartesianChart Series="{Binding TodayColumnSeriesCollection}" Margin="5" Grid.Row="1">
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding TodayColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
@@ -65,12 +65,12 @@
                                     <RowDefinition Height="202*"/>
                                     <RowDefinition Height="261*"/>
                                 </Grid.RowDefinitions>
-                                <lvc:PieChart x:Name="week_piechart" Grid.Row="0" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="5" AnimationsSpeed="0">
+                                <lvc:PieChart x:Name="week_piechart" Grid.Row="0" Hoverable="False" Series="{Binding WeekPieSeriesCollection}" Opacity="0.8" Margin="5">
                                     <lvc:PieChart.DataTooltip>
                                         <lvc:DefaultTooltip BulletSize="10"></lvc:DefaultTooltip>
                                     </lvc:PieChart.DataTooltip>
                                 </lvc:PieChart>
-                                <lvc:CartesianChart Grid.Row="1" Series="{Binding WeekColumnSeriesCollection}" Margin="5" AnimationsSpeed="0">
+                                <lvc:CartesianChart Grid.Row="1" Series="{Binding WeekColumnSeriesCollection}" Margin="5">
                                     <lvc:CartesianChart.AxisX>
                                         <lvc:Axis Labels="{Binding WeekColumnXLabels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
@@ -84,7 +84,7 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="番茄钟"  Loaded="TomatoClock_OnLoaded">
+            <TabItem Header="番茄钟">
                 <Grid>
                     <TabControl
                         pu:TabControlHelper.SelectedForeground="#3F3F3F" 
@@ -96,26 +96,22 @@
                                     <RowDefinition Height="203*"/>
                                     <RowDefinition Height="46*"/>
                                 </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0" Margin="0">
-                                    <WrapPanel>
-                                        <Label Content="当前任务：" Height="30" Width="75" Margin="5"/>
-                                        <Label x:Name="LabelCurrentTask" Content="完成选题报告" Height="30" Width="133" Margin="5" FontSize="14"/>
-                                    </WrapPanel>
+                                <StackPanel Grid.Row="0" Margin="5">
+                                    <Label x:Name="CurrentTaskInfoLabel" Content="没有未完成的任务(*￣▽￣*)" Height="30" Margin="5" FontSize="18" HorizontalContentAlignment="Center"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <StackPanel Orientation="Vertical">
-                                            <myProgressbar:Progressbar_xy x:Name="circleProgressBar" CurrentValue1="1" Height="150" Width="150" Margin="0"/>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27" Margin="0">
-                                                <TextBlock  Text="25" x:Name="MinuteArea" FontSize="18" Width="26"/>
-                                                <TextBlock Text=":" x:Name="MinuteSplitSecond" FontSize="18" Background="Transparent" Width="15"/>
-                                                <TextBlock Text="00"  x:Name="SecondArea" FontSize="18" Background="Transparent" Width="26"/>
+                                            <myProgressbar:Progressbar_xy x:Name="ProgressBar" CurrentValue="1" Height="120" Width="120" Margin="5"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="25" Margin="5">
+                                                <TextBlock Text="25" x:Name="MinuteTextBlock" FontSize="18" Width="Auto"/>
+                                                <TextBlock Text=":" x:Name="MinuteSplitTextBlock" FontSize="18" Width="Auto" Margin="5, 0, 5, 0"/>
+                                                <TextBlock Text="00"  x:Name="SecondTextClock" FontSize="18" Width="Auto"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5">
                                             <TextBlock Text="白名单：" Margin="5,0,0,0"/>
-                                            <ComboBox Name="WhiteListComboBox" Width="90" Height="30" Margin="5" ItemsSource="{Binding WhiteListNames}"/>
+                                            <ComboBox Name="WhiteListKeyComboBox" Width="90" Height="30" Margin="5" ItemsSource="{Binding WhiteListKeys}"/>
                                             <Button Name="ClockBtn"
-                                                    Click="ButtonStart_Click"
-                                                    MouseRightButtonDown="TimeCountPause_Click"
+                                                    Click="ClockBtn_Click"
                                                     HorizontalAlignment="Center" 
                                                     Width="35" Height="35" Margin="5"
                                                     pu:ButtonHelper.ButtonStyle="Link">
@@ -126,17 +122,16 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1">
+                                <StackPanel Grid.Row="1" Margin="5">
                                     <WrapPanel>
-                                        <TextBlock Text="相关文件：" Height="20" Margin="5"/>
+                                        <TextBlock Text="相关文件：" Height="20" Margin="5,0,0,0"/>
                                     </WrapPanel>
-                                    
-                                    <ListView Name="RelativeFilesListView" ItemsSource="{Binding RelativeFileItems}"  Margin="5" Height="160" Background="{x:Null}">
+                                    <ListView Name="RelativeFilesListView" ItemsSource="{Binding RelativeFileItems}"  Margin="5" Height="155">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <WrapPanel>
-                                                    <Image Name="IconImage" Width="25" Height="25"/>
-                                                    <TextBlock Name="FileNameTextBlock" Text="{Binding FileName}"/>
+                                                    <Image Name="IconImage" Source="{Binding ImageSrc}" Width="25" Height="25" Stretch="UniformToFill" Margin="0,0,5,0"/>
+                                                    <TextBlock Name="FileNameTextBlock" Text="{Binding FileName}" VerticalAlignment="Center"/>
                                                 </WrapPanel>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
@@ -161,9 +156,6 @@
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis></lvc:Axis>
                                     </lvc:CartesianChart.AxisY>
-                                    <!--lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Labels="{Binding LineXLabels}"></lvc:Axis>
-                                    </-->
                                 </lvc:CartesianChart>
                             </Grid>
                         </TabItem>
@@ -172,19 +164,12 @@
             </TabItem>
             <TabItem Header="文件管理" Name="FileManagementTabItem"  AllowDrop="True">
                 <Grid>
-                    <Label Content="拖拽入此：" Margin="21,40,184,414.6"/>
-                    <Border
-                        BorderBrush="Blue"
-                        BorderThickness="5"
-                        Opacity="0.3"
-                        pu:TextBoxHelper.FocusedBorderBrush="#00DBFF"
-                        pu:TextBoxHelper.FocusedShadowColor="#00DBFF"
-                        pu:TextBoxHelper.CornerRadius="3"
-                        Margin="21,84,18,159.6"
-                        AllowDrop="True"
-                        DragEnter="File_DragEnter"
-                        Drop="File_Drop">
-                    </Border>
+                    <WrapPanel Name="FileDropPanel"
+                               Height="200" Width="200"
+                               Drop="File_Drop"
+                               DragEnter="File_DragEnter"
+                               Background="AliceBlue"/>
+                    <!--Label Content="将文件拖拽入此" Margin="85,197,86,269.6"/-->
 
                     <Button Content="文件管理"
                             Foreground="black"

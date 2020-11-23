@@ -1,65 +1,62 @@
-﻿<Window x:Class="UI.Tomato.AllTasksWindow"
+﻿<Window x:Class="UI.AllTaskWindow.AllTasksWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-        xmlns:local="clr-namespace:UI.Tomato"
+        xmlns:local="clr-namespace:UI.AllTaskWindow"
         Title="任务" Height="450" Width="528" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="59*"/>
-            <RowDefinition Height="318*"/>
-            <RowDefinition Height="42*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="164*"/>
+            <RowDefinition Height="21*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5">
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="5,5,4.6,4.4">
             <DockPanel Height="32" Margin="0,0,0.2,0">
                 <TextBox x:Name="SearchTextBox" Text="输入搜索内容" 
                          pu:TextBoxHelper.IsClearButtonVisible="True" 
                          TextChanged="SearchTextBox_OnTextChanged"
                          Foreground="DarkGray" Width="444" Margin="0"
                          />
-                <Button pu:ButtonHelper.ButtonStyle="Link" x:Name="SearchBtn" Margin="0">
+                <Button pu:ButtonHelper.ButtonStyle="Link" x:Name="SearchBtn" Margin="0" Click="SearchBtn_OnClick">
                     <WrapPanel>
                         <Image Height="25" Width="25" Source="../Image/Search.png"></Image>
                     </WrapPanel>
                 </Button>
-
-
             </DockPanel>
         </StackPanel>
-        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0,59,-0.4,42" Grid.RowSpan="3">
+        <StackPanel x:Name="StackPanelOne"  Orientation="Horizontal"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="Auto" Margin="0" Grid.Row="1">
             <ListView x:Name="AllTasksListView" Width="505" Margin="5">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel Width="300">
-                            <StackPanel  Orientation="Vertical">
-                                <WrapPanel>
-                                    <TextBlock Text="{Binding ID}" FontSize="18" Height="28" />
-                                    <TextBlock Text="    "/>
-                                    <TextBlock Text="{Binding Name}" FontSize="18" Height="28" />
-                                    <TextBlock Text="&#xA;&#xA;"/>
+                        <WrapPanel Width="505">
+                            <StackPanel Orientation="Vertical" Width="Auto">
+                                <WrapPanel Margin="5">
+                                    <TextBlock Text="{Binding ID}" VerticalAlignment="Center" FontSize="18" Height="Auto" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18" Height="Auto" />
                                 </WrapPanel>
-                                <WrapPanel>
-                                    <TextBlock Text=" 开始时间 " FontSize="12" Height="25" />
-                                    <TextBlock Text="  "/>
-                                    <TextBlock  Text="{Binding StartTime}" FontSize="12" Height="25"  />
+                                <WrapPanel Margin="5">
+                                    <TextBlock Text=" 开始时间：" FontSize="12" Height="Auto"/>
+                                    <TextBlock  Text="{Binding StartTime}" FontSize="12" Height="Auto"/>
                                 </WrapPanel>
-                                <WrapPanel>
-                                    <TextBlock Text=" 截止时间 " FontSize="12" Height="25" />
-                                    <TextBlock Text="  "/>
-                                    <TextBlock Text="{Binding DeadLine}" FontSize="12" Height="25"  />
+                                <WrapPanel Margin="5">
+                                    <TextBlock Text=" 截止时间：" FontSize="12" Height="Auto"/>
+                                    <TextBlock Text="{Binding DeadLine}" FontSize="12" Height="Auto"/>
                                 </WrapPanel>
-                                <WrapPanel>
-                                    <StackPanel x:Name="TomatoStackPanel" Orientation="Horizontal">
-                                        <ItemsControl ItemsSource="{Binding TomatoImageList}">
-                                            <ItemsControl.Template>
-                                                <ControlTemplate>
-                                                    <Image Width="25" Height="25"/>
-                                                </ControlTemplate>
-                                            </ItemsControl.Template>
-                                        </ItemsControl>
-                                    </StackPanel>
+                                <WrapPanel Margin="5">
+                                    <ItemsControl ItemsSource="{Binding ImageItems}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image Source="{Binding ImageSrc}" Width="25" Height="25"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </WrapPanel>
                             </StackPanel>
                         </WrapPanel>
@@ -93,24 +90,30 @@
         </StackPanel>
         <Grid Grid.Row="2" Grid.RowSpan="1" Margin="0" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="333*"/>
-                <ColumnDefinition Width="60*"/>
-                <ColumnDefinition Width="61*"/>
-                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="284*"/>
+                <ColumnDefinition Width="62*"/>
+                <ColumnDefinition Width="62*"/>
+                <ColumnDefinition Width="62*"/>
+                <ColumnDefinition Width="62*"/>
             </Grid.ColumnDefinitions>
-            <Button pu:ButtonHelper.ButtonStyle="Link" Click="ModifyTasks" Width="35"  HorizontalAlignment="Center" Margin="20.2,5,4.8,5.4" Grid.Column="1" >
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="ModifyTasks" Width="34"  HorizontalAlignment="Center" Margin="5" Grid.Column="1" >
                 <WrapPanel>
                     <Image Source="../Image/Edit.png"></Image>
                 </WrapPanel>
             </Button>
-            <Button pu:ButtonHelper.ButtonStyle="Link" Click="DeleteTask"  Width="36"  HorizontalAlignment="Center" Margin="16.2,5,8.6,5.4" Grid.Column="2" >
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="DeleteTask"  Width="34"  HorizontalAlignment="Center" Margin="5" Grid.Column="2" >
                 <WrapPanel>
                     <Image Source="../Image/Delete.png"></Image>
                 </WrapPanel>
             </Button>
-            <Button pu:ButtonHelper.ButtonStyle="Link" Click="AddNewTask_OnClick"  Width="35"  HorizontalAlignment="Center" Margin="12.4,5,12.6,5.4" Grid.Column="3" >
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="AddNewTask_OnClick"  Width="35"  HorizontalAlignment="Center" Margin="5" Grid.Column="3" >
                 <WrapPanel>
                     <Image Source="../Image/Add.png"></Image>
+                </WrapPanel>
+            </Button>
+            <Button pu:ButtonHelper.ButtonStyle="Link" Click="SelectBtn_Click"  Width="35"  HorizontalAlignment="Center" Margin="5" Grid.Column="4" >
+                <WrapPanel>
+                    <Image Source="../Image/Start.png"></Image>
                 </WrapPanel>
             </Button>
         </Grid>

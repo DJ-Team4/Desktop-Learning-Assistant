@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace UI
 {
@@ -12,7 +13,7 @@ namespace UI
     /// </summary>
     public class RelativeFileItem
     {
-        public Image IconImage { get; set; }
+        public ImageSource ImageSrc { get; set; }
         public string FilePath { get; set; }
         public string FileName
         {
@@ -23,6 +24,5 @@ namespace UI
                 return tmp[tmp.Count - 1];
             }
         }
-        
     }
 }

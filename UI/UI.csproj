@@ -163,6 +163,7 @@
     <Compile Include="MainWindow\Model\MainWindowVM.cs" />
     <Compile Include="MainWindow\Model\RelativeFileItem.cs" />
     <Compile Include="FileWindow\SelectableFileTag.cs" />
+    <Compile Include="MainWindow\TomatoClockManager.cs" />
     <Compile Include="SettingsWindow\NewWhiteList.xaml.cs">
       <DependentUpon>NewWhiteList.xaml</DependentUpon>
     </Compile>
@@ -170,13 +171,13 @@
     <Compile Include="TomatoWindow\AllTasksWindow.xaml.cs">
       <DependentUpon>AllTasksWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TomatoWindow\Model\TaskItem.cs" />
     <Compile Include="TomatoWindow\MyProgressbar\Progressbar_xy.xaml.cs">
       <DependentUpon>Progressbar_xy.xaml</DependentUpon>
     </Compile>
     <Compile Include="TomatoWindow\NewTaskWindow.xaml.cs">
       <DependentUpon>NewTaskWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Process\TimeCount.cs" />
     <Compile Include="SettingsWindow\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

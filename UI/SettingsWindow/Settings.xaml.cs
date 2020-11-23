@@ -75,12 +75,12 @@ namespace UI
                 // 更新数据
                 configService.TTConfig.WhiteLists.Add(newWhiteListName, new List<string>());
                 viewModel.UpdateWhiteListKey();
-                WhiteListKeyComboBox.GetBindingExpression(ComboBox.ItemsSourceProperty).UpdateSource();
-                WhiteListKeyComboBox.SelectedItem = newWhiteList.WhiteListName;
                 viewModel.UpdateWhiteListValue(newWhiteList.WhiteListName);
 
-                // 刷新控件
-                
+                // 更新控件
+                WhiteListKeyComboBox.ItemsSource = viewModel.WhiteListKeyList;
+                WhiteListKeyComboBox.SelectedIndex = WhiteListKeyComboBox.Items.Count - 1;  // 选择新的
+                WhiteListKeyComboBox.Items.Refresh();
                 WhiteListValueListView.Items.Refresh();
             }
         }
@@ -96,7 +96,9 @@ namespace UI
             viewModel.UpdateWhiteListValue();
 
             // 刷新控件
-            RefreshControls();
+            WhiteListKeyComboBox.ItemsSource = viewModel.WhiteListKeyList;
+            WhiteListKeyComboBox.Items.Refresh();
+            WhiteListValueListView.Items.Refresh();
         }
 
         private void SaveWhiteListBtn_Click(object sender, RoutedEventArgs e)

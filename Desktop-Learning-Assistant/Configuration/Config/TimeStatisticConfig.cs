@@ -21,7 +21,13 @@ namespace DesktopLearningAssistant.Configuration.Config
             TimeSlice = 200;
             SaveToDbTimeSlice = 5000;
             DbPath = "TimeStatistic.db";
-            TypeDict = new Dictionary<string, string>();
+            TypeDict = new Dictionary<string, string>
+            {
+                { "UI", "学习" },
+                { "devenv", "工具" },
+                { "chrome", "工具" },
+                { "QQ", "社交" }
+            };
 
             TypeList = new List<string>()
             {

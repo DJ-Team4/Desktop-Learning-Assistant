@@ -29,5 +29,18 @@ namespace DesktopLearningAssistant.TaskTomato.Model
         /// </summary>
         [ForeignKey("TomatoID")]
         public int TomatoID { get; set; }
+
+        public static ICollection<FocusApp> TransFrom(List<string> whiteListValues)
+        {
+            List<FocusApp> focusApps = new List<FocusApp>();
+            foreach (string whiteListValue in whiteListValues)
+            {
+                focusApps.Add(new FocusApp()
+                {
+                    AppName = whiteListValue
+                });
+            }
+            return focusApps;
+        }
     }
 }

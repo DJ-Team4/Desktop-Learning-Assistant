@@ -25,9 +25,12 @@ namespace UI.TomatoWindow.MyProgressbar
             InitializeComponent();
         }
 
-        public double CurrentValue1
+        public double CurrentValue
         {
-            set { SetValue(value); }
+            set 
+            {
+                SetValue(value); 
+            }
         }
 
         /// <summary>
@@ -43,8 +46,6 @@ namespace UI.TomatoWindow.MyProgressbar
             ******************************************/
             double angel = percentValue * 360; //角度
 
-
-
             double radius = 14; //环形半径
 
             //起始点
@@ -54,8 +55,6 @@ namespace UI.TomatoWindow.MyProgressbar
             //结束点
             double endLeft = 0;
             double endTop = 0;
-
-
 
             //数字显示
             lbValue.Content = (percentValue * 100).ToString("0") + "%";

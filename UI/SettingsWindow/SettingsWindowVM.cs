@@ -70,7 +70,6 @@ namespace UI.SettingsWindow
 
                 WhiteListValueList.Add(software);
             }
-            
         }
 
         public void UpdateTypeKey()

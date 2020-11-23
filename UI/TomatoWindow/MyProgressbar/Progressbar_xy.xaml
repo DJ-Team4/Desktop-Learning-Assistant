@@ -9,7 +9,7 @@
         <Grid Width="34" Height="34">
             <Path Name="MyCycleProcessBar1" Data="M17,3 A14,14 0 0 1 16,3 " Stroke="SkyBlue" StrokeThickness="4" Height="34" Width="34" VerticalAlignment="Center" HorizontalAlignment="Center">
             </Path>
-            <Label Name="lbValue" Content="50%" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="4"  />
+            <Label Name="lbValue" Content="50%" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="5"  />
         </Grid>
     </Viewbox>
 </UserControl>
