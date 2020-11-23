@@ -173,7 +173,7 @@ namespace DesktopLearningAssistant.TimeStatistic
                     // 如果是新发现的进程，则加入类型字典中
                     if (!configService.TSConfig.TypeDict.ContainsKey(proc.ProcessName))
                     {
-                        ConfigService.GetConfigService().TSConfig.TypeDict.Add(proc.ProcessName, "其他");
+                        configService.TSConfig.TypeDict.Add(proc.ProcessName, "其他");
                     }
 
                     UserActivityPiece currentUAP = new UserActivityPiece
@@ -201,17 +201,26 @@ namespace DesktopLearningAssistant.TimeStatistic
                         {
                             // 更新UAP数组
                             lastUAP.Finished = true;
+                            Console.WriteLine("————————————————————");
+                            foreach (var uap in userActivityPieces)
+                            {
+                                Console.WriteLine(uap.ToString());
+                            }
+                            Console.WriteLine(currentUAP.ToString());
                             userActivityPieces.Add(currentUAP);
 
                             // 更新KA数组
+                            /*
                             if ((lastUAP.Name == "explorer" || lastUAP.Name == "Idle") && userActivityPieces.Count >= 3)    // Windows在杀进程前会先转入explorer或Idle，所以出现这种情况时需要再回溯一层UAP
                             {
                                 lastUAP = userActivityPieces[userActivityPieces.Count - 3];
                             }
+                            
                             if (Process.GetProcesses().Count(p => p.ProcessName == lastUAP.Name) == 0)     // 当前窗口发送了变化时，检测上一个窗口的进程是否被关闭（可能也只是隐藏）。
                             {
                                 TDManager.KilledActivities.Add(new UserActivity(lastUAP));  // 记录被杀死的进程
                             }
+                            */
                         }
                     }
                     uniqueMonitor.DataUpdateEvent?.Invoke(this, new EventArgs());

@@ -14,6 +14,7 @@ using System.Threading;
 using DesktopLearningAssistant.Configuration;
 using System.Drawing;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace UI
 {
@@ -115,11 +116,11 @@ namespace UI
             var relativeFiles = currentTaskInfo.RelativeFiles;
             foreach (var file in relativeFiles)
             {
+                if (!File.Exists(file.FilePath)) continue;      // 排除已删除文件
                 if (!file.FilePath.Contains(".")) continue;     // 排除文件夹
 
                 RelativeFileItem relativeFileItem = new RelativeFileItem()
                 {
-                    ImageSrc = new BitmapImage(new Uri("../Image/File.jpeg", UriKind.Relative)),
                     FilePath = file.FilePath
                 };
                 if (!RelativeFileItems.Contains(relativeFileItem)) RelativeFileItems.Add(relativeFileItem);     // 去重

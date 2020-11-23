@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI.SettingsWindow"
         mc:Ignorable="d"
+        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
         Title="新建白名单" Height="163.568" Width="285.129" Icon="../Image/Icon.ico">
     <Grid>
-        <TextBox Name="WhiteListNameTextBox" HorizontalAlignment="Left" Margin="10,41,0,60.6" TextWrapping="Wrap" Text="TextBox" Width="258"/>
+        <TextBox Name="WhiteListNameTextBox" HorizontalAlignment="Left" Margin="10,41,0,60.6" TextWrapping="Wrap" Width="258"
+                 pu:TextBoxHelper.Watermark="白名单名称"/>
         <Label Content="名称：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Button Content="确定" HorizontalAlignment="Left" Margin="98,89,0,0" VerticalAlignment="Top" Width="79" Height="24" Click="Button_Click"/>
 

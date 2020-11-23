@@ -83,6 +83,8 @@ namespace UI
                 WhiteListKeyComboBox.Items.Refresh();
                 WhiteListValueListView.Items.Refresh();
             }
+
+            MessageBox.Show("添加成功");
         }
 
         private void DeleteWhiteListBtn_Click(object sender, RoutedEventArgs e)
@@ -99,6 +101,8 @@ namespace UI
             WhiteListKeyComboBox.ItemsSource = viewModel.WhiteListKeyList;
             WhiteListKeyComboBox.Items.Refresh();
             WhiteListValueListView.Items.Refresh();
+
+            MessageBox.Show("删除成功");
         }
 
         private void SaveWhiteListBtn_Click(object sender, RoutedEventArgs e)
@@ -114,6 +118,8 @@ namespace UI
 
             ConfigService configService = ConfigService.GetConfigService();
             configService.TTConfig.WhiteLists[selectedKey] = selectedValues;        // 更新专注白名单
+
+            MessageBox.Show("保存成功");
         }
 
         private void WhiteListKey_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -22,8 +22,6 @@ namespace UI
     /// </summary>
     public partial class NewTaskWindow : Window
     {
-        [DllImport("user32.dll")] public static extern int MessageBoxTimeoutA(IntPtr hWnd, string msg, string Caps, int type, int Id, int time); //引用DLL
-
         public TaskInfo NewTaskInfo { get; set; }
         public bool IsModify { get; set; }
 
@@ -69,7 +67,7 @@ namespace UI
 
         private void Affirm_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxTimeoutA((IntPtr)0, "保存成功", "提示", 0, 0, 1000); // 直接调用 1秒
+            MessageBox.Show("保存成功");
             TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
 
             NewTaskInfo.Name = TxtBoxTaskName.Text;

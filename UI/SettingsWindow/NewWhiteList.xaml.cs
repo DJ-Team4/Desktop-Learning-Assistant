@@ -28,6 +28,12 @@ namespace UI.SettingsWindow
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (WhiteListNameTextBox.Text == null || WhiteListNameTextBox.Text == "")
+            {
+                MessageBox.Show("未输入白名单名称");
+                this.DialogResult = false;
+                this.Close();
+            }
             WhiteListName = WhiteListNameTextBox.Text;
             this.DialogResult = true;
             this.Close();

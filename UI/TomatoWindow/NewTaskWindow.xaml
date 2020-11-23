@@ -81,7 +81,8 @@
                      VerticalContentAlignment="Top"
                      Text=""
                      Padding="5"
-                     Width="323"/>
+                     Width="323"
+                     silver:TextBoxHelper.Watermark="关于任务的详细信息"/>
         </StackPanel>
         <Button
             Content="确认"

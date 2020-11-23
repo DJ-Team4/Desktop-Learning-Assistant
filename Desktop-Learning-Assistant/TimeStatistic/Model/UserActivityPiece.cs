@@ -81,6 +81,12 @@ namespace DesktopLearningAssistant.TimeStatistic.Model
         {
             return base.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return $"{Id}\t{Name}\t{Detail}\t{StartTime}\t{CloseTime}\t{Finished}";
+        }
+
         #endregion
 
     }
