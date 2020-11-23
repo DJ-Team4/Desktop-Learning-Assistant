@@ -49,10 +49,8 @@ namespace UI.FileWindow
             Filepath = filepath;
             Task.Run(async () =>
             {
-                await FillTagsFromServiceAsync();
-                Debug.WriteLine("ok1");
+                await FillTagsFromServiceAsync();;
                 await UpdateRecommendationAsync(Filepath);
-                Debug.WriteLine("ok2");
             }).ConfigureAwait(false);
         }
 
