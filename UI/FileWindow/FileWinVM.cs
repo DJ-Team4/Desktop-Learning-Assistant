@@ -14,215 +14,28 @@ namespace UI.FileWindow
 {
     public class FileWinVM : INotifyPropertyChanged
     {
-        public FileWinVM()
+        public FileWinVM(System.Windows.Window window)
         {
-            service = TagFileService.GetService();
-            FillNavItemsThenNotify();
-        }
+            this.window = window;
 
-        private readonly ITagFileService service;
-
-        /// <summary>
-        /// 填充导航栏的数据
-        /// </summary>
-        public void FillNavItemsThenNotify()
-        {
             UpNavItems.Add(new AllFilesNavItem());
             UpNavItems.Add(new NoTagNavItem());
             UpNavItems.Add(new SearchResultNavItem());
             SelectedNavItem = UpNavItems[0];
+            //TODO obs colle
             Task.Run(async () =>
             {
                 List<Tag> tags = await service.TagListAsync();
-                foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
-                    DownNavItems.Add(tagNav);
+                this.window.Dispatcher.Invoke(() =>
+                {
+                    foreach (TagNavItem tagNav in TagsToTagNavItems(tags))
+                        DownNavItems.Add(tagNav);
+                });
             }).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// 添加标签。若标签已存在则什么都不做。
-        /// </summary>
-        public async Task AddTagAsync(string tagName)
-        {
-            if (await service.IsTagExistAsync(tagName))
-                return;
-            Tag tag = await service.AddTagAsync(tagName);
-            DownNavItems.Add(new TagNavItem(tag));
-        }
-
-        /// <summary>
-        /// 重命名选中的标签，若重命名成功则刷新界面。
-        /// </summary>
-        public async Task RenameSelectedTagAsync(string newTagName)
-        {
-            if (!(SelectedNavItem is TagNavItem tagNav))
-                return;
-            bool needRefresh = await service.RenameTagAsync(tagNav.Tag, newTagName);
-            if (needRefresh)
-            {
-                tagNav.NotifyHeaderChanged();
-                await RefreshFilesAsync();
-            }
-        }
-
-        /// <summary>
-        /// 移除选中的标签。
-        /// 若选中的条目不是标签条目则什么都不做。
-        /// </summary>
-        public async Task RemoveSelectedTagAsync()
-        {
-            if (!(SelectedNavItem is TagNavItem tagNav))
-                return;
-            await service.RemoveTagAsync(tagNav.Tag);
-            DownNavItems.Remove(tagNav);
-        }
-
-        /// <summary>
-        /// 所有标签的名称列表
-        /// </summary>
-        public async Task<List<string>> AllTagNamesAsync()
-        {
-            var tags = await service.TagListAsync();
-            var tagNames = new List<string>();
-            foreach (Tag tag in tags)
-                tagNames.Add(tag.TagName);
-            tagNames.Sort();
-            return tagNames;
-        }
-
-        /// <summary>
-        /// 打开选中的文件
-        /// </summary>
-        public void OpenSelectedFile()
-        {
-            SelectedFile?.FileItem.Open();
-        }
-
-        /// <summary>
-        /// 在资源管理器中展示选中的文件
-        /// </summary>
-        public void ShowSelectedFileInExplorer()
-        {
-            SelectedFile?.FileItem.ShowInExplorer();
-            Debug.WriteLine(SelectedFile.FileItem.RealPath());
-        }
-
-        /// <summary>
-        /// 将选中文件移动到回收站
-        /// </summary>
-        public async Task DeleteSelectedFileToRecycleBin()
-        {
-            await SelectedFile?.FileItem.DeleteToRecycleBinAsync();
-            Files.Remove(SelectedFile);
-        }
-
-        /// <summary>
-        /// 将选中文件彻底删除
-        /// </summary>
-        public async Task DeleteSelectedFile()
-        {
-            await SelectedFile?.FileItem.DeleteAsync();
-            Files.Remove(SelectedFile);
-        }
-
-        /// <summary>
-        /// 获取选中文件的信息
-        /// </summary>
-        /// <returns>若未选中则返回 null</returns>
-        public FileInfoForEdit GetSelectedFileInfo()
-        {
-            if (SelectedFile == null)
-                return null;
-            var fileInfo = new FileInfoForEdit
-            {
-                Filename = SelectedFile.FileItem.RealName,
-                CreateAt = SelectedFile.CreateAt,
-                AccessAt = SelectedFile.AccessAt
-            };
-            foreach (string tagName in SelectedFile.TagNames)
-                fileInfo.TagNames.Add(tagName);
-            return fileInfo;
-        }
-
-        /// <summary>
-        /// 更新文件信息：文件名、标签
-        /// </summary>
-        public async Task UpdateSelectedFile(FileInfoForEdit fileInfo)
-        {
-            if (SelectedFile == null)
-                return;
-            //update tag
-            var tags = new List<Tag>();
-            foreach (string tagName in fileInfo.TagNames)
-            {
-                Tag tag = await service.GetTagByNameAsync(tagName);
-                if (tag != null)
-                    tags.Add(tag);
-            }
-            FileItem selectedFile = SelectedFile.FileItem;
-            await service.UpdateFileRelationAsync(selectedFile, tags);
-            //update filename
-            await service.RenameFileItemAsync(selectedFile, fileInfo.Filename);
-            //update UI
-            for (int i = 0; i < Files.Count; i++)
-            {
-                if (Files[i].FileItem.FileItemId == selectedFile.FileItemId)
-                {
-                    Files[i] = new FileVM(selectedFile);
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 刷新文件区文件集合，完成后会自动通知界面刷新
-        /// </summary>
-        public void RefreshFilesThenNotify()
-        {
-            RefreshFilesAsync().ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// 刷新文件区的文件集合
-        /// </summary>
-        public async Task RefreshFilesAsync()
-        {
-            ObservableCollection<FileVM> observableFiles;
-            try
-            {
-                observableFiles = FileItemsToFileVMs(await FilesFromNavAsync());
-            }
-            catch (Exception e)
-            {
-                //TODO 表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
-                Debug.WriteLine($"Exception in FileWinVM.Files: {e.Message}");
-                observableFiles = new ObservableCollection<FileVM>();
-            }
-            Files = observableFiles;
-        }
-
-        /// <summary>
-        /// 转到搜索结果页面
-        /// </summary>
-        public void GoToSearchResult()
-        {
-            SelectedNavItem = UpNavItems[2];
-        }
-
-        /// <summary>
-        /// 刷新智能提示列表
-        /// </summary>
-        /// <param name="prefix">标签前缀</param>
-        public void RefreshIntelliItems(string prefix)
-        {
-            IntelliItems.Clear();
-            foreach (var tagNav in DownNavItems)
-            {
-                string tagName = tagNav.Header;
-                if (tagName.StartsWith(prefix))
-                    IntelliItems.Add(new IntelliItem(tagName));
-            }
-        }
+        private readonly ITagFileService service = TagFileService.GetService();
+        private readonly System.Windows.Window window;
 
         /// <summary>
         /// 导航栏上半部分
@@ -309,28 +122,195 @@ namespace UI.FileWindow
             }
         }
 
+        /// <summary>
+        /// 供智能提示使用的标签集合
+        /// </summary>
         public ObservableCollection<IntelliItem> IntelliItems { get; }
             = new ObservableCollection<IntelliItem>();
 
-        private ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
+        /// <summary>
+        /// 添加标签。若标签已存在则什么都不做。
+        /// </summary>
+        public async Task AddTagAsync(string tagName)
         {
-            tags.Sort((t1, t2) => t1.TagName.CompareTo(t2.TagName));
-            var tagNavs = new ObservableCollection<TagNavItem>();
-            foreach (Tag tag in tags)
-                tagNavs.Add(new TagNavItem(tag));
-            return tagNavs;
+            if (await service.IsTagExistAsync(tagName))
+                return;
+            Tag tag = await service.AddTagAsync(tagName);
+            window.Dispatcher.Invoke(() => DownNavItems.Add(new TagNavItem(tag)));
         }
 
-        private ObservableCollection<FileVM> FileItemsToFileVMs(
-            List<FileItem> fileItems)
+        /// <summary>
+        /// 重命名选中的标签，若重命名成功则刷新界面。
+        /// </summary>
+        public async Task RenameSelectedTagAsync(string newTagName)
         {
-            //按显示的文件名排序
-            fileItems.Sort(
-                (f1, f2) => f1.DisplayName.CompareTo(f2.DisplayName));
-            var fileVMs = new ObservableCollection<FileVM>();
-            foreach (FileItem fileItem in fileItems)
-                fileVMs.Add(new FileVM(fileItem));
-            return fileVMs;
+            if (!(SelectedNavItem is TagNavItem tagNav))
+                return;
+            bool needRefresh = await service.RenameTagAsync(tagNav.Tag, newTagName);
+            if (needRefresh)
+            {
+                tagNav.NotifyHeaderChanged();
+                await RefreshFilesAsync();
+            }
+        }
+
+        /// <summary>
+        /// 移除选中的标签。
+        /// 若选中的条目不是标签条目则什么都不做。
+        /// </summary>
+        public async Task RemoveSelectedTagAsync()
+        {
+            if (!(SelectedNavItem is TagNavItem tagNav))
+                return;
+            await service.RemoveTagAsync(tagNav.Tag);
+            window.Dispatcher.Invoke(() => DownNavItems.Remove(tagNav));
+        }
+
+        /// <summary>
+        /// 所有标签的名称列表
+        /// </summary>
+        public async Task<List<string>> AllTagNamesAsync()
+        {
+            var tags = await service.TagListAsync();
+            var tagNames = new List<string>();
+            foreach (Tag tag in tags)
+                tagNames.Add(tag.TagName);
+            tagNames.Sort();
+            return tagNames;
+        }
+
+        /// <summary>
+        /// 打开选中的文件
+        /// </summary>
+        public void OpenSelectedFile()
+        {
+            SelectedFile?.FileItem.Open();
+        }
+
+        /// <summary>
+        /// 在资源管理器中展示选中的文件
+        /// </summary>
+        public void ShowSelectedFileInExplorer()
+        {
+            SelectedFile?.FileItem.ShowInExplorer();
+        }
+
+        /// <summary>
+        /// 将选中文件移动到回收站
+        /// </summary>
+        public async Task DeleteSelectedFileToRecycleBinAsync()
+        {
+            await SelectedFile?.FileItem.DeleteToRecycleBinAsync();
+            window.Dispatcher.Invoke(() => Files.Remove(SelectedFile));
+        }
+
+        /// <summary>
+        /// 将选中文件彻底删除
+        /// </summary>
+        public async Task DeleteSelectedFileAsync()
+        {
+            await SelectedFile?.FileItem.DeleteAsync();
+            window.Dispatcher.Invoke(() => Files.Remove(SelectedFile));
+        }
+
+        /// <summary>
+        /// 获取选中文件的信息
+        /// </summary>
+        /// <returns>若未选中则返回 null</returns>
+        public FileInfoForEdit GetSelectedFileInfo()
+        {
+            FileVM file = SelectedFile;
+            if (file == null)
+                return null;
+            var fileInfo = new FileInfoForEdit
+            {
+                Filename = file.FileItem.RealName,
+                CreateAt = file.CreateAt,
+                AccessAt = file.AccessAt
+            };
+            foreach (string tagName in file.TagNames)
+                fileInfo.TagNames.Add(tagName);
+            return fileInfo;
+        }
+
+        /// <summary>
+        /// 更新文件信息：文件名、标签
+        /// </summary>
+        public async Task UpdateSelectedFileAsync(FileInfoForEdit fileInfo)
+        {
+            if (SelectedFile == null)
+                return;
+            //update tag
+            var tags = new List<Tag>();
+            foreach (string tagName in fileInfo.TagNames)
+            {
+                Tag tag = await service.GetTagByNameAsync(tagName);
+                if (tag != null)
+                    tags.Add(tag);
+            }
+            FileItem selectedFile = SelectedFile.FileItem;
+            await service.UpdateFileRelationAsync(selectedFile, tags);
+            //update filename
+            await service.RenameFileItemAsync(selectedFile, fileInfo.Filename);
+            //update UI
+            for (int i = 0; i < Files.Count; i++)
+            {
+                if (Files[i].FileItem.FileItemId == selectedFile.FileItemId)
+                {
+                    Files[i] = new FileVM(selectedFile);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 刷新文件区文件集合，完成后会自动通知界面刷新
+        /// </summary>
+        public void RefreshFilesThenNotify()
+        {
+            RefreshFilesAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// 刷新文件区的文件集合
+        /// </summary>
+        public async Task RefreshFilesAsync()
+        {
+            ObservableCollection<FileVM> observableFiles;
+            try
+            {
+                observableFiles = FileItemsToFileVMs(await FilesFromNavAsync());
+            }
+            catch (InvalidExpressionException e)
+            {
+                //表达式查询可能出现非法表达式异常，这里暂时把异常吞掉，返回一个空列表
+                Debug.WriteLine($"Exception in FileWinVM.RefreshFilesAsync(): {e.Message}");
+                observableFiles = new ObservableCollection<FileVM>();
+            }
+            window.Dispatcher.Invoke(() => Files = observableFiles);
+        }
+
+        /// <summary>
+        /// 转到搜索结果页面
+        /// </summary>
+        public void GoToSearchResult()
+        {
+            SelectedNavItem = UpNavItems[2];
+        }
+
+        /// <summary>
+        /// 刷新智能提示列表
+        /// </summary>
+        /// <param name="prefix">标签前缀</param>
+        public void RefreshIntelliItems(string prefix)
+        {
+            IntelliItems.Clear();
+            foreach (var tagNav in DownNavItems)
+            {
+                string tagName = tagNav.Header;
+                if (tagName.StartsWith(prefix))
+                    IntelliItems.Add(new IntelliItem(tagName));
+            }
         }
 
         /// <summary>
@@ -372,17 +352,17 @@ namespace UI.FileWindow
             }
         }
 
-        #region 属性发生改变
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         /// <summary>
         /// 导航栏被选中条目改变。
-        /// 1. 通知 SelectedNavItem 属性改变。
-        /// 2. 刷新文件区。
-        /// 3. 若选中了标签，则设置表达式栏。
+        /// <list type="number">
+        /// <item>通知 SelectedNavItem 属性改变。</item>
+        /// <item>刷新文件区。</item>
+        /// <item>若选中了标签，则设置表达式栏。</item>
+        /// </list>
         /// </summary>
         private void OnSelectedNavItemChanged()
         {
@@ -410,7 +390,31 @@ namespace UI.FileWindow
             }
         }
 
-        #endregion
+        /// <summary>
+        /// 将 Tag 列表转换为 TagNavItem 集合，按照标签名字排序
+        /// </summary>
+        private static ObservableCollection<TagNavItem> TagsToTagNavItems(List<Tag> tags)
+        {
+            tags.Sort((t1, t2) => t1.TagName.CompareTo(t2.TagName));
+            var tagNavs = new ObservableCollection<TagNavItem>();
+            foreach (Tag tag in tags)
+                tagNavs.Add(new TagNavItem(tag));
+            return tagNavs;
+        }
 
+        /// <summary>
+        /// 将 FileItem 列表转换为 FileVM 集合，按照显示的文件名排序
+        /// </summary>
+        private static ObservableCollection<FileVM> FileItemsToFileVMs(
+            List<FileItem> fileItems)
+        {
+            //按显示的文件名排序
+            fileItems.Sort(
+                (f1, f2) => f1.DisplayName.CompareTo(f2.DisplayName));
+            var fileVMs = new ObservableCollection<FileVM>();
+            foreach (FileItem fileItem in fileItems)
+                fileVMs.Add(new FileVM(fileItem));
+            return fileVMs;
+        }
     }
 }

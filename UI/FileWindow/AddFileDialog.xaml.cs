@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Panuon.UI.Silver;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace UI.FileWindow
 {
@@ -33,7 +34,8 @@ namespace UI.FileWindow
         {
             InitializeComponent();
             DataContext = this;
-            FillTagsFromNames(allTagNames);
+            foreach (string tagName in allTagNames)
+                FileTags.Add(new SelectableFileTag(tagName));
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace UI.FileWindow
             Filepath = filepath;
             Task.Run(async () =>
             {
-                await FillTagsFromServiceAsync();
+                await FillTagsFromServiceAsync();;
                 await UpdateRecommendationAsync(Filepath);
             }).ConfigureAwait(false);
         }
@@ -152,12 +154,15 @@ namespace UI.FileWindow
         }
 
         /// <summary>
-        /// 从标签名集合填充所有标签列表
+        /// 从标签名集合填充所有标签列表，在 UI 线程执行
         /// </summary>
-        private void FillTagsFromNames(IEnumerable<string> allTagNames)
+        private void FillTagsFromNamesInUiThread(IEnumerable<string> allTagNames)
         {
-            foreach (string tagName in allTagNames)
-                FileTags.Add(new SelectableFileTag(tagName));
+            Dispatcher.Invoke(() =>
+            {
+                foreach (string tagName in allTagNames)
+                    FileTags.Add(new SelectableFileTag(tagName));
+            });
         }
 
         /// <summary>
@@ -168,7 +173,7 @@ namespace UI.FileWindow
             var tagNames = new List<string>();
             (await service.TagListAsync()).ForEach(tag => tagNames.Add(tag.TagName));
             tagNames.Sort();
-            FillTagsFromNames(tagNames);
+            FillTagsFromNamesInUiThread(tagNames);
         }
 
         /// <summary>
