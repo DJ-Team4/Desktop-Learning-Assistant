@@ -311,6 +311,12 @@
     <Resource Include="Image\add-in-filewin.png" />
     <Resource Include="Image\refresh-in-filewin.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\go.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

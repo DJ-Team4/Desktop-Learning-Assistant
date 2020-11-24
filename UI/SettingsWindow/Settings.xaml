@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="设置" Height="400" Width="512.8">
+        Title="设置" Height="400" Width="515">
     <Grid>
         <TabControl 
             HorizontalAlignment="Left" 
