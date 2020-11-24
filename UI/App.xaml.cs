@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using DesktopLearningAssistant.TimeStatistic;
 using DesktopLearningAssistant.Configuration;
+using DesktopLearningAssistant.TagFile;
 
 namespace UI
 {
@@ -22,7 +23,7 @@ namespace UI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             // 启动主窗口
             mainWindow = new MainWindow();
@@ -32,8 +33,8 @@ namespace UI
             ActivityMonitor am = ActivityMonitor.GetMonitor();
             am.Start();
 
-            // 读入配置
-            ConfigService.LoadFromJson();
+            // 确保 TagFile 数据库和文件夹已创建
+            await TagFileService.EnsureDbAndFolderCreatedAsync();
         }
 
         /// <summary>

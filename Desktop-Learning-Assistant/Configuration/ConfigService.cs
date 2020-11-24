@@ -37,7 +37,7 @@ namespace DesktopLearningAssistant.Configuration
         /// <summary>
         /// 单例变量
         /// </summary>
-        private static ConfigService uniqueConfigService;
+        private static volatile ConfigService uniqueConfigService = null;
 
         /// <summary>
         /// 确保线程同步的锁标识
@@ -52,7 +52,7 @@ namespace DesktopLearningAssistant.Configuration
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ConfigService()
+        private ConfigService()
         {
             GConfig = new GlobalConfig();
             TSConfig = new TimeStatisticConfig();
@@ -65,19 +65,23 @@ namespace DesktopLearningAssistant.Configuration
         /// <returns></returns>
         public static ConfigService GetConfigService()
         {
-            if (uniqueConfigService != null) return uniqueConfigService;
-
-            lock (locker)
+            if (uniqueConfigService == null)
             {
-                if (File.Exists(configPath))
+                lock (locker)
                 {
-                    LoadFromJson();     // 配置文件存在时，从配置文件中加载配置信息
-                }
-                else
-                {
-                    uniqueConfigService = new ConfigService();      // 否则生成一个新的配置类
-                    SetDefault();
-                    SaveAsJson();       // 将默认配置写入Json文件
+                    if (uniqueConfigService == null)
+                    {
+                        if (File.Exists(configPath))
+                        {
+                            LoadFromJson();     // 配置文件存在时，从配置文件中加载配置信息
+                        }
+                        else
+                        {
+                            uniqueConfigService = new ConfigService();      // 否则生成一个新的配置类
+                            SetDefault();
+                            SaveAsJson();       // 将默认配置写入Json文件
+                        }
+                    }
                 }
             }
             return uniqueConfigService;
@@ -86,11 +90,11 @@ namespace DesktopLearningAssistant.Configuration
         /// <summary>
         /// 从JSON文件中加载配置信息，并据此创建单例对象
         /// </summary>
-        public static void LoadFromJson()
+        private static void LoadFromJson()
         {
             try
             {
-                Object obj = JsonConvert.DeserializeObject(File.ReadAllText(configPath), typeof(ConfigService));
+                object obj = JsonConvert.DeserializeObject(File.ReadAllText(configPath), typeof(ConfigService));
                 if (obj != null) uniqueConfigService = obj as ConfigService;
             }
             catch (Exception)
