@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="设置" Height="400" Width="515">
+        Title="设置" Height="410" Width="520">
     <Grid>
         <TabControl 
             HorizontalAlignment="Left" 
@@ -17,9 +17,9 @@
             pu:TabControlHelper.CanRemove="False"
             pu:TabControlHelper.SelectedBackground="AliceBlue"
             TabStripPlacement="Left"
-            Margin="0,0,0,-0.6">
+            Margin="0,0,0,0">
             <TabItem Header="白名单">
-                <Grid Margin="0,0,0.6,0.2">
+                <Grid Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="263*"/>
                         <ColumnDefinition Width="87*"/>
@@ -38,7 +38,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,5,5">
                         <Button Name="AddWhiteListBtn" Content="增加" Margin="5" Height="25" Click="AddWhiteListBtn_Click"
                             Foreground="black"
                             pu:ButtonHelper.ButtonStyle="Outline"
