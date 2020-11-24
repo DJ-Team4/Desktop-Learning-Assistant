@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Panuon.UI.Silver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace UI.SettingsWindow
     /// <summary>
     /// NewWhiteList.xaml 的交互逻辑
     /// </summary>
-    public partial class NewWhiteList : Window
+    public partial class NewWhiteList : WindowX
     {
         public string WhiteListName { get; set; }
 
@@ -26,17 +27,26 @@ namespace UI.SettingsWindow
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             if (WhiteListNameTextBox.Text == null || WhiteListNameTextBox.Text == "")
             {
                 MessageBox.Show("未输入白名单名称");
-                this.DialogResult = false;
-                this.Close();
+                DialogResult = false;
+                Close();
             }
-            WhiteListName = WhiteListNameTextBox.Text;
-            this.DialogResult = true;
-            this.Close();
+            else
+            {
+                WhiteListName = WhiteListNameTextBox.Text;
+                DialogResult = true;
+                Close();
+            }
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

@@ -14,13 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DesktopLearningAssistant.TaskTomato;
 using DesktopLearningAssistant.TaskTomato.Model;
+using Panuon.UI.Silver;
 
 namespace UI
 {
     /// <summary>
     /// NewTaskWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class NewTaskWindow : Window
+    public partial class NewTaskWindow : WindowX
     {
         public TaskInfo NewTaskInfo { get; set; }
         public bool IsModify { get; set; }
@@ -65,9 +66,8 @@ namespace UI
             TxtBoxNotes.Text = taskInfo.Notes;
         }
 
-        private void Affirm_Click(object sender, RoutedEventArgs e)
+        private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("保存成功");
             TaskTomatoService tts = TaskTomatoService.GetTaskTomatoService();
 
             NewTaskInfo.Name = TxtBoxTaskName.Text;
@@ -84,15 +84,26 @@ namespace UI
             {
                 tts.ModifyTask(NewTaskInfo);
             }
-            
-            this.Close();
+
+            Close();
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private void AddTomatoNum_OnClick(object sender, RoutedEventArgs e)
         {
-            Image image = new Image() { Source = new BitmapImage(new Uri(MLinePath, UriKind.Absolute)) };
-            image.Width = 30;
-            image.Height = 30;
+            Image image = new Image
+            {
+                Source = new BitmapImage(
+                    new Uri("pack://application:,,,/UI;component/Image/Tomato-Finished.png",
+                            UriKind.Absolute))
+            };
+            double imgLen = TomatoListStackPanel.Height;
+            image.Width = imgLen;
+            image.Height = imgLen;
             TomatoListStackPanel.Children.Add(image);
         }
 
@@ -101,6 +112,5 @@ namespace UI
             if (TomatoListStackPanel.Children.Count == 0) return;
             TomatoListStackPanel.Children.RemoveAt(TomatoListStackPanel.Children.Count - 1);
         }
-    
     }
 }

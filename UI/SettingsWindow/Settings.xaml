@@ -1,75 +1,169 @@
-﻿<Window x:Class="UI.Settings"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI"
-        mc:Ignorable="d"
-        Title="设置" Height="410" Width="520">
+﻿<pu:WindowX x:Class="UI.Settings"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:UI"
+            mc:Ignorable="d"
+            Title="设置"
+            Icon="../Image/Icon.ico"
+            Height="500"
+            Width="600"
+            Background="#f2f2f2">
+
     <Grid>
-        <TabControl 
-            HorizontalAlignment="Left" 
-            Height="371" 
-            VerticalAlignment="Top" 
-            Width="506"
-            pu:TabControlHelper.ItemHeight="30"
-            pu:TabControlHelper.CanRemove="False"
-            pu:TabControlHelper.SelectedBackground="AliceBlue"
-            TabStripPlacement="Left"
-            Margin="0,0,0,0">
+        <TabControl pu:TabControlHelper.TabControlStyle="Card"
+                    pu:TabControlHelper.HeaderPanelBackground="#e6ebf0"
+                    pu:TabControlHelper.SelectedForeground="White"
+                    pu:TabControlHelper.SelectedBackground="#0077d7"
+                    pu:TabControlHelper.ItemPadding="20,0,20,0"
+                    TabStripPlacement="Left"
+                    Background="Transparent">
+
             <TabItem Header="白名单">
-                <Grid Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="263*"/>
-                        <ColumnDefinition Width="87*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid Margin="15,0,15,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="16*"/>
-                        <RowDefinition Height="17*"/>
-                        <RowDefinition Height="153*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label Content="设置白名单以统计任务效率" HorizontalAlignment="Left" Margin="5,4,0,0" VerticalAlignment="Top" Height="27" Width="251"/>
-                    <ComboBox Name="WhiteListKeyComboBox" Margin="5,5,160,5" Grid.Row="1" ItemsSource="{Binding WhiteListKeyList}" SelectionChanged="WhiteListKey_SelectionChanged"/>
-                    <ListView Name="WhiteListValueListView" Grid.Row="2" Grid.Column="0" Margin="5,5,5,5" Initialized="SoftwareListView_Initialized" ItemsSource="{Binding WhiteListValueList}">
+
+                    <TextBlock Grid.Row="0"
+                               Text="设置白名单以统计任务效率"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Padding="0,5,0,5" />
+
+                    <ComboBox Grid.Row="1"
+                              Name="WhiteListKeyComboBox"
+                              ItemsSource="{Binding WhiteListKeyList}"
+                              SelectionChanged="WhiteListKey_SelectionChanged"
+                              Margin="0,5,0,10"
+                              Padding="4"
+                              MinWidth="200"
+                              HorizontalAlignment="Left"
+                              pu:ComboBoxHelper.CornerRadius="4" />
+
+                    <ListView Grid.Row="2"
+                              Name="WhiteListValueListView"
+                              HorizontalContentAlignment="Stretch"
+                              Initialized="SoftwareListView_Initialized"
+                              ItemsSource="{Binding WhiteListValueList}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                                <CheckBox Content="{Binding Name}"
+                                          IsChecked="{Binding IsChecked}"
+                                          FontSize="14"
+                                          Padding="5"
+                                          pu:CheckBoxHelper.CheckedBackground="#0077d7" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,5,5">
-                        <Button Name="AddWhiteListBtn" Content="增加" Margin="5" Height="25" Click="AddWhiteListBtn_Click"
-                            Foreground="black"
-                            pu:ButtonHelper.ButtonStyle="Outline"
-                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
-                        <Button Name="DeleteWhiteListBtn" Content="删除" Margin="5" Height="25" Click="DeleteWhiteListBtn_Click"
-                            Foreground="black"
-                            pu:ButtonHelper.ButtonStyle="Outline"
-                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
-                        <Button Name="SaveWhiteListBtn" Content="保存" Margin="5" Height="25" Click="SaveWhiteListBtn_Click"
-                            Foreground="black"
-                            pu:ButtonHelper.ButtonStyle="Outline"
-                            pu:ButtonHelper.CornerRadius="3" Background="aliceblue"/>
-                    </StackPanel>
+
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal">
+                            <Button Name="AddWhiteListBtn"
+                                    Content="增加"
+                                    Margin="5,10,5,10"
+                                    Padding="10,5,10,5"
+                                    Background="White"
+                                    Foreground="Black"
+                                    pu:ButtonHelper.ButtonStyle="Outline"
+                                    pu:ButtonHelper.HoverBrush="Black"
+                                    pu:ButtonHelper.CornerRadius="4"
+                                    Click="AddWhiteListBtn_Click" />
+                            <Button Name="DeleteWhiteListBtn"
+                                    Content="删除"
+                                    Margin="5,10,5,10"
+                                    Padding="10,5,10,5"
+                                    Background="White"
+                                    Foreground="Black"
+                                    pu:ButtonHelper.ButtonStyle="Outline"
+                                    pu:ButtonHelper.HoverBrush="Black"
+                                    pu:ButtonHelper.CornerRadius="4"
+                                    Click="DeleteWhiteListBtn_Click" />
+                            <Button Name="SaveWhiteListBtn"
+                                    Content="保存"
+                                    Margin="5,10,0,10"
+                                    Padding="10,5,10,5"
+                                    Background="White"
+                                    Foreground="Black"
+                                    pu:ButtonHelper.ButtonStyle="Outline"
+                                    pu:ButtonHelper.HoverBrush="Black"
+                                    pu:ButtonHelper.CornerRadius="4"
+                                    Click="SaveWhiteListBtn_Click" />
+                        </StackPanel>
+                    </Grid>
+
                 </Grid>
             </TabItem>
+
             <TabItem Header="软件类型设置">
-                <Grid>
-                    <Border BorderBrush="White" BorderThickness="1" Height="284" Margin="10,39,34.6,0" VerticalAlignment="Top">
-                        <Grid>
-                            <Label Content="软件:" Margin="10,19,292.2,234.4"/>
-                            <Label Content="类型:" Width="50" Margin="179,19,126.2,234.4"/>
-                            <ComboBox Name="TypeKeyComboBox" Height="32" Margin="63,19,186.2,231.4" ItemsSource="{Binding Path=TypeKeyList}" SelectionChanged="SoftWareSelectionChanged"/>
-                            <ComboBox Name="TypeValueComboBox" Height="32" Margin="229,19,20.2,231.4" ItemsSource="{Binding Path=TypeValueList}" SelectionChanged="TypeSelectionChange"/>
-                        </Grid>
-                    </Border>
-                    <Label Content="设置各软件的软件类型" Margin="10,10,237.6,332.2"/>
-                </Grid>
+                <StackPanel Margin="15,0,15,0">
+
+                    <TextBlock Text="设置各软件的软件类型"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Padding="0,5,0,5" />
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="软件:"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+                        <ComboBox Grid.Row="0"
+                                  Grid.Column="1"
+                                  Name="TypeKeyComboBox"
+                                  Padding="4"
+                                  Margin="10,5,10,5"
+                                  HorizontalAlignment="Left"
+                                  MinWidth="200"
+                                  pu:ComboBoxHelper.CornerRadius="4"
+                                  ItemsSource="{Binding Path=TypeKeyList}"
+                                  SelectionChanged="SoftWareSelectionChanged" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="类型:"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  Name="TypeValueComboBox"
+                                  Padding="4"
+                                  Margin="10,5,10,5"
+                                  HorizontalAlignment="Left"
+                                  MinWidth="200"
+                                  pu:ComboBoxHelper.CornerRadius="4"
+                                  ItemsSource="{Binding Path=TypeValueList}"
+                                  SelectionChanged="TypeSelectionChange" />
+
+                    </Grid>
+
+                </StackPanel>
             </TabItem>
-            <Border BorderBrush="Black" BorderThickness="1" Height="178" Width="254">
-                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="32" Margin="0,0,-60,-32" VerticalAlignment="Top" Width="60"/>
-            </Border>
+
         </TabControl>
     </Grid>
-</Window>
+
+</pu:WindowX>
