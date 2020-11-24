@@ -1,95 +1,185 @@
-﻿<Window x:Class="UI.NewTaskWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI"
-        xmlns:TimeTool="clr-namespace:Loya.Dameer;assembly=Loya.Dameer"
-        xmlns:silver="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+﻿<pu:WindowX x:Class="UI.NewTaskWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:UI"
+            xmlns:TimeTool="clr-namespace:Loya.Dameer;assembly=Loya.Dameer"
+            xmlns:pu="clr-namespace:Panuon.UI.Silver;assembly=Panuon.UI.Silver"
+            mc:Ignorable="d"
+            Title="新建任务"
+            Height="400"
+            Width="500">
 
-        mc:Ignorable="d"
-        Title="新建任务" Height="368" Width="443.2" >
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="288*"/>
-            <RowDefinition Height="37*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="44*"/>
-            <ColumnDefinition Width="113*"/>
-            <ColumnDefinition Width="57*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="任务名：" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Height="28" Width="49" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-        <Label Content="开始时间：" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="28" Width="62" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-        <Label Content="截止时间：" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="27" Width="62" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-        <Label Content="备注：" HorizontalAlignment="Left" Margin="10,181,0,0" VerticalAlignment="Top" Height="25" Width="36" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-        <Label Content="所需番茄数：" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Height="27" Width="76" VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="0"/>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="3,0,-1.8,0.8" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <TextBox Name="TxtBoxTaskName" HorizontalAlignment="Left" Height="30" Margin="5,5,0,5" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="248"/>
-            <TimeTool:Dameer  
-                          Name="StartTimeSelect"
-                          Foreground="Black" 
-                          Format="Custom"
-                          CustomFormat="yyyy-MM-dd HH:mm:ss"
-                          ShowCheckBox="false"
-                          Value="11/11/2020 1:50 PM"
-                          Height="30"
-                          Margin="5">
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            </TimeTool:Dameer>
-            <TimeTool:Dameer
-                          Name="EndTimeSelect"
-                          Foreground="Black"   
-                          Format="Custom"
-                          CustomFormat="yyyy-MM-dd HH:mm:ss"
-                          ShowCheckBox="false"
-                          Value="11/11/2020 3:50 PM"
-                          Height="30"
-                          Margin="5">
-            </TimeTool:Dameer>
-            <WrapPanel Margin="0,0,9.6,0" Height="64">
-                <StackPanel Name="TomatoListStackPanel" Width="220" Orientation="Horizontal" Margin="5" Height="54">
-                    <!--Image Width="35" Height="35" Source="../Image/Tomato-Finished.png"/-->
-                </StackPanel>
-                <Button
-                    silver:ButtonHelper.ButtonStyle="Link"
-                    silver:ButtonHelper.CornerRadius="3"
-                    Margin="5"
-                    Click='AddTomatoNum_OnClick' 
-                    Height="25" Width="25">
-                    <WrapPanel>
-                        <Image Source="../Image/Add.png" Stretch="UniformToFill"></Image>
-                    </WrapPanel>
-                </Button>
-                <Button
-                    silver:ButtonHelper.ButtonStyle="Link"
-                    silver:ButtonHelper.CornerRadius="3"
-                    Margin="5"
-                    Click='DeleteTomatoNum_OnClick' 
-                    Height="25" Width="25">
-                    <WrapPanel>
-                        <Image Source="../Image/Minus.png"></Image>
-                    </WrapPanel>
-                </Button>
-            </WrapPanel>
+            <Grid.Resources>
+                <Style x:Key="LeftLabelStyle"
+                       TargetType="TextBlock">
+                    <Setter Property="Padding"
+                            Value="10" />
+                    <Setter Property="VerticalAlignment"
+                            Value="Center" />
+                </Style>
+            </Grid.Resources>
 
-            <TextBox x:Name="TxtBoxNotes" 
-                     HorizontalAlignment="Left" VerticalAlignment="Top"
-                     Height="94" Margin="5,5,0,5"
-                     TextWrapping="Wrap" 
-                     VerticalContentAlignment="Top"
-                     Text=""
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Text="任务名："
+                       Style="{StaticResource LeftLabelStyle}" />
+
+            <TextBox Grid.Row="0"
+                     Grid.Column="1"
+                     Name="TxtBoxTaskName"
+                     Margin="5"
                      Padding="5"
-                     Width="323"
-                     silver:TextBoxHelper.Watermark="关于任务的详细信息"/>
-        </StackPanel>
-        <Button
-            Content="确认"
-            Foreground="black"
-            silver:ButtonHelper.ButtonStyle="Outline"
-            silver:ButtonHelper.CornerRadius="3" Background="aliceblue" Margin="2.4,4.8,8.2,5.8"
-            Click="Affirm_Click" 
-            Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1"/>
+                     VerticalAlignment="Center"
+                     FontSize="14"
+                     pu:TextBoxHelper.CornerRadius="4"
+                     pu:TextBoxHelper.Watermark="请输入任务名"
+                     pu:TextBoxHelper.FocusedShadowColor="Transparent"
+                     pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue" />
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="开始时间："
+                       Style="{StaticResource LeftLabelStyle}" />
+
+            <TimeTool:Dameer Grid.Row="1"
+                             Grid.Column="1"
+                             Name="StartTimeSelect"
+                             Foreground="Black"
+                             Format="Custom"
+                             CustomFormat="yyyy-MM-dd HH:mm:ss"
+                             ShowCheckBox="false"
+                             Value="11/11/2020 1:50 PM" />
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="截止时间："
+                       Style="{StaticResource LeftLabelStyle}" />
+
+            <TimeTool:Dameer Grid.Row="2"
+                             Grid.Column="1"
+                             Name="EndTimeSelect"
+                             Foreground="Black"
+                             Format="Custom"
+                             CustomFormat="yyyy-MM-dd HH:mm:ss"
+                             ShowCheckBox="false"
+                             Value="11/11/2020 3:50 PM" />
+
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Text="所需番茄数："
+                       Style="{StaticResource LeftLabelStyle}" />
+
+            <Grid Grid.Row="3"
+                  Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Name="TomatoListStackPanel"
+                            Orientation="Horizontal"
+                            Margin="5"
+                            Height="20"
+                            VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Margin="5,0,5,0">
+                    <Button Margin="2"
+                            Padding="2"
+                            Click='AddTomatoNum_OnClick'
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            pu:ButtonHelper.HoverBrush="LightGray"
+                            pu:ButtonHelper.CornerRadius="4">
+                        <Image Source="../Image/Add.png"
+                               Height="20"
+                               Width="20" />
+                    </Button>
+                    <Button Margin="2"
+                            Padding="2"
+                            Click='DeleteTomatoNum_OnClick'
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            pu:ButtonHelper.HoverBrush="LightGray"
+                            pu:ButtonHelper.CornerRadius="4">
+                        <Image Source="../Image/Minus.png"
+                               Height="20"
+                               Width="20" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="备注："
+                       Style="{StaticResource LeftLabelStyle}"
+                       VerticalAlignment="Top" />
+
+            <TextBox Grid.Row="4"
+                     Grid.Column="1"
+                     x:Name="TxtBoxNotes"
+                     Margin="5"
+                     VerticalContentAlignment="Top"
+                     Padding="10"
+                     pu:TextBoxHelper.Watermark="关于任务的详细信息"
+                     pu:TextBoxHelper.CornerRadius="4"
+                     pu:TextBoxHelper.FocusedShadowColor="Transparent"
+                     pu:TextBoxHelper.FocusedBorderBrush="DodgerBlue" />
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Name="confirmBtn"
+                    Content="确定"
+                    Click="ConfirmBtn_Click"
+                    Padding="10,5,10,5"
+                    Margin="0,0,10,0"
+                    FontWeight="Bold"
+                    Background="DodgerBlue"
+                    pu:ButtonHelper.CornerRadius="4"
+                    pu:ButtonHelper.HoverBrush="#0077d7" />
+
+            <Button Grid.Column="2"
+                    Name="cancelBtn"
+                    Content="取消"
+                    Click="CancelBtn_Click"
+                    Padding="10,5,10,5"
+                    Margin="0,0,5,0"
+                    Background="White"
+                    Foreground="Black"
+                    pu:ButtonHelper.ButtonStyle="Outline"
+                    pu:ButtonHelper.HoverBrush="Black"
+                    pu:ButtonHelper.CornerRadius="4" />
+        </Grid>
+
     </Grid>
-</Window>
+
+</pu:WindowX>

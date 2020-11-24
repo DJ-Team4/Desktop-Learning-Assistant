@@ -61,7 +61,7 @@ namespace UI
         /// <summary>
         /// 窗口起始位置
         /// </summary>
-        public double left = SystemParameters.WorkArea.Width;
+        public double Left { get; set; } = SystemParameters.WorkArea.Width;
 
         /// <summary>
         /// 白名单列表

@@ -17,13 +17,14 @@ using UI.AllTaskWindow;
 using UI.FileWindow;
 using DesktopLearningAssistant.TagFile;
 using System.IO;
+using Panuon.UI.Silver;
 
 namespace UI
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : WindowX
     {
         #region 屏幕时间统计模块
 
@@ -236,13 +237,13 @@ namespace UI
 
             if (CurrentTaskInfo != null)
             {
-                CurrentTaskInfoLabel.Content = CurrentTaskInfo.Name;
+                CurrentTaskInfoLabel.Text = CurrentTaskInfo.Name;
                 viewModel.UpdateRelativeFiles();
                 RelativeFilesListView.Items.Refresh();
             }
             else
             {
-                CurrentTaskInfoLabel.Content = "没有未完成的任务(*￣▽￣*)";
+                CurrentTaskInfoLabel.Text = "没有未完成的任务(*￣▽￣*)";
                 viewModel.RelativeFileItems.Clear();
                 RelativeFilesListView.Items.Refresh();
             }
@@ -362,14 +363,14 @@ namespace UI
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                this.DragMove();
+                DragMove();
             }
-            if (this.Left < 10)
-                this.Left = 0;
-            else if (this.Left > SystemParameters.WorkArea.Width)
-                this.Left = SystemParameters.WorkArea.Width;
-            if (this.Top < 10)
-                this.Top = 0;
+            if (Left < 10)
+                Left = 0;
+            else if (Left > SystemParameters.WorkArea.Width)
+                Left = SystemParameters.WorkArea.Width;
+            if (Top < 10)
+                Top = 0;
         }
 
         #endregion
@@ -381,8 +382,8 @@ namespace UI
         {
             InitializeComponent();
 
-            this.configService = ConfigService.GetConfigService();
-            this.DataContext = viewModel;
+            configService = ConfigService.GetConfigService();
+            DataContext = viewModel;
 
             // 定时更新ViewModel数据
             timeDataUpdateTimer.Interval = new TimeSpan(0, 0, 0, updateSlice);
