@@ -25,7 +25,6 @@ namespace UI.FileWindow
         public FileWindow()
         {
             InitializeComponent();
-            TagFileService.EnsureDbAndFolderCreated();//TODO move it
             winVM = new FileWinVM(this);
             DataContext = winVM;
             SetAlignment();

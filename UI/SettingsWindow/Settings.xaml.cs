@@ -1,4 +1,5 @@
 ﻿using DesktopLearningAssistant.Configuration;
+using Panuon.UI.Silver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +14,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UI.SettingsWindow;
-using DesktopLearningAssistant.TimeStatistic;
-using DesktopLearningAssistant.TimeStatistic.Model;
 
 namespace UI
 {
     /// <summary>
     /// Settings.xaml 的交互逻辑
     /// </summary>
-    public partial class Settings : Window
+    public partial class Settings : WindowX
     {
-        private SettingsWindowVM viewModel;
+        private readonly SettingsWindowVM viewModel;
 
         public Settings()
         {
@@ -89,6 +88,8 @@ namespace UI
 
         private void DeleteWhiteListBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (WhiteListKeyComboBox.SelectedItem == null)
+                return;
             string selectedKey = WhiteListKeyComboBox.SelectedItem.ToString();
             ConfigService configService = ConfigService.GetConfigService();
 
@@ -107,6 +108,8 @@ namespace UI
 
         private void SaveWhiteListBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (WhiteListKeyComboBox.SelectedItem == null)
+                return;
             string selectedKey = WhiteListKeyComboBox.SelectedItem.ToString();
             List<string> selectedValues = new List<string>();
             foreach (Software software in viewModel.WhiteListValueList)
