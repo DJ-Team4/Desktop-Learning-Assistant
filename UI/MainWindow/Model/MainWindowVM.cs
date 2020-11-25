@@ -149,7 +149,7 @@ namespace UI
             for (int i = 0; i < taskEfficiencies.Count && i < 8; i++)
             {
                 LineXLabels.Add(taskEfficiencies[i].Name);
-                values.Add(taskEfficiencies[i].Efficiency);
+                values.Add(Math.Round(taskEfficiencies[i].Efficiency, 2));
             }
             
             LineSeriesCollection.Add(new LineSeries
