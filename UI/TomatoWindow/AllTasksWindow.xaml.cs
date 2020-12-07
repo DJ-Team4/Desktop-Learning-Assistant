@@ -201,14 +201,16 @@ namespace UI.AllTaskWindow
                 {
                     images.Add(new ImageItem()
                     {
-                        ImageSrc = new BitmapImage(new Uri("../Image/Tomato-Finished.png", UriKind.Relative))
+                        ImageSrc = new BitmapImage(
+                            new Uri("pack://application:,,,/UI;component/Image/Tomato-Finished.png", UriKind.Absolute))
                     });
                 }
                 else
                 {
                     images.Add(new ImageItem()
                     {
-                        ImageSrc = new BitmapImage(new Uri("../Image/Tomato-Unfinished.png", UriKind.Relative))
+                        ImageSrc = new BitmapImage(
+                            new Uri("pack://application:,,,/UI;component/Image/Tomato-Unfinished.png", UriKind.Absolute))
                     });
                 }
             }

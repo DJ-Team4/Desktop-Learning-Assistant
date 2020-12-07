@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -96,7 +95,7 @@ namespace UI
                     MinuteTextBlock.Text = configService.TTConfig.WorkTimeSpan.Minutes.ToString("D2");
                     SecondTextClock.Text = configService.TTConfig.WorkTimeSpan.Seconds.ToString("D2");
                 }
-                
+
                 else if (clockManager.clockState == ClockState.Relaxing)
                 {
                     nextState = ClockState.Working;
@@ -105,7 +104,8 @@ namespace UI
                 }
 
                 ProgressBar.CurrentValue = 1;
-                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
+                ClockBtnImage.Source = new BitmapImage(
+                    new Uri("pack://application:,,,/UI;component/Image/Start.png", UriKind.Absolute));
 
                 clockManager.AbortClock();
                 return;
@@ -121,7 +121,8 @@ namespace UI
             }
 
             nextState = ClockState.Stop;
-            ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Pause.png", UriKind.Relative));
+            ClockBtnImage.Source = new BitmapImage(
+                new Uri("pack://application:,,,/UI;component/Image/Pause.png", UriKind.Absolute));
         }
 
         /// <summary>
@@ -188,7 +189,8 @@ namespace UI
                 nextState = ClockState.Relaxing;
 
                 // UI恢复
-                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
+                ClockBtnImage.Source = new BitmapImage(
+                    new Uri("pack://application:,,,/UI;component/Image/Start.png", UriKind.Absolute));
                 viewModel.UpdateRelativeFiles();
                 RelativeFilesListView.Items.Refresh();  // 强制刷新相关文件视图
 
@@ -213,17 +215,19 @@ namespace UI
 
             this.Dispatcher.Invoke(new Action(() =>
             {
-                ClockBtnImage.Source = new BitmapImage(new Uri("../Image/Start.png", UriKind.Relative));
+                ClockBtnImage.Source = new BitmapImage(
+                    new Uri("pack://application:,,,/UI;component/Image/Start.png", UriKind.Absolute));
             }));
         }
-        
+
         /// <summary>
         /// 每间隔一秒clockManager就会调用此方法一次，并返回累计时间间隔
         /// </summary>
         /// <param name="timeSpan"></param>
         private void ClockTickEventHandler(object sender, TimeSpan timeSpan)
         {
-            this.Dispatcher.Invoke(new Action(() => {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
                 this.MinuteTextBlock.Text = timeSpan.Minutes.ToString("D2");
                 this.SecondTextClock.Text = timeSpan.Seconds.ToString("D2");
                 this.ProgressBar.CurrentValue = clockManager.Percentage;
@@ -297,7 +301,7 @@ namespace UI
 
         #region 设置、隐藏与关闭
 
-        private NotifyIcon notifyIcon = null;
+        private System.Windows.Forms.NotifyIcon notifyIcon = null;
 
         private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
@@ -323,12 +327,16 @@ namespace UI
         private void notify()
         {
             //隐藏主窗体
-            this.Visibility = Visibility.Hidden;
+            Visibility = Visibility.Hidden;
+            if (notifyIcon != null)
+                return;
 
             //设置托盘的各个属性
-            notifyIcon = new NotifyIcon();
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
             notifyIcon.Text = "桌面学习助手";
-            notifyIcon.Icon = new System.Drawing.Icon("Image/Icon.ico");
+            Stream iconStream = Application.GetResourceStream(
+                new Uri("pack://application:,,,/UI;component/Image/Icon.ico")).Stream;
+            notifyIcon.Icon = new System.Drawing.Icon(iconStream);
             notifyIcon.Visible = true;
             notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(notifyIcon_MouseClick);
         }
@@ -341,16 +349,16 @@ namespace UI
         private void notifyIcon_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //如果鼠标左键单击
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                if (this.Visibility == Visibility.Visible)
+                if (Visibility == Visibility.Visible)
                 {
-                    this.Visibility = Visibility.Hidden;
+                    Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    this.Visibility = Visibility.Visible;
-                    this.Activate();
+                    Visibility = Visibility.Visible;
+                    Activate();
                 }
             }
         }

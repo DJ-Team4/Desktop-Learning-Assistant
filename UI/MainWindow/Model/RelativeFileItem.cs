@@ -19,7 +19,8 @@ namespace UI
         {
             get
             {
-                if (!File.Exists(FilePath)) return new BitmapImage(new Uri("../Image/File.jpeg", UriKind.Relative));
+                if (!File.Exists(FilePath)) return new BitmapImage(
+                    new Uri("pack://application:,,,/UI;component/Image/File.jpeg", UriKind.Absolute));
                 Icon ico = Icon.ExtractAssociatedIcon(FilePath);
                 return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
                     ico.Handle,
