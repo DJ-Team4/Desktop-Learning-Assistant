@@ -30,7 +30,7 @@
 
 [选题报告](./doc/选题报告-DJ小队.docx)
 
-[需求与设计文档](./doc/需求与设计文档-DJ小队.docx)
+[需求与设计文档](./doc/需求与设计文档-DJ 小队.docx)
 
 [结项PPT](./doc/DJ-Team.pptx)
 
